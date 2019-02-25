@@ -1,2 +1,0 @@
-# metida-engine
-game engine

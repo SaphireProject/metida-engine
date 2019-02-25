@@ -1,6 +1,8 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.*;
+
 public class Main {
 
     static Tank firstTank, secondTank;
@@ -8,8 +10,9 @@ public class Main {
     static int lengthMapX = 10;
     static int lengthMapY = 10;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
+        /*
         firstTank = new Tank("java",
                 80,
                 30,
@@ -31,6 +34,27 @@ public class Main {
         System.out.println("STEP 0");
         print();
         game();
+        */
+
+        fileOutput();
+        fileInput();
+    }
+
+    static void fileOutput() throws IOException {
+        File file = new File("C:\\test.txt");
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        String greetings = "Привет! Добро пожаловать на JavaRush - лучшй сайт для тех, кто хочет стать программистом!";
+        fileOutputStream.write(greetings.getBytes());
+        fileOutputStream.close();
+    }
+
+    static void fileInput() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream("C:\\test.txt");
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
+        int i;
+        while ((i = bufferedInputStream.read()) != -1) {
+            System.out.print((char) i);
+        }
     }
 
     private static JSONObject constructorStrategy(int left_move, int right_move, int up_move, int down_move) {
