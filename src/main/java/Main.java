@@ -1,7 +1,13 @@
+import JavaCompilerAPI.CountClassesMethodsFieldsScanner;
+import JavaCompilerAPI.CountElementsProcessor;
+import JavaCompilerAPI.EmptyTryBlockProcessor;
+import JavaCompilerAPI.EmptyTryBlockScanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.tools.*;
 import java.io.*;
+import java.util.Arrays;
 
 public class Main {
 
@@ -34,10 +40,12 @@ public class Main {
         System.out.println("STEP 0");
         print();
         game();
-        */
 
         fileOutput();
         fileInput();
+        */
+
+        compilerJava();
     }
 
     static void fileOutput() throws IOException {
@@ -56,6 +64,62 @@ public class Main {
             System.out.print((char) i);
         }
     }
+
+    private String str;
+
+    private static class InnerClass {
+        private int number;
+
+        public void method() {
+            int i = 0;
+
+            try {
+                // Some implementation here
+            } catch (final Throwable ex) {
+                // Some implementation here
+            }
+        }
+    }
+
+    static void compilerJava() throws IOException {
+        final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+        final StandardJavaFileManager manager = compiler.getStandardFileManager(
+                diagnostics, null, null);
+
+        final File file = new File("C:\\Hello.java");
+
+        final Iterable<? extends JavaFileObject> sources =
+                manager.getJavaFileObjectsFromFiles(Arrays.asList(file));
+
+        final CountClassesMethodsFieldsScanner scanner = new CountClassesMethodsFieldsScanner();
+        final CountElementsProcessor processor = new CountElementsProcessor(scanner);
+
+        JavaCompiler.CompilationTask task = compiler.getTask(null, manager, diagnostics,
+                null, null, sources);
+
+        task.setProcessors(Arrays.asList(processor));
+        task.call();
+
+        System.out.format("Classes %d, methods/constructors %d, fields %d",
+                scanner.getNumberOfClasses(),
+                scanner.getNumberOfMethods(),
+                scanner.getNumberOfFields());
+
+        manager.close();
+
+        final EmptyTryBlockScanner scannerTry = new EmptyTryBlockScanner();
+        final EmptyTryBlockProcessor processorTry = new EmptyTryBlockProcessor(scannerTry);
+
+
+        task = compiler.getTask( null, manager, diagnostics,
+                null, null, sources );
+        task.setProcessors( Arrays.asList( processor ) );
+        task.call();
+
+        System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
+    }
+
 
     private static JSONObject constructorStrategy(int left_move, int right_move, int up_move, int down_move) {
         JSONArray ar = new JSONArray();
