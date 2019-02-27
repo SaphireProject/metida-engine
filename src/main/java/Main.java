@@ -1,15 +1,12 @@
 import JavaCompilerAPI.CountClassesMethodsFieldsScanner;
 import JavaCompilerAPI.CountElementsProcessor;
-import JavaCompilerAPI.EmptyTryBlockProcessor;
-import JavaCompilerAPI.EmptyTryBlockScanner;
-import org.joor.Reflect;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import javax.tools.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.function.Supplier;
+import org.joor.Reflect;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Main {
 
