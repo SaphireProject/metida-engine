@@ -1,10 +1,7 @@
 package JavaCompilerAPI;
 
-import com.sun.source.tree.TryTree;
-import com.sun.source.util.TreePathScanner;
-import com.sun.source.util.Trees;
-
-public class EmptyTryBlockScanner extends TreePathScanner< Object, Trees> {
+public class EmptyTryBlockScanner {
+        /* extends TreePathScanner< Object, Trees> {
     private int numberOfEmptyTryBlocks;
 
     @Override
@@ -19,5 +16,6 @@ public class EmptyTryBlockScanner extends TreePathScanner< Object, Trees> {
     public int getNumberOfEmptyTryBlocks() {
         return numberOfEmptyTryBlocks;
     }
+    */
 }
 

@@ -10,11 +10,11 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
-import com.sun.source.util.Trees;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 @SupportedAnnotationTypes("*")
-public class EmptyTryBlockProcessor extends AbstractProcessor {
+public class EmptyTryBlockProcessor {
+    /*extends AbstractProcessor {
     private final EmptyTryBlockScanner scanner;
     private Trees trees;
 
@@ -39,5 +39,6 @@ public class EmptyTryBlockProcessor extends AbstractProcessor {
 
         return true;
     }
+    */
 }
 

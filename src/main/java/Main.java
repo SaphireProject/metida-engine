@@ -2,12 +2,14 @@ import JavaCompilerAPI.CountClassesMethodsFieldsScanner;
 import JavaCompilerAPI.CountElementsProcessor;
 import JavaCompilerAPI.EmptyTryBlockProcessor;
 import JavaCompilerAPI.EmptyTryBlockScanner;
+import org.joor.Reflect;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.tools.*;
 import java.io.*;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class Main {
 
@@ -45,7 +47,20 @@ public class Main {
         fileInput();
         */
 
-        compilerJava();
+        //compilerJava();
+
+        Supplier<String> supplier = Reflect.compile(
+                "com.example.CompileTest",
+                "package com.example;\n" +
+                        "class CompileTest\n" +
+                        "implements java.util.function.Supplier<String> {\n" +
+                        "  public String get() {\n" +
+                        "    return \"Hello World!\";\n" +
+                        "  }\n" +
+                        "}\n"
+        ).create().get();
+
+        System.out.println(supplier.get());
     }
 
     static void fileOutput() throws IOException {
@@ -108,16 +123,16 @@ public class Main {
 
         manager.close();
 
-        final EmptyTryBlockScanner scannerTry = new EmptyTryBlockScanner();
-        final EmptyTryBlockProcessor processorTry = new EmptyTryBlockProcessor(scannerTry);
+        //final EmptyTryBlockScanner scannerTry = new EmptyTryBlockScanner();
+        //final EmptyTryBlockProcessor processorTry = new EmptyTryBlockProcessor(scannerTry);
 
 
-        task = compiler.getTask( null, manager, diagnostics,
-                null, null, sources );
-        task.setProcessors( Arrays.asList( processor ) );
-        task.call();
+        //task = compiler.getTask( null, manager, diagnostics,
+        //        null, null, sources );
+        //task.setProcessors( Arrays.asList( processor ) );
+        //task.call();
 
-        System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
+        //System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
     }
 
 
