@@ -5,13 +5,13 @@ public class Tank {
     private String name;
     private float health;
     private float damage;
-    private String strategy;
+    private String[] strategy;
     private int x;
     private int y;
     private int length;
     private int deg;
 
-    Tank(String name, float health, float damage, String strategy, int x, int y, int length, int deg) {
+    Tank(String name, float health, float damage, String[] strategy, int x, int y, int length, int deg) {
         this.name = name;
         this.health = health;
         this.damage = damage;
@@ -46,11 +46,11 @@ public class Tank {
         this.damage = damage;
     }
 
-    public String getStrategy() {
+    public String[] getStrategy() {
         return strategy;
     }
 
-    public void setStrategy(String strategy) {
+    public void setStrategy(String[] strategy) {
         this.strategy = strategy;
     }
 

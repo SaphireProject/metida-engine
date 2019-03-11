@@ -1,9 +1,6 @@
-import JavaCompilerAPI.CountClassesMethodsFieldsScanner;
-import JavaCompilerAPI.CountElementsProcessor;
-import javax.tools.*;
 import java.io.*;
-import java.util.Arrays;
 import java.util.function.Supplier;
+
 import org.joor.Reflect;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +12,16 @@ public class Main {
     static int lengthMapX = 10;
     static int lengthMapY = 10;
 
-    public static void main(String[] args) throws IOException {
+    static String[] subStrStrategy;
+    static String[] clazzTankFactory = {"TankFactory.getMyTank().moveAhead()", "TankFactory.getMyTank().moveDown()",
+            "TankFactory.getMyTank().turnTowerRight()", "TankFactory.getMyTank().turnTowerLeft()",
+            "TankFactory.getMyTank().scanAround()", "TankFactory.getMyTank().getHelth()",
+            "TankFactory.getMyTank().getCoordinates()", "TankFactory.getMyTank().getAngle()",
+            "TankFactory.getMyTank().recharge()", "TankFactory.getMyTank().getHowManySteps()"};
+    static String[] clazzScanFactory = {"ScanFactory.getEnemyTank()", "ScanFactory.getBullet()",
+            "ScanFactory.getWall()", "ScanFactory.shot()"};
+
+    public static void main(String[] args) {
 
         /*
         firstTank = new Tank("java",
@@ -44,94 +50,87 @@ public class Main {
         fileInput();
         */
 
-        //compilerJava();
+        /*Supplier<String> supplier = Reflect.compile(
+                "com.example.StrategyTest",
+                strategy
+        ).create().;
 
+        System.out.println(supplier.get());
+        */
+
+        reception();
+        if (!check()) {
+            System.out.println("Неверный код стратегии. Посмотрите документацию");
+            System.exit(0);
+        }
+
+
+    }
+
+    private static void reception() {
         Supplier<String> supplier = Reflect.compile(
                 "com.example.CompileTest",
                 "package com.example;\n" +
                         "class CompileTest\n" +
                         "implements java.util.function.Supplier<String> {\n" +
                         "  public String get() {\n" +
-                        "    return \"Hello World!\";\n" +
+                        "    return \"private void execute(){" +
+                        "        TankFactory.getMyTank().moveAhead();" +
+                        "        TankFactory.getMyTank().turnTowerLeft();" +
+                        "    }\";\n" +
                         "  }\n" +
                         "}\n"
         ).create().get();
 
         System.out.println(supplier.get());
-    }
 
-    static void fileOutput() throws IOException {
-        File file = new File("C:\\test.txt");
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        String greetings = "Привет! Добро пожаловать на JavaRush - лучшй сайт для тех, кто хочет стать программистом!";
-        fileOutputStream.write(greetings.getBytes());
-        fileOutputStream.close();
-    }
+        String delimeter = ";";
+        subStrStrategy = supplier.get().split(delimeter);
 
-    static void fileInput() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream("C:\\test.txt");
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
-        int i;
-        while ((i = bufferedInputStream.read()) != -1) {
-            System.out.print((char) i);
+        int index = subStrStrategy[0].indexOf('{');
+        subStrStrategy[0] = subStrStrategy[0].substring(index + 1, subStrStrategy[0].length());
+
+        for (int i = 0; i < subStrStrategy.length - 1; i++) {
+            subStrStrategy[i] = subStrStrategy[i].replace(" ", "");
+            System.out.println(subStrStrategy[i]);
         }
+
     }
 
-    private String str;
+    private static boolean check() {
+        int count_check = 0;
 
-    private static class InnerClass {
-        private int number;
-
-        public void method() {
-            int i = 0;
-
-            try {
-                // Some implementation here
-            } catch (final Throwable ex) {
-                // Some implementation here
+        for (int i = 0; subStrStrategy.length - 1 > i; i++) {
+            for (int j = 0; clazzScanFactory.length > j; j++) {
+                if (subStrStrategy[i].equals(clazzScanFactory[j])) {
+                    count_check++;
+                }
+            }
+            for (int j = 0; clazzTankFactory.length > j; j++) {
+                if (subStrStrategy[i].equals(clazzTankFactory[j])) {
+                    count_check++;
+                }
             }
         }
+
+        if (count_check == subStrStrategy.length - 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    static void compilerJava() throws IOException {
-        final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        final StandardJavaFileManager manager = compiler.getStandardFileManager(
-                diagnostics, null, null);
+    static String fileInput() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream("E:\\test.txt");
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
+        int i;
+        String res = "";
+        while ((i = bufferedInputStream.read()) != -1) {
+            res += (char) i;
+        }
 
-        final File file = new File("C:\\Hello.java");
-
-        final Iterable<? extends JavaFileObject> sources =
-                manager.getJavaFileObjectsFromFiles(Arrays.asList(file));
-
-        final CountClassesMethodsFieldsScanner scanner = new CountClassesMethodsFieldsScanner();
-        final CountElementsProcessor processor = new CountElementsProcessor(scanner);
-
-        JavaCompiler.CompilationTask task = compiler.getTask(null, manager, diagnostics,
-                null, null, sources);
-
-        task.setProcessors(Arrays.asList(processor));
-        task.call();
-
-        System.out.format("Classes %d, methods/constructors %d, fields %d",
-                scanner.getNumberOfClasses(),
-                scanner.getNumberOfMethods(),
-                scanner.getNumberOfFields());
-
-        manager.close();
-
-        //final EmptyTryBlockScanner scannerTry = new EmptyTryBlockScanner();
-        //final EmptyTryBlockProcessor processorTry = new EmptyTryBlockProcessor(scannerTry);
-
-
-        //task = compiler.getTask( null, manager, diagnostics,
-        //        null, null, sources );
-        //task.setProcessors( Arrays.asList( processor ) );
-        //task.call();
-
-        //System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
+        return res;
     }
-
 
     private static JSONObject constructorStrategy(int left_move, int right_move, int up_move, int down_move) {
         JSONArray ar = new JSONArray();
