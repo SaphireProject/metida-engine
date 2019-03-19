@@ -2,6 +2,8 @@ import JavaCompilerAPI.CountClassesMethodsFieldsScanner;
 import JavaCompilerAPI.CountElementsProcessor;
 import javax.tools.*;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.function.Supplier;
 import org.joor.Reflect;
@@ -52,12 +54,37 @@ public class Main {
                         "class CompileTest\n" +
                         "implements java.util.function.Supplier<String> {\n" +
                         "  public String get() {\n" +
-                        "    return \"Hello World!\";\n" +
+                        "    return \"" +
+                        "       " +
+                        "       public void init(){" +
+                        "       }" +
+                        "       public void execute(){" +
+                        "           TankFactory.getMyTank().moveAhead();" +
+                        "       }\";\n" +
                         "  }\n" +
                         "}\n"
         ).create().get();
 
+        try {
+            Class clazz = supplier.get().getClass();
+            //System.out.println(clazz.getFields());
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                System.out.println("method : " + method.getName());
+            }
+            Field[] fields = clazz.getFields();
+            for (Field field : fields) {
+                System.out.println("field : " + field.getName());
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         System.out.println(supplier.get());
+    }
+
+    static void moveAhead(){
+
     }
 
     static void fileOutput() throws IOException {
@@ -131,7 +158,6 @@ public class Main {
 
         //System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
     }
-
 
     private static JSONObject constructorStrategy(int left_move, int right_move, int up_move, int down_move) {
         JSONArray ar = new JSONArray();
