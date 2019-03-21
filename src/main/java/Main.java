@@ -48,219 +48,223 @@ public class Main {
 
         //compilerJava();
 
-        Supplier<String> supplier = Reflect.compile(
-                "com.example.CompileTest",
-                "package com.example;\n" +
-                        "class CompileTest\n" +
-                        "implements java.util.function.Supplier<String> {\n" +
-                        "  public String get() {\n" +
-                        "    return \"" +
-                        "       " +
-                        "       public void init(){" +
-                        "       }" +
-                        "       public void execute(){" +
-                        "           TankFactory.getMyTank().moveAhead();" +
-                        "       }\";\n" +
-                        "  }\n" +
-                        "}\n"
-        ).create().get();
+        //Supplier<String> supplier = Reflect.compile(
+        //        "com.example.CompileTest",
+        //        "package com.example;\n" +
+        //                "class CompileTest\n" +
+        //                "implements java.util.function.Supplier<String> {\n" +
+        //                "  public String get() {\n" +
+        //                "    return \"" +
+        //                "       " +
+        //                "       public void init(){" +
+        //                "       }" +
+        //                "       public void execute(){" +
+        //                "           TankFactory.getMyTank().moveAhead();" +
+        //                "       }\";\n" +
+        //                "  }\n" +
+        //                "}\n"
+        //).create().get();
 
-        try {
-            Class clazz = supplier.get().getClass();
-            //System.out.println(clazz.getFields());
-            Method[] methods = clazz.getDeclaredMethods();
-            for (Method method : methods) {
-                System.out.println("method : " + method.getName());
-            }
-            Field[] fields = clazz.getFields();
-            for (Field field : fields) {
-                System.out.println("field : " + field.getName());
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        //try {
+        //    Class clazz = supplier.get().getClass();
+        //    //System.out.println(clazz.getFields());
+        //    Method[] methods = clazz.getDeclaredMethods();
+        //    for (Method method : methods) {
+        //        System.out.println("method : " + method.getName());
+        //    }
+        //    Field[] fields = clazz.getFields();
+        //    for (Field field : fields) {
+        //        System.out.println("field : " + field.getName());
+        //    }
+        //} catch (Exception e) {
+        //    System.out.println(e);
+        //}
 
-        System.out.println(supplier.get());
+        //System.out.println(supplier.get());
+
+
+
+
     }
 
-    static void moveAhead(){
+    //static void moveAhead(){
 
-    }
+    //}
 
-    static void fileOutput() throws IOException {
-        File file = new File("C:\\test.txt");
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        String greetings = "Привет! Добро пожаловать на JavaRush - лучшй сайт для тех, кто хочет стать программистом!";
-        fileOutputStream.write(greetings.getBytes());
-        fileOutputStream.close();
-    }
+    //static void fileOutput() throws IOException {
+    //    File file = new File("C:\\test.txt");
+    //    FileOutputStream fileOutputStream = new FileOutputStream(file);
+    //    String greetings = "Привет! Добро пожаловать на JavaRush - лучшй сайт для тех, кто хочет стать программистом!";
+    //    fileOutputStream.write(greetings.getBytes());
+    //    fileOutputStream.close();
+    //}
 
-    static void fileInput() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream("C:\\test.txt");
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
-        int i;
-        while ((i = bufferedInputStream.read()) != -1) {
-            System.out.print((char) i);
-        }
-    }
+    //static void fileInput() throws IOException {
+    //    FileInputStream fileInputStream = new FileInputStream("C:\\test.txt");
+    //    BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
+    //    int i;
+    //    while ((i = bufferedInputStream.read()) != -1) {
+    //        System.out.print((char) i);
+    //    }
+    //}
 
-    private String str;
+    //private String str;
 
-    private static class InnerClass {
-        private int number;
+    //private static class InnerClass {
+    //    private int number;
 
-        public void method() {
-            int i = 0;
+    //    public void method() {
+    //        int i = 0;
 
-            try {
-                // Some implementation here
-            } catch (final Throwable ex) {
-                // Some implementation here
-            }
-        }
-    }
+    //        try {
+    //            // Some implementation here
+    //        } catch (final Throwable ex) {
+    //            // Some implementation here
+    //        }
+    //    }
+    //}
 
-    static void compilerJava() throws IOException {
-        final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        final StandardJavaFileManager manager = compiler.getStandardFileManager(
-                diagnostics, null, null);
+    //static void compilerJava() throws IOException {
+    //    final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+    //    final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+    //    final StandardJavaFileManager manager = compiler.getStandardFileManager(
+    //            diagnostics, null, null);
 
-        final File file = new File("C:\\Hello.java");
+    //    final File file = new File("C:\\Hello.java");
 
-        final Iterable<? extends JavaFileObject> sources =
-                manager.getJavaFileObjectsFromFiles(Arrays.asList(file));
+    //    final Iterable<? extends JavaFileObject> sources =
+    //            manager.getJavaFileObjectsFromFiles(Arrays.asList(file));
 
-        final CountClassesMethodsFieldsScanner scanner = new CountClassesMethodsFieldsScanner();
-        final CountElementsProcessor processor = new CountElementsProcessor(scanner);
+    //    final CountClassesMethodsFieldsScanner scanner = new CountClassesMethodsFieldsScanner();
+    //    final CountElementsProcessor processor = new CountElementsProcessor(scanner);
 
-        JavaCompiler.CompilationTask task = compiler.getTask(null, manager, diagnostics,
-                null, null, sources);
+    //    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, diagnostics,
+    //            null, null, sources);
 
-        task.setProcessors(Arrays.asList(processor));
-        task.call();
+    //    task.setProcessors(Arrays.asList(processor));
+    //    task.call();
 
-        System.out.format("Classes %d, methods/constructors %d, fields %d",
-                scanner.getNumberOfClasses(),
-                scanner.getNumberOfMethods(),
-                scanner.getNumberOfFields());
+    //    System.out.format("Classes %d, methods/constructors %d, fields %d",
+    //            scanner.getNumberOfClasses(),
+    //            scanner.getNumberOfMethods(),
+    //            scanner.getNumberOfFields());
 
-        manager.close();
+    //    manager.close();
 
-        //final EmptyTryBlockScanner scannerTry = new EmptyTryBlockScanner();
-        //final EmptyTryBlockProcessor processorTry = new EmptyTryBlockProcessor(scannerTry);
+    //    //final EmptyTryBlockScanner scannerTry = new EmptyTryBlockScanner();
+    //    //final EmptyTryBlockProcessor processorTry = new EmptyTryBlockProcessor(scannerTry);
 
 
-        //task = compiler.getTask( null, manager, diagnostics,
-        //        null, null, sources );
-        //task.setProcessors( Arrays.asList( processor ) );
-        //task.call();
+    //    //task = compiler.getTask( null, manager, diagnostics,
+    //    //        null, null, sources );
+    //    //task.setProcessors( Arrays.asList( processor ) );
+    //    //task.call();
 
-        //System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
-    }
+    //    //System.out.format( "Empty try/catch blocks: %d", scannerTry.getNumberOfEmptyTryBlocks() );
+    //}
 
-    private static JSONObject constructorStrategy(int left_move, int right_move, int up_move, int down_move) {
-        JSONArray ar = new JSONArray();
-        JSONObject obj = new JSONObject();
-        obj.put("left_move", left_move);
-        ar.put(obj);
+    //private static JSONObject constructorStrategy(int left_move, int right_move, int up_move, int down_move) {
+    //    JSONArray ar = new JSONArray();
+    //    JSONObject obj = new JSONObject();
+    //    obj.put("left_move", left_move);
+    //    ar.put(obj);
 
-        obj = new JSONObject();
-        obj.put("up_move", up_move);
-        ar.put(obj);
+    //    obj = new JSONObject();
+    //    obj.put("up_move", up_move);
+    //    ar.put(obj);
 
-        obj = new JSONObject();
-        obj.put("down_move", down_move);
-        ar.put(obj);
+    //    obj = new JSONObject();
+    //    obj.put("down_move", down_move);
+    //    ar.put(obj);
 
-        obj = new JSONObject();
-        obj.put("right_move", right_move);
-        ar.put(obj);
+    //    obj = new JSONObject();
+    //    obj.put("right_move", right_move);
+    //    ar.put(obj);
 
-        obj = new JSONObject();
-        obj.put("strategy", ar);
+    //    obj = new JSONObject();
+    //    obj.put("strategy", ar);
 
-        return obj;
-    }
+    //    return obj;
+    //}
 
-    private static void game() {
-        int k = 0;
-        boolean game = true;
-        while (game) {
-            k++;
-            System.out.println("STEP " + k);
-            System.out.println("1 health " + firstTank.getHealth());
-            System.out.println("2 health " + secondTank.getHealth());
+    //private static void game() {
+    //    int k = 0;
+    //    boolean game = true;
+    //    while (game) {
+    //        k++;
+    //        System.out.println("STEP " + k);
+    //        System.out.println("1 health " + firstTank.getHealth());
+    //        System.out.println("2 health " + secondTank.getHealth());
 
-            new Action().action(firstTank, secondTank, lengthMapX, lengthMapY);
-            new Action().action(secondTank, firstTank, lengthMapX, lengthMapY);
+    //        new Action().action(firstTank, secondTank, lengthMapX, lengthMapY);
+    //        new Action().action(secondTank, firstTank, lengthMapX, lengthMapY);
 
-            print();
+    //        print();
 
-            if (firstTank.getHealth() <= 0 || secondTank.getHealth() <= 0) {
-                game = false;
-            }
-        }
+    //        if (firstTank.getHealth() <= 0 || secondTank.getHealth() <= 0) {
+    //            game = false;
+    //        }
+    //    }
 
-        int win;
-        if (firstTank.getHealth() > 0) {
-            win = 1;
-        } else {
-            win = 2;
-        }
+    //    int win;
+    //    if (firstTank.getHealth() > 0) {
+    //        win = 1;
+    //    } else {
+    //        win = 2;
+    //    }
 
-        System.out.println("WIN = " + win);
-    }
+    //    System.out.println("WIN = " + win);
+    //}
 
-    public static void print() {
+    //public static void print() {
 
-        int[][] sh;
-        sh = new Action().shoot(firstTank, secondTank, lengthMapX + 1, lengthMapY + 1);
+    //    int[][] sh;
+    //    sh = new Action().shoot(firstTank, secondTank, lengthMapX + 1, lengthMapY + 1);
 
-        for (int x = 1; x < lengthMapX + 1; x++) {
-            for (int y = 1; y < lengthMapY + 1; y++) {
-                if (firstTank.getX() == x && firstTank.getY() == y) {
-                    switch (firstTank.getDeg()) {
-                        case 0:
-                            System.out.print("|▲");
-                            break;
-                        case 90:
-                            System.out.print("|▶");
-                            break;
-                        case 180:
-                            System.out.print("|▼");
-                            break;
-                        case 270:
-                            System.out.print("|◀");
-                            break;
-                    }
-                } else if (secondTank.getX() == x && secondTank.getY() == y) {
-                    switch (secondTank.getDeg()) {
-                        case 0:
-                            System.out.print("|▲");
-                            break;
-                        case 90:
-                            System.out.print("|▶");
-                            break;
-                        case 180:
-                            System.out.print("|▼");
-                            break;
-                        case 270:
-                            System.out.print("|◀");
-                            break;
-                    }
-                } else if (sh[x][y] != 0) {
-                    System.out.print("|" + sh[x][y]);
-                } else if (y < lengthMapY) {
-                    System.out.print("|_");
-                } else {
-                    System.out.print("|_|");
+    //    for (int x = 1; x < lengthMapX + 1; x++) {
+    //        for (int y = 1; y < lengthMapY + 1; y++) {
+    //            if (firstTank.getX() == x && firstTank.getY() == y) {
+    //                switch (firstTank.getDeg()) {
+    //                    case 0:
+    //                        System.out.print("|▲");
+    //                        break;
+    //                    case 90:
+    //                        System.out.print("|▶");
+    //                        break;
+    //                    case 180:
+    //                        System.out.print("|▼");
+    //                        break;
+    //                    case 270:
+    //                        System.out.print("|◀");
+    //                        break;
+    //                }
+    //            } else if (secondTank.getX() == x && secondTank.getY() == y) {
+    //                switch (secondTank.getDeg()) {
+    //                    case 0:
+    //                        System.out.print("|▲");
+    //                        break;
+    //                    case 90:
+    //                        System.out.print("|▶");
+    //                        break;
+    //                    case 180:
+    //                        System.out.print("|▼");
+    //                        break;
+    //                    case 270:
+    //                        System.out.print("|◀");
+    //                        break;
+    //                }
+    //            } else if (sh[x][y] != 0) {
+    //                System.out.print("|" + sh[x][y]);
+    //            } else if (y < lengthMapY) {
+    //                System.out.print("|_");
+    //            } else {
+    //                System.out.print("|_|");
 
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
+    //            }
+    //        }
+    //        System.out.println();
+    //    }
+    //    System.out.println();
+    //}
 
 }
