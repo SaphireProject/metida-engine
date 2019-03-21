@@ -1,6 +1,8 @@
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
+import interfaces.TankInterface;
 import org.joor.Reflect;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,65 +61,28 @@ public class Main {
         */
 
         reception();
-        if (!check()) {
-            System.out.println("Неверный код стратегии. Посмотрите документацию");
-            System.exit(0);
-        }
-
-
     }
 
     private static void reception() {
-        Supplier<String> supplier = Reflect.compile(
+        TankInterface tankInterface = Reflect.compile(
                 "com.example.CompileTest",
                 "package com.example;\n" +
-                        "class CompileTest\n" +
-                        "implements java.util.function.Supplier<String> {\n" +
-                        "  public String get() {\n" +
-                        "    return \"private void execute(){" +
-                        "        TankFactory.getMyTank().moveAhead();" +
-                        "        TankFactory.getMyTank().turnTowerLeft();" +
-                        "    }\";\n" +
+                        "class CompileTest implements interfaces.TankInterface {\n" +
+                        "  public void execute() {\n" +
+                        "    list.getMyTank().ahead();" +
+                        "    return list; \n" +
                         "  }\n" +
-                        "}\n"
-        ).create().get();
+                        "}\n").create().get();
 
-        System.out.println(supplier.get());
-
-        String delimeter = ";";
-        subStrStrategy = supplier.get().split(delimeter);
-
-        int index = subStrStrategy[0].indexOf('{');
-        subStrStrategy[0] = subStrStrategy[0].substring(index + 1, subStrStrategy[0].length());
-
-        for (int i = 0; i < subStrStrategy.length - 1; i++) {
-            subStrStrategy[i] = subStrStrategy[i].replace(" ", "");
-            System.out.println(subStrStrategy[i]);
-        }
-
+        // заверифицировать на конфликт
+        // usertickaction, n штук, инстанс класса
+        // что может изменить execute
+        // list передавать, на выходе измененый лист танка, посмотреть что изменилось, и так каждого
+        //
     }
 
-    private static boolean check() {
-        int count_check = 0;
+    void create() {
 
-        for (int i = 0; subStrStrategy.length - 1 > i; i++) {
-            for (int j = 0; clazzScanFactory.length > j; j++) {
-                if (subStrStrategy[i].equals(clazzScanFactory[j])) {
-                    count_check++;
-                }
-            }
-            for (int j = 0; clazzTankFactory.length > j; j++) {
-                if (subStrStrategy[i].equals(clazzTankFactory[j])) {
-                    count_check++;
-                }
-            }
-        }
-
-        if (count_check == subStrStrategy.length - 1) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     static String fileInput() throws IOException {
