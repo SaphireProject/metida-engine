@@ -70,7 +70,6 @@ public class Main {
                         "class CompileTest implements interfaces.TankInterface {\n" +
                         "  public void execute() {\n" +
                         "    list.getMyTank().ahead();" +
-                        "    return list; \n" +
                         "  }\n" +
                         "}\n").create().get();
 
