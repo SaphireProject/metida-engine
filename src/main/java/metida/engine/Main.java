@@ -1,12 +1,16 @@
-import java.io.*;
-import java.lang.reflect.Method;
-import java.util.function.Supplier;
+package metida.engine;
 
-import interfaces.TankInterface;
-import org.joor.Reflect;
+import metida.engine.factories.TankFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+@Component
 public class Main {
 
     static Tank firstTank, secondTank;
@@ -14,19 +18,13 @@ public class Main {
     static int lengthMapX = 10;
     static int lengthMapY = 10;
 
-    static String[] subStrStrategy;
-    static String[] clazzTankFactory = {"TankFactory.getMyTank().moveAhead()", "TankFactory.getMyTank().moveDown()",
-            "TankFactory.getMyTank().turnTowerRight()", "TankFactory.getMyTank().turnTowerLeft()",
-            "TankFactory.getMyTank().scanAround()", "TankFactory.getMyTank().getHelth()",
-            "TankFactory.getMyTank().getCoordinates()", "TankFactory.getMyTank().getAngle()",
-            "TankFactory.getMyTank().recharge()", "TankFactory.getMyTank().getHowManySteps()"};
-    static String[] clazzScanFactory = {"ScanFactory.getEnemyTank()", "ScanFactory.getBullet()",
-            "ScanFactory.getWall()", "ScanFactory.shot()"};
+    @Autowired
+    private TankFactory tankFactory;
 
     public static void main(String[] args) {
 
         /*
-        firstTank = new Tank("java",
+        firstTank = new metida.engine.Tank("java",
                 80,
                 30,
                 String.valueOf(constructorStrategy(1, 1, 1, 1)),
@@ -35,7 +33,7 @@ public class Main {
                 constructorStrategy(90, 90, 3, 4).length(),
                 0);
 
-        secondTank = new Tank("c#",
+        secondTank = new metida.engine.Tank("c#",
                 80,
                 30,
                 String.valueOf(constructorStrategy(1, 1, 1, 1)),
@@ -60,29 +58,10 @@ public class Main {
         System.out.println(supplier.get());
         */
 
-        reception();
+        StrategyCreate strategyCreate = new StrategyCreate();
+        strategyCreate.strCreate();
     }
 
-    private static void reception() {
-        TankInterface tankInterface = Reflect.compile(
-                "com.example.CompileTest",
-                "package com.example;\n" +
-                        "class CompileTest implements interfaces.TankInterface {\n" +
-                        "  public void execute() {\n" +
-                        "    list.getMyTank().ahead();" +
-                        "  }\n" +
-                        "}\n").create().get();
-
-        // заверифицировать на конфликт
-        // usertickaction, n штук, инстанс класса
-        // что может изменить execute
-        // list передавать, на выходе измененый лист танка, посмотреть что изменилось, и так каждого
-        //
-    }
-
-    void create() {
-
-    }
 
     static String fileInput() throws IOException {
         FileInputStream fileInputStream = new FileInputStream("E:\\test.txt");
