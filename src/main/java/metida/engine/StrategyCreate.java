@@ -16,11 +16,12 @@ public class StrategyCreate {
                         "class CompileTest implements metida.engine.interfaces.IUserStrategy {" +
                         "   public void execute() {" +
                         "       TankFactoryProvider.getTankFactory().getTank();" +
+                        "   public void init() {" +
+                        "       TankFactoryProvider.getTankFactory().getTank();" +
                         "  }\n" +
                         "}\n").create().get();
 
         userStrategy.execute();
+        userStrategy.init();
     }
-
-
 }

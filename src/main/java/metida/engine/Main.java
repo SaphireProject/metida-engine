@@ -21,48 +21,6 @@ public class Main {
     @Autowired
     private TankFactory tankFactory;
 
-    public static void main(String[] args) {
-
-        /*
-        firstTank = new metida.engine.Tank("java",
-                80,
-                30,
-                String.valueOf(constructorStrategy(1, 1, 1, 1)),
-                3,
-                3,
-                constructorStrategy(90, 90, 3, 4).length(),
-                0);
-
-        secondTank = new metida.engine.Tank("c#",
-                80,
-                30,
-                String.valueOf(constructorStrategy(1, 1, 1, 1)),
-                3,
-                8,
-                constructorStrategy(90, 90, 3, 4).length(),
-                180);
-
-        System.out.println("STEP 0");
-        print();
-        game();
-
-        fileOutput();
-        fileInput();
-        */
-
-        /*Supplier<String> supplier = Reflect.compile(
-                "com.example.StrategyTest",
-                strategy
-        ).create().;
-
-        System.out.println(supplier.get());
-        */
-
-        StrategyCreate strategyCreate = new StrategyCreate();
-        strategyCreate.strCreate();
-    }
-
-
     static String fileInput() throws IOException {
         FileInputStream fileInputStream = new FileInputStream("E:\\test.txt");
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
