@@ -1,0 +1,31 @@
+{  
+   "lengthX":"10",
+   "lengthY":"12",
+   "obstacles":true,
+   "countPlayers":"3",
+   "buff":"false",
+   "debuff":"true",
+   "maxTanksOnPlayer":"3",
+   "vision":"1",
+   "players":[{  
+         "path":"C:/strategy.txt",
+         "team":"1",
+         "goldTank":"0"
+      },
+      {  
+         "path":"F:/strategy.txt",
+         "team":"2",
+         "goldTank":"0"
+      },
+      {  
+         "path":"E:/strategy.txt",
+         "team":"1",
+         "goldTank":"1"
+      },
+      {  
+         "path":"F:/strategy.txt",
+         "team":"2",
+         "goldTank":"0"
+      }
+   ]
+}
