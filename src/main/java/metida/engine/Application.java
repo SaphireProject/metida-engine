@@ -1,5 +1,6 @@
 package metida.engine;
 
+import metida.engine.test.TestHashMap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -14,8 +15,11 @@ public class Application {
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
 
-        StrategyCreate strategyCreate = new StrategyCreate();
-        strategyCreate.strCreate();
+        //StrategyCreate strategyCreate = new StrategyCreate();
+        //strategyCreate.strCreate();
+
+        TestHashMap testHashMap = new TestHashMap();
+        testHashMap.test();
     }
 
 }

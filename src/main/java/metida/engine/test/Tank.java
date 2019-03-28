@@ -1,4 +1,4 @@
-package metida.engine;
+package metida.engine.test;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,6 +22,9 @@ public class Tank {
         this.y = y;
         this.length = length;
         this.deg = deg;
+    }
+
+    Tank(){
     }
 
     public String getName() {
