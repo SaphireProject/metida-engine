@@ -7,6 +7,8 @@ import java.util.*;
 
 public class Game extends GameOptions{
 
+
+    //ToDo: добавлять параметры из конфига в конструктор GameOptions
     public Game()
     {
         gameOptions = new GameOptions();
@@ -30,6 +32,7 @@ public class Game extends GameOptions{
     public void setGameOptions(GameOptions gameOptions) {
         this.gameOptions = gameOptions;
     }
+
     //ToDo: не лист, map с разными ключами на один элемент ссылающиеся
     public List<BaseObject> objects = new ArrayList<BaseObject>();
 
