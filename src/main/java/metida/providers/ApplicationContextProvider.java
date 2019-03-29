@@ -1,4 +1,4 @@
-package metida;
+package metida.providers;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

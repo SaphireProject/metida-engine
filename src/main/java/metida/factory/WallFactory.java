@@ -1,7 +1,9 @@
 package metida.factory;
 
 import metida.object.Wall;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WallFactory {
 
     private static WallFactory instance;
