@@ -3,17 +3,6 @@ package metida.object;
 import java.lang.reflect.Type;
 
 public abstract class BaseObject  {
-/*
-    Type type;
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-*/
     int X;
     int Y;
     boolean living;
@@ -44,6 +33,6 @@ public abstract class BaseObject  {
     }
 
     void getHit(){
-
+        health--;
     }
 }
