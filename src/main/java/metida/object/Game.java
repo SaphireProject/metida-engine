@@ -33,22 +33,23 @@ public class Game extends GameOptions{
         this.gameOptions = gameOptions;
     }
 
-    //ToDo: не лист, map с разными ключами на один элемент ссылающиеся
-    public List<BaseObject> objects = new ArrayList<BaseObject>();
+    public Map<Integer, BaseObject> objects = new HashMap<>();
 
-    public void AddObject(BaseObject obj)
+    public void AddObject(BaseObject obj,int x,int y)
     {
-        objects.add(obj);
+        Point point = new Point(x,y);
+        objects.put(point.hashCode(), obj);
     }
 
-    public void RemoveObject(BaseObject obj)
+    public void RemoveObject(BaseObject obj,int x , int y)
     {
-        objects.remove(obj);
+        Point point = new Point(x,y);
+        objects.remove(point.hashCode(), obj);
     }
 
-    //ToDo: нормальную реализацию
     public BaseObject findObject(int x , int y) {
-        return null;
+        Point point = new Point(x,y);
+        return objects.get(point.hashCode());
     }
 
 }

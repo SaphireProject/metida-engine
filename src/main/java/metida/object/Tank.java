@@ -2,8 +2,7 @@ package metida.object;
 
 import metida.interfacable.*;
 
-import static metida.interfacable.Direction.DOWN;
-import static metida.object.GameOptions.getByRange;
+import java.util.HashMap;
 
 public class Tank extends BaseObject implements Movable, Activable, Checkable,Shootable {
 
@@ -77,43 +76,44 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable,Sh
 
     }
 
-    public int[][] checkAround(int vis) {
+    public HashMap<Integer,BaseObject> checkAround(int vis) {
         vis=gameOptions.getVision();
-        int[][] map=getByRange(gameOptions.getMap(),
+        HashMap<Integer,BaseObject> map = gameOptions.getByRange(gameOptions.getHashmap(),
                 super.X-vis,super.X+vis,
                 super.Y-vis,super.Y+vis);
-        //ToDo: как отличать объекты, сделать ли отдельные методы для всего,
-
         return map;
     }
 
     public boolean checkForward(Direction direction) {
-        int map[][];
-        map=checkAround(gameOptions.getVision());
+        HashMap<Integer,BaseObject> map = checkAround(gameOptions.getVision());
         switch(direction){
             case UP:
-                if (map[super.X][super.Y+1]==0){
+                Point pointUP=new Point(super.X,super.Y+1);
+                if (map.get(pointUP.hashCode())==null){
                     return true;
                 }
                 else{
                     return false;
                 }
             case DOWN:
-                if (map[super.X][super.Y-1]==0){
+                Point pointDOWN=new Point(super.X,super.Y-1);
+                if (map.get(pointDOWN.hashCode())==null){
                     return true;
                 }
                 else{
                     return false;
                 }
             case LEFT:
-                if (map[super.X-1][super.Y]==0){
+                Point pointLEFT=new Point(super.X-1,super.Y);
+                if (map.get(pointLEFT.hashCode())==null){
                     return true;
                 }
                 else{
                     return false;
                 }
             case RIGHT:
-                if (map[super.X+1][super.Y]==0){
+                Point pointRIGHT=new Point(super.X+1,super.Y);
+                if (map.get(pointRIGHT.hashCode())==null){
                     return true;
                 }
                 else{
@@ -133,4 +133,5 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable,Sh
                 dy=Y-this.Y;
         return Math.sqrt(dx*dx+dy*dy);
     }
+    //map for танков юзеров, для пуль,
 }

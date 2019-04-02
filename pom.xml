@@ -16,8 +16,6 @@
 
 
     <dependencies>
-
-
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -42,11 +40,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.jooq/joor -->
         <dependency>
             <groupId>org.jooq</groupId>
-            <artifactId>joor-java-8</artifactId>
+            <artifactId>joor</artifactId>
             <version>0.9.10</version>
         </dependency>
+
 
 
 
