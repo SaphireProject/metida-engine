@@ -1,5 +1,5 @@
 server:
-  port: 55
+  port: 8904
   contextPath: "/"
 spring:
   datasource:
