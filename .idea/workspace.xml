@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d58e3f45-0a27-40f2-a561-e2f72c67aeb5" name="Default Changelist" comment="">
+    <list default="true" id="d58e3f45-0a27-40f2-a561-e2f72c67aeb5" name="Default Changelist" comment="rest">
+      <change afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/Application.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/StrategyCreate.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/controllers/GetConfiguration.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/controllers/UserController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/controllers/UserController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/data/Config.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/data/Data.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/data/Player.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/data/UserConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/factory/ArtifactFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/factory/TankFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/factory/WallFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/Activable.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/Checkable.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/Direction.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/Gameable.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/IUserStrategy.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/Movable.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/interfacable/Shootable.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/ArtAddHP.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Artifact.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/BaseObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Bullet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Game.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/GameOptions.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/GoldTank.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Point.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Tank$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Tank.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/object/Wall.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/providers/ApplicationContextProvider.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/providers/ProviderForClasses.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/providers/TankFactoryProvider.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/metida/service/FileService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/metida/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/metida/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/metida/StrategyCreate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/metida/StrategyCreate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/metida.kotlin_module" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -73,10 +104,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StrategyCreate.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="StrategyCreate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/metida/StrategyCreate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
+            <state relative-caret-position="357">
               <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -88,7 +119,7 @@
       <file leaf-file-name="GetConfiguration.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/metida/controllers/GetConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
+            <state relative-caret-position="306">
               <caret line="18" selection-start-line="18" selection-end-line="18" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -97,14 +128,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/metida/controllers/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
+            <state relative-caret-position="370">
               <caret line="45" column="51" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -266,7 +294,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="metida" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="providers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="metida-engine" type="b2602c69:ProjectViewProjectNode" />
@@ -276,6 +304,13 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="metida" type="462c0819:PsiDirectoryNode" />
               <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="metida-engine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="metida-engine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -358,7 +393,21 @@
       <option name="project" value="LOCAL" />
       <updated>1553866000538</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="rest">
+      <created>1554322511449</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1554322511450</updated>
+    </task>
+    <task id="LOCAL-00003" summary="rest for userconfig">
+      <created>1554323152522</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1554323152522</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -374,8 +423,8 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="9" />
-      <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5681115" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="11" visible="true" weight="0.36687306" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.5681115" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="8" />
       <window_info id="Designer" order="2" />
@@ -434,12 +483,40 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
     </layout-to-restore>
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add classes in project&#10;запушил что бы дома потом заново всё не делать, но падает ошибка" />
-    <option name="LAST_COMMIT_MESSAGE" value="add classes in project&#10;запушил что бы дома потом заново всё не делать, но падает ошибка" />
+    <MESSAGE value="rest" />
+    <MESSAGE value="rest for userconfig" />
+    <option name="LAST_COMMIT_MESSAGE" value="rest for userconfig" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -800,26 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/metida/controllers/GetConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/metida/controllers/UserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="45" column="51" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/metida/Application.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -829,11 +886,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/metida/StrategyCreate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
+        <state relative-caret-position="357">
           <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/metida/controllers/GetConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/metida/controllers/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="45" column="51" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
         </state>
       </provider>
     </entry>
