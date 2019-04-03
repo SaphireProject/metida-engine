@@ -27,8 +27,5 @@ public class Application {
         //System.out.println(json.get("Players").getAsJsonArray());
 
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
-        StrategyCreate strategyCreate = new StrategyCreate();
-        strategyCreate.strCreate();
     }
-
 }
