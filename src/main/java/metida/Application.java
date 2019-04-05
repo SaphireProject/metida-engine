@@ -1,12 +1,8 @@
 package metida;
 
-import com.google.gson.JsonObject;
-import metida.data.Data;
-import metida.service.FileService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,7 +22,8 @@ public class Application {
         //String first=json.get("countPlayers").getAsString();
         //System.out.println(json.get("Players").getAsJsonArray());
 
-        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
+
         StrategyCreate strategyCreate = new StrategyCreate();
         strategyCreate.strCreate("");
     }

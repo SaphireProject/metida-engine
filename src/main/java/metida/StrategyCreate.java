@@ -8,16 +8,20 @@ import org.springframework.stereotype.Component;
 public class StrategyCreate {
 
     public void strCreate(String strategy) {
-        IUserStrategy userStrategy;
-        userStrategy = Reflect.compile(
+
+        IUserStrategy userStrategy = Reflect.compile(
                 "com.example.CompileTest",
                 "package com.example;\n" +
                         "import metida.factory.TankFactory; \n" +
                         "import metida.providers.TankFactoryProvider; \n" +
                         "class CompileTest implements metida.interfacable.IUserStrategy {" +
+                        "   public void execute() {" +
+                        "   }" +
                         "   public void init() {" +
                         "  }\n" +
                         "}\n").create().get();
+
+        //System.out.println(supplier.get());
 
         /*IUserStrategy userStrategy;
         userStrategy = Reflect.compile(
