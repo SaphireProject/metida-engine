@@ -1,23 +1,46 @@
 package metida.object;
 
 import metida.interfacable.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class Tank extends BaseObject implements Movable, Activable, Checkable,Shootable {
+public class Tank extends BaseObject implements Movable, Activable, Checkable, Shootable {
 
     private int idTeam;
     private int damage=1;
     private int step=1;
     private int hp=5;
+    private Direction direction;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(Tank.class);
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
     private GameOptions gameOptions;
+
+    public GameOptions getGameOptions() {
+        return gameOptions;
+    }
+
+    public void setGameOptions(GameOptions gameOptions) {
+        this.gameOptions = gameOptions;
+    }
 
     public Tank(int idTeam) {
         this.idTeam = idTeam;
         this.damage = 1;
         this.step = 1;
         this.hp = 5;
+        this.direction=Direction.UP;
     }
 
     public Tank() {
@@ -42,53 +65,102 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable,Sh
 
 
     public void action() {
-
+        if(X-step>=0) {
+            if(checkForward(Direction.LEFT)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                X=X-1;
+                setDirection(Direction.LEFT);
+                Point newpoint = new Point(X-1,Y);
+                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
     }
 
 
     @Override
     public void moveUp() {
-        if(Y-step>=0) {
+        if(Y+step<=gameOptions.getHeight()) {
             if(checkForward(Direction.UP)){
-                super.Y=Y+1;
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                Y=Y+1;
+                setDirection(Direction.UP);
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
             }
-
         }
-
     }
 
     @Override
     public void moveDown() {
-        super.Y=Y-1;
+        if(Y-step>=0) {
+            if(checkForward(Direction.DOWN)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                Y=Y-1;
+                setDirection(Direction.DOWN);
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
     }
 
     @Override
     public void moveRight() {
-        super.X=X+1;
+        if(X+step<=gameOptions.getWidth()) {
+            if(checkForward(Direction.RIGHT)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                X=X+1;
+                setDirection(Direction.RIGHT);
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
     }
 
     @Override
     public void moveLeft() {
-        super.X=X-1;
+        if(X-step>=0) {
+            if(checkForward(Direction.LEFT)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                X=X-1;
+                setDirection(Direction.LEFT);
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
     }
 
-    public void turn() {
-
+    public void turn(Direction direction) {
+        setDirection(direction);
     }
 
-    public HashMap<Integer,BaseObject> checkAround(int vis) {
+    public Map<Integer,BaseObject> checkAround(int vis) {
         vis=gameOptions.getVision();
-        HashMap<Integer,BaseObject> map = gameOptions.getByRange(gameOptions.getHashmap(),
-                super.X-vis,super.X+vis,
-                super.Y-vis,super.Y+vis);
+        Map<Integer,BaseObject> map = gameOptions.getByRange(gameOptions.getHashmap(),
+                X-vis,X+vis,
+                Y-vis,Y+vis);
         return map;
     }
 
     public boolean checkForward(Direction direction) {
-        HashMap<Integer,BaseObject> map = checkAround(gameOptions.getVision());
+        Map<Integer,BaseObject> map = checkAround(gameOptions.getVision());
         switch(direction){
             case UP:
-                Point pointUP=new Point(super.X,super.Y+1);
+                Point pointUP=new Point(X,Y+1);
                 if (map.get(pointUP.hashCode())==null){
                     return true;
                 }
@@ -105,7 +177,8 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable,Sh
                 }
             case LEFT:
                 Point pointLEFT=new Point(super.X-1,super.Y);
-                if (map.get(pointLEFT.hashCode())==null){
+                LOGGER.info("hash"+ pointLEFT.hashCode());
+                if ((map.get(pointLEFT.hashCode()))==null){
                     return true;
                 }
                 else{
@@ -123,8 +196,8 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable,Sh
         return false;
     }
 
-    public void shoot() {
-        Bullet bullet=new Bullet(super.X,super.Y, idTeam);
+    public void shoot(Direction direction) {
+        Bullet bullet=new Bullet(super.X,super.Y, idTeam, direction);
 
     }
 
@@ -133,5 +206,15 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable,Sh
                 dy=Y-this.Y;
         return Math.sqrt(dx*dx+dy*dy);
     }
-    //map for танков юзеров, для пуль,
+
+    @Override
+    public String toString() {
+        return "Tank{" +
+                "idTeam=" + idTeam +
+                ", damage=" + damage +
+                ", step=" + step +
+                ", hp=" + hp +
+                ", direction=" + direction +
+                '}';
+    }
 }

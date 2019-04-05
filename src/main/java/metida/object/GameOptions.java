@@ -1,7 +1,9 @@
 package metida.object;
 
+import metida.interfacable.Direction;
 import metida.interfacable.Gameable;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,13 +12,13 @@ public class GameOptions implements Gameable {
     private int width;
     private int height;
     private int vision;
-    public HashMap<Integer, BaseObject> hashmap = new HashMap<>();
+    public Map<Integer, BaseObject> hashmap = new HashMap<>();
 
 
     public GameOptions() {
     }
 
-    public HashMap<Integer, BaseObject> getHashmap() {
+    public Map<Integer, BaseObject> getHashmap() {
         return hashmap;
     }
 
@@ -56,26 +58,62 @@ public class GameOptions implements Gameable {
         this.width = width;
         this.height = height;
         this.vision = vision;
-        this.hashmap=new HashMap<>();
+        this.hashmap = new HashMap<>();
 
-        for(int i=0; i<width; i++){
-            for(int j=0; j<height; j++) {
-                Point point=new Point(width,height);
-                hashmap.put(point.hashCode(), null);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Point point = new Point(i , j);
+                hashmap.put(point.hashCode() , null);
             }
         }
-
+        System.out.println(Collections.singletonList(hashmap));
     }
 
-    public HashMap<Integer, BaseObject> getByRange (HashMap<Integer, BaseObject> map, int xFrom, int xTo, int yFrom, int yTo){
-        HashMap<Integer, BaseObject> newmap = new HashMap<>();
-        for (int i = xFrom; i < xTo; i++){
-            for (int j = yFrom; j < yTo; j++){
-                Point point=new Point(i - xFrom,j - yFrom);
-                Point pointOriginal=new Point(i,j );
-                newmap.put(point.hashCode(), map.get(pointOriginal.hashCode()));
+    public Map<Integer, BaseObject> getByRange(Map<Integer, BaseObject> map , int xFrom , int xTo , int yFrom , int yTo) {
+        Map<Integer, BaseObject> newmap = new HashMap<>();
+        for (int i = xFrom; i <=xTo; i++) {
+            for (int j = yFrom; j <= yTo; j++) {
+                Point point = new Point(i - xFrom , j - yFrom);
+                Point pointOriginal = new Point(i , j);
+                newmap.put(point.hashCode() , map.get(pointOriginal.hashCode()));
             }
         }
         return newmap;
     }
+
+    public Map<Integer, BaseObject> getByForward(Map<Integer, BaseObject> map,
+                                                     Direction direction, int x, int y) {
+        Map<Integer, BaseObject> newmap = new HashMap<>();
+        switch (direction) {
+            case UP:
+                for(int i=y+1;i<height;i++){
+                    Point point=new Point(x,i);
+                    //Point pointNew=new Point(x,y);
+                    newmap.put(point.hashCode(),map.get(point.hashCode()));
+                }
+                return newmap;
+            case DOWN:
+                for(int i=y-1;i>0;i--){
+                    Point point=new Point(x,i);
+                    newmap.put(point.hashCode(),map.get(point.hashCode()));
+                }
+                return newmap;
+            case LEFT:
+                for(int i=x-1;i>0;i--){
+                    Point point=new Point(i,y);
+                    //Point pointNew=new Point(x,y);
+                    newmap.put(point.hashCode(),map.get(point.hashCode()));
+                }
+                return newmap;
+            case RIGHT:
+                for(int i=x+1;i<width;i++){
+                    Point point=new Point(i,y);
+                    newmap.put(point.hashCode(),map.get(point.hashCode()));
+                }
+                return newmap;
+        }
+        return  null;
+    }
+
+
 }

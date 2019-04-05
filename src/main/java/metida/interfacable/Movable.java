@@ -5,5 +5,5 @@ public interface Movable {
     void moveDown();
     void moveRight();
     void moveLeft();
-    void turn();
+    void turn(Direction direction);
 }

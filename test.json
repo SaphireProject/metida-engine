@@ -1,6 +1,6 @@
 {  
-   "lengthX":"10",
-   "lengthY":"12",
+   "lengthX":"100",
+   "lengthY":"120",
    "obstacles":true,
    "countPlayers":"3",
    "buff":"false",
