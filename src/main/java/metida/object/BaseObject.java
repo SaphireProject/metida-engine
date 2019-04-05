@@ -1,19 +1,24 @@
 package metida.object;
 
-import java.lang.reflect.Type;
-
 public abstract class BaseObject  {
     int X;
     int Y;
-    boolean living;
+    //boolean living;
     int health;
-
+/*
     public boolean isLiving() {
         return living;
     }
 
     public void setLiving(boolean living) {
         this.living = living;
+    }
+*/
+
+    GameOptions gameOptions;
+
+    public void setGameOptions(GameOptions gameOptions) {
+        this.gameOptions = gameOptions;
     }
 
     public int getHealth() {
@@ -32,7 +37,28 @@ public abstract class BaseObject  {
         return Y;
     }
 
-    void getHit(){
-        health--;
+    public void setX(int x) {
+        X = x;
+    }
+
+    public void setY(int y) {
+        Y = y;
+    }
+
+    void getHit(BaseObject obj){
+        obj.setHealth(obj.getHealth()-1);
+    }
+
+    void action() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "BaseObject{" +
+                "X=" + X +
+                ", Y=" + Y +
+                ", health=" + health +
+                '}';
     }
 }
