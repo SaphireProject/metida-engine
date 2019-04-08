@@ -1,6 +1,6 @@
 package metida.controllers;
 
-import metida.StrategyCreate;
+import metida.StrategyCheck;
 import metida.data.UserConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.FilenameFilter;
+import java.io.*;
 import java.util.List;
 
 @RestController
@@ -31,23 +30,40 @@ public class UserController {
     }
 
     static private void searchStrategy(String path) {
+        StrategyCheck strategyCreate = new StrategyCheck();
         LOGGER.info(path);
         File folder = new File(path);
-        String[] files = folder.list(new FilenameFilter() {
+        folder.list(new FilenameFilter() {
             @Override
             public boolean accept(File folder, String name) {
-                return name.endsWith(".java");
+                if (name.endsWith(".java")) {
+                    String strategy = fileInput(folder + "\\" + name);
+                    boolean bool = strategyCreate.check(strategy);
+                    if (bool) {
+                        LOGGER.info("Ваш код ужасен");
+                    } else {
+                        LOGGER.info("Ваш код хорош");
+                    }
+                }
+                return false;
             }
         });
+    }
 
-        StrategyCreate strategyCreate = new StrategyCreate();
+    static String fileInput(String name) {
+        String res = "";
         try {
-            for (String fileName : files) {
-                strategyCreate.strCreate(fileName);
+            FileInputStream fileInputStream = new FileInputStream(name);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
+            int i;
+            while ((i = bufferedInputStream.read()) != -1) {
+                res += (char) i;
             }
-        } catch (Exception e) {
-            strategyCreate.strCreate(String.valueOf(e));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        return res;
     }
 
 }
