@@ -26,4 +26,12 @@ public class Wall extends BaseObject {
         return health;
     }
 
+    @Override
+    public String toString() {
+        return "Wall{" +
+                "X=" + X +
+                ", Y=" + Y +
+                ", health=" + health +
+                '}';
+    }
 }

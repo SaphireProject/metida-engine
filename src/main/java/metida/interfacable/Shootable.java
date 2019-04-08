@@ -1,5 +1,5 @@
 package metida.interfacable;
 
 public interface Shootable {
-    void shoot();
+    void shoot(Direction direction);
 }

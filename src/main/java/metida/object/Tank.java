@@ -10,9 +10,10 @@ import java.util.Map;
 public class Tank extends BaseObject implements Movable, Activable, Checkable, Shootable {
 
     private int idTeam;
-    private int damage=1;
-    private int step=1;
-    private int hp=5;
+    private int damage;
+    private int step;
+    private int hp;
+    private  int health;
     private Direction direction;
 
     private static Logger LOGGER = LoggerFactory.getLogger(Tank.class);
@@ -39,17 +40,28 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.idTeam = idTeam;
         this.damage = 1;
         this.step = 1;
-        this.hp = 5;
+        this.health=2;
+        //this.hp = 2;
         this.direction=Direction.UP;
     }
 
     public Tank() {
     }
 
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+/*
     public int getHp() {
         return hp;
     }
-
+*/
     public int getStep() {
         return step;
     }
@@ -65,18 +77,12 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
 
     public void action() {
-        if(X-step>=0) {
-            if(checkForward(Direction.LEFT)){
-                LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
-                X=X-1;
-                setDirection(Direction.LEFT);
-                Point newpoint = new Point(X-1,Y);
-                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(oldPoint.hashCode(),null);
-            }
-        }
+
+    }
+
+    //@Override
+    public void getHit(Tank tank) {
+
     }
 
 
@@ -89,7 +95,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                 Y=Y+1;
                 setDirection(Direction.UP);
                 Point newpoint = new Point(X,Y);
-                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(oldPoint.hashCode(),null);
             }
@@ -131,13 +137,14 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     @Override
     public void moveLeft() {
         if(X-step>=0) {
+            setDirection(Direction.LEFT);
             if(checkForward(Direction.LEFT)){
                 LOGGER.info("Начало движения");
                 Point oldPoint = new Point(X,Y);
                 X=X-1;
-                setDirection(Direction.LEFT);
+
                 Point newpoint = new Point(X,Y);
-                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(oldPoint.hashCode(),null);
             }
@@ -150,7 +157,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
     public Map<Integer,BaseObject> checkAround(int vis) {
         vis=gameOptions.getVision();
-        Map<Integer,BaseObject> map = gameOptions.getByRange(gameOptions.getHashmap(),
+        Map<Integer,BaseObject> map = gameOptions.getByRange(gameOptions.hashmap,
                 X-vis,X+vis,
                 Y-vis,Y+vis);
         return map;
@@ -175,13 +182,15 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                 else{
                     return false;
                 }
+                /*gameOptions.hashmap.get(pointLEFT.hashCode())==null*/
             case LEFT:
                 Point pointLEFT=new Point(super.X-1,super.Y);
                 LOGGER.info("hash"+ pointLEFT.hashCode());
-                if ((map.get(pointLEFT.hashCode()))==null){
+                if (gameOptions.hashmap.get(pointLEFT.hashCode())==null/*map.get(pointLEFT.hashCode())==null*/){
                     return true;
                 }
                 else{
+                    LOGGER.info("Движение невозможно в координату: "+(X-1)+" "+(Y));
                     return false;
                 }
             case RIGHT:
@@ -197,7 +206,11 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public void shoot(Direction direction) {
-        Bullet bullet=new Bullet(super.X,super.Y, idTeam, direction);
+        Bullet bullet = new Bullet(X, Y, direction);
+        Point point = new Point(X,Y);
+       //gameOptions.hashmap.put(point.hashCode(),bullet)
+        // game.objects.put(point.hashCode(),bullet);
+        game.addObject(bullet,X,Y,game.gameOptions);
 
     }
 
@@ -213,7 +226,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                 "idTeam=" + idTeam +
                 ", damage=" + damage +
                 ", step=" + step +
-                ", hp=" + hp +
+                ", health=" + health +
                 ", direction=" + direction +
                 '}';
     }

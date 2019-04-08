@@ -15,7 +15,7 @@ public class GetConfiguration {
     @RequestMapping(value="config", method = RequestMethod.GET)
     public Config getData(@RequestBody Config config){
 
-        return config;
+        return null;
 
     }
 }

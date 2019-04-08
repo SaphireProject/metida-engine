@@ -1,19 +1,33 @@
 package metida.object;
 
 public abstract class BaseObject  {
+
     int X;
     int Y;
-    //boolean living;
+    boolean living=true;
     int health;
-/*
+
     public boolean isLiving() {
-        return living;
+        if(health>0) {
+            return true;
+        }
+        return false;
     }
 
     public void setLiving(boolean living) {
         this.living = living;
     }
-*/
+
+
+    Game game;
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     GameOptions gameOptions;
 
@@ -48,6 +62,7 @@ public abstract class BaseObject  {
     void getHit(BaseObject obj){
         obj.setHealth(obj.getHealth()-1);
     }
+
 
     void action() {
 
