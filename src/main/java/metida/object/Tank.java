@@ -12,11 +12,37 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     private int idTeam;
     private int damage;
     private int step;
-    private int hp;
     private  int health;
+    private  boolean isFlag;
+    private  boolean living;
+
     private Direction direction;
 
     private static Logger LOGGER = LoggerFactory.getLogger(Tank.class);
+
+
+    @Override
+    public boolean isFlag() {
+        return isFlag;
+    }
+
+    @Override
+    public void setFlag(boolean flag) {
+        isFlag = flag;
+    }
+
+    @Override
+    public boolean isLiving() {
+        if(health>0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setLiving(boolean living) {
+        this.living = living;
+    }
 
     public Direction getDirection() {
         return direction;
@@ -41,7 +67,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.damage = 1;
         this.step = 1;
         this.health=2;
-        //this.hp = 2;
         this.direction=Direction.UP;
     }
 
@@ -57,11 +82,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     public void setHealth(int health) {
         this.health = health;
     }
-/*
-    public int getHp() {
-        return hp;
-    }
-*/
+
     public int getStep() {
         return step;
     }
@@ -79,12 +100,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     public void action() {
 
     }
-
-    //@Override
-    public void getHit(Tank tank) {
-
-    }
-
 
     @Override
     public void moveUp() {
@@ -206,7 +221,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public void shoot(Direction direction) {
-        Bullet bullet = new Bullet(X, Y, direction);
+        Bullet bullet = new Bullet(X, Y, direction,false);
         Point point = new Point(X,Y);
        //gameOptions.hashmap.put(point.hashCode(),bullet)
         // game.objects.put(point.hashCode(),bullet);

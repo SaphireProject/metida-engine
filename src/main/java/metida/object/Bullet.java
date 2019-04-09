@@ -15,7 +15,8 @@ public class Bullet extends BaseObject implements Activable, Checkable {
     private int X;
     private int Y;
     private  int health;
-    //private int idTeam;
+
+    private  boolean isFlag;
     private  boolean living;
     Direction direction;
     public Map<Integer, BaseObject> hashmap = new HashMap<>();
@@ -28,6 +29,25 @@ public class Bullet extends BaseObject implements Activable, Checkable {
         this.Y=Y;
         this.health=1;
         this.direction=direction;
+    }
+
+    public Bullet(int X , int Y , Direction direction,boolean isFlag) {
+        this.speed = 3;
+        this.X=X;
+        this.Y=Y;
+        this.health=1;
+        this.direction=direction;
+        this.isFlag = isFlag;
+    }
+
+    @Override
+    public boolean isFlag() {
+        return isFlag;
+    }
+
+    @Override
+    public void setFlag(boolean flag) {
+        isFlag = flag;
     }
 
     @Override
@@ -64,18 +84,18 @@ public class Bullet extends BaseObject implements Activable, Checkable {
         if(checkForward(this.direction)){
             switch (this.direction) {
                 case LEFT:
-                    Bullet bulletLEFT = new Bullet(this.X-1,this.Y,direction);
+                    Bullet bulletLEFT = new Bullet(this.X-1, this.Y, direction,true);
                     game.addObject(bulletLEFT ,X-1,Y,game.gameOptions);
                     Point pointLEFT = new Point(this.X-1,this.Y);
                     Point oldPointLEFT= new Point(this.X,this.Y);
                     gameOptions.hashmap.put(pointLEFT.hashCode(), bulletLEFT);
                     LOGGER.info("коорд пули "+bulletLEFT.X);
                     gameOptions.hashmap.put(oldPointLEFT.hashCode(),null);
-                    LOGGER.info("переместилась ли пуля "+game.findObject(X,Y));
-                    LOGGER.info("переместилась ли пуля "+game.findObject(X-1,Y));
+                    LOGGER.info("переместилась ли пуля(должна исчезнуть) "+game.findObject(X,Y));
+                    LOGGER.info("переместилась ли пуля(должна появиться тут) "+game.findObject(X-1,Y));
 
                     game.objects.put(pointLEFT.hashCode(), bulletLEFT);
-                    game.objects.put(oldPointLEFT.hashCode(),null);
+                    game.objects.remove(oldPointLEFT.hashCode());
                     break;
                 case RIGHT:
                     Bullet bulletRIGHT = new Bullet(this.X-1,this.Y,this.direction);
@@ -133,19 +153,20 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                 Point pointLEFT=new Point(this.X-1,this.Y);
                 Point pointLEFTold=new Point(this.X,this.Y);
                 LOGGER.info("hash"+ pointLEFT.hashCode());
-                if (gameOptions.hashmap.get(pointLEFT.hashCode())==null/*map.get(pointLEFT.hashCode())==null*/){
-
+                if (gameOptions.hashmap.get(pointLEFT.hashCode())==null){
                     return true;
                 }
-                else{
-                    LOGGER.info("Движение невозможно в координату: "+(this.X-1)+" "+(Y));
+                else {
+                    LOGGER.info("Движение невозможно в координату: " + (this.X-1) + " " + (Y));
                     BaseObject base=gameOptions.hashmap.get(pointLEFT.hashCode());
-                    LOGGER.info("health " + gameOptions.hashmap.get(pointLEFT.hashCode()).getHealth());
+                    LOGGER.info("health old " + gameOptions.hashmap.get(pointLEFT.hashCode()).getHealth());
                     base.getHit(gameOptions.hashmap.get(pointLEFT.hashCode()));
-                    LOGGER.info("health " + gameOptions.hashmap.get(pointLEFT.hashCode()).getHealth());
-                    //gameOptions.hashmap.get(pointLEFT.hashCode()).getHit(gameOptions.hashmap.get(pointLEFT.hashCode()));
+                    LOGGER.info("health new " + gameOptions.hashmap.get(pointLEFT.hashCode()).getHealth());
+                    LOGGER.info("удаляем пулю, которая встретила препятствие " +  gameOptions.hashmap.get(pointLEFTold.hashCode()));
                     gameOptions.hashmap.put(pointLEFTold.hashCode(),null);//удаляем пулю с карты
-                    game.objects.put(pointLEFTold.hashCode(),null);//удаляем пулю из спика объектов
+                    //ToDo: как правильно удалить пулю из объектов???
+                    game.objects.remove(pointLEFTold.hashCode());//удаляем пулю из списка объектов
+
                     LOGGER.info("Повредился ли объект: "+gameOptions.hashmap.get(pointLEFT.hashCode()));
                     return false;
                 }
