@@ -24,8 +24,6 @@ public class Application {
 
         SpringApplication.run(Application.class, args);
 
-        StrategyCreate strategyCreate = new StrategyCreate();
-        strategyCreate.strCreate("");
     }
 
 }

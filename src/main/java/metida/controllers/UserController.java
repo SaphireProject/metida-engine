@@ -1,6 +1,6 @@
 package metida.controllers;
 
-import metida.StrategyCreate;
+import metida.StrategyCheck;
 import metida.data.UserConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.FilenameFilter;
+import java.io.*;
 import java.util.List;
 
 @RestController
@@ -31,23 +30,49 @@ public class UserController {
     }
 
     static private void searchStrategy(String path) {
-        LOGGER.info(path);
+        StrategyCheck strategyCreate = new StrategyCheck();
         File folder = new File(path);
-        String[] files = folder.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File folder, String name) {
-                return name.endsWith(".java");
+        if (path.endsWith(".java")) {
+            String strategy = fileInput(path);
+            boolean bool = strategyCreate.check(strategy);
+            if (bool) {
+                LOGGER.info("Ваш код ужасен");
+            } else {
+                LOGGER.info("Ваш код хорош");
             }
-        });
-
-        StrategyCreate strategyCreate = new StrategyCreate();
-        try {
-            for (String fileName : files) {
-                strategyCreate.strCreate(fileName);
-            }
-        } catch (Exception e) {
-            strategyCreate.strCreate(String.valueOf(e));
+        } else {
+            folder.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File folder, String name) {
+                    if (name.endsWith(".java")) {
+                        String strategy = fileInput(folder + "\\" + name);
+                        boolean bool = strategyCreate.check(strategy);
+                        if (bool) {
+                            LOGGER.info("Ваш код ужасен");
+                        } else {
+                            LOGGER.info("Ваш код хорош");
+                        }
+                    }
+                    return true;
+                }
+            });
         }
+    }
+
+    static String fileInput(String name) {
+        String res = "";
+        try {
+            FileInputStream fileInputStream = new FileInputStream(name);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, 200);
+            int i;
+            while ((i = bufferedInputStream.read()) != -1) {
+                res += (char) i;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return res;
     }
 
 }
