@@ -95,7 +95,7 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                     LOGGER.info("переместилась ли пуля(должна появиться тут) "+game.findObject(X-1,Y));
 
                     game.objects.put(pointLEFT.hashCode(), bulletLEFT);
-                    game.objects.remove(oldPointLEFT.hashCode());
+                   // game.objects.remove(oldPointLEFT.hashCode());
                     break;
                 case RIGHT:
                     Bullet bulletRIGHT = new Bullet(this.X-1,this.Y,this.direction);
@@ -165,7 +165,7 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                     LOGGER.info("удаляем пулю, которая встретила препятствие " +  gameOptions.hashmap.get(pointLEFTold.hashCode()));
                     gameOptions.hashmap.put(pointLEFTold.hashCode(),null);//удаляем пулю с карты
                     //ToDo: как правильно удалить пулю из объектов???
-                    game.objects.remove(pointLEFTold.hashCode());//удаляем пулю из списка объектов
+                   // game.objects.remove(pointLEFTold.hashCode());//удаляем пулю из списка объектов
 
                     LOGGER.info("Повредился ли объект: "+gameOptions.hashmap.get(pointLEFT.hashCode()));
                     return false;

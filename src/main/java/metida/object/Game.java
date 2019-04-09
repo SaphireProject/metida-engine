@@ -84,12 +84,13 @@ public class Game extends GameOptions{
                 LOGGER.info("Объект "+object.toString()+" выполнил одно свое действие в свой ход");
                 //object.setFlag(false);
             }
+            /*
             if(!object.isLiving()){
                 LOGGER.info("Удаление мертвого объекта "+objects.get(id));
                 objects.remove(id);
                 LOGGER.info("Объект "+objects.get(id)+" удален");
             }
-
+*/
 
         });
 
