@@ -13,7 +13,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     private int damage;
     private int step;
     private  int health;
-    private  boolean isFlag;
+    private  boolean isFlag = false;
     private  boolean living;
 
     private Direction direction;
@@ -168,6 +168,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
     public void turn(Direction direction) {
         setDirection(direction);
+        LOGGER.info("Танк повернулся на " +direction);
     }
 
     public Map<Integer,BaseObject> checkAround(int vis) {
@@ -221,11 +222,33 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public void shoot(Direction direction) {
-        Bullet bullet = new Bullet(X, Y, direction,false);
-        Point point = new Point(X,Y);
-       //gameOptions.hashmap.put(point.hashCode(),bullet)
-        // game.objects.put(point.hashCode(),bullet);
-        game.addObject(bullet,X,Y,game.gameOptions);
+        switch (direction){
+            case DOWN:
+                Bullet bulletDOWN = new Bullet(X, Y-1, direction,false);
+                Point pointDOWN = new Point(X,Y-1);
+                gameOptions.hashmap.put(pointDOWN.hashCode(),bulletDOWN);
+                LOGGER.info("произошел выстрел вни");
+                game.addObject(bulletDOWN,X,Y-1,game.gameOptions);
+            case UP:
+                Bullet bulletUP = new Bullet(X, Y+1, direction,false);
+                Point pointUP = new Point(X,Y+1);
+                gameOptions.hashmap.put(pointUP.hashCode(),bulletUP);
+                LOGGER.info("произошел выстрел");
+                game.addObject(bulletUP,X,Y+1,game.gameOptions);
+            case RIGHT:
+                Bullet bulletRIGHT = new Bullet(X+1, Y, direction,false);
+                Point pointRIGHT = new Point(X+1,Y);
+                gameOptions.hashmap.put(pointRIGHT.hashCode(),bulletRIGHT);
+                LOGGER.info("произошел выстрел");
+                game.addObject(bulletRIGHT,X+1,Y,game.gameOptions);
+            case LEFT:
+                Bullet bulletLEFT = new Bullet(X-1, Y, direction,false);
+                Point pointLEFT = new Point(X-1,Y);
+                gameOptions.hashmap.put(pointLEFT.hashCode(),bulletLEFT);
+                LOGGER.info("произошел выстрел");
+                game.addObject(bulletLEFT,X-1,Y,game.gameOptions);
+        }
+
 
     }
 

@@ -43,12 +43,29 @@ public class Game extends GameOptions{
 
     public Map<Integer, BaseObject> objects = new HashMap<>();
 
+    public Map<Integer, BaseObject> objectsAdd = new HashMap<>();
+
+    public Map<Integer, BaseObject> objectsDeleteOld = new HashMap<>();
+
     public Map<Integer, BaseObject> getObjects() {
         return objects;
     }
 
     public void setObjects(Map<Integer, BaseObject> objects) {
         this.objects = objects;
+    }
+
+
+    public void addObjectAdd(BaseObject obj, int x, int y, GameOptions gameOptions)
+    {
+        obj.setX(x);
+        obj.setY(y);
+        obj.setGameOptions(gameOptions);
+        obj.setGame(instance);
+        Point point = new Point(x,y);
+
+        gameOptions.hashmap.put(point.hashCode(), obj);
+        objectsAdd.put(point.hashCode(), obj);
     }
 
     public void addObject(BaseObject obj, int x, int y, GameOptions gameOptions)
@@ -61,13 +78,26 @@ public class Game extends GameOptions{
 
         gameOptions.hashmap.put(point.hashCode(), obj);
         objects.put(point.hashCode(), obj);
+        LOGGER.info("Добавлен объект "+obj);
     }
 
     public void removeObject(BaseObject obj, int x , int y)
     {
         Point point = new Point(x,y);
         gameOptions.hashmap.put(point.hashCode(), null);
-        objects.put(point.hashCode(), null);
+        objects.remove(point.hashCode());
+    }
+
+    public void removeObjectOld(BaseObject obj, int x , int y, GameOptions gameOptions)
+    {
+        obj.setX(x);
+        obj.setY(y);
+        obj.setGameOptions(gameOptions);
+        obj.setGame(instance);
+        Point point = new Point(x,y);
+
+        gameOptions.hashmap.put(point.hashCode(), null);
+        objectsDeleteOld.put(point.hashCode(), obj);
     }
 
     public BaseObject findObject(int x , int y) {
@@ -79,22 +109,29 @@ public class Game extends GameOptions{
     public void action() {
 
         objects.forEach((id, object) ->  {
-            if(!object.isFlag()){
+            if(object.isFlag()==false){
                 object.action();
                 LOGGER.info("Объект "+object.toString()+" выполнил одно свое действие в свой ход");
                 //object.setFlag(false);
             }
-            /*
+
             if(!object.isLiving()){
                 LOGGER.info("Удаление мертвого объекта "+objects.get(id));
                 objects.remove(id);
                 LOGGER.info("Объект "+objects.get(id)+" удален");
             }
-*/
+
 
         });
 
         objects.forEach((id, object) -> object.setFlag(false));
+        //Добавление новых пуль на карту
+        objectsAdd.forEach((id, object) -> objects.put(id,object));
+        //Удаление старых пуль с карты
+        objectsDeleteOld.forEach((id,object) -> objects.remove(id));
+        objectsDeleteOld.clear();
+        objectsAdd.clear();
+        LOGGER.info("Конец одного действия");
     }
 
     public void setFalseStatus(){
@@ -106,68 +143,3 @@ public class Game extends GameOptions{
     }
 
 }
-
-
-/*
-            if(!object.isLiving()){
-                LOGGER.info("Удаление мертвого объекта "+objects.get(id));
-                objects.remove(id);
-                LOGGER.info("Объект "+objects.get(id)+" удален");
-            }
-*/
-
-
-/*
-        Set<Map.Entry<Integer, BaseObject>> entrySet = objects.entrySet();
-
-        Iterator<Map.Entry<Integer, BaseObject>> itr = entrySet.iterator();
-
-        while (itr.hasNext())
-        {
-            Map.Entry<Integer, BaseObject> entry = itr.next();
-
-
-            itr.remove();
-        }
-
-
-
-//Iterator it = objects.entrySet().iterator();
-         while (it.hasNext())
-        {
-            Map.Entry item = (Map.Entry) it.next();
-
-            item.
-            it.remove();
-        }
-
-
-
-
-        Set<Map.Entry<Integer, BaseObject>> entrySet = objects.entrySet();
-
-       Iterator<Map.Entry<Integer, BaseObject>> itr = entrySet.iterator();
-
-       while (itr.hasNext())
-       {
-           Map.Entry<Integer, BaseObject> entry = itr.next();
-
-           if(!objects.get(entry.getKey()).isFlag()){
-               objects.get(entry.getKey()).action();
-               //LOGGER.info("Объект "+objects.get(entry.getKey()).toString()+" выполнил одно свое действие в свой ход");
-               //objects.get(entry.getKey()).setFlag(false);
-           }
-       }
-       /*
-       while (itr.hasNext())
-       {
-           Map.Entry<Integer, BaseObject> entry = itr.next();
-
-           if(!objects.get(entry.getKey()).isLiving()){
-               LOGGER.info("Удаление мертвого объекта "+objects.get(entry.getKey()));
-               itr.remove();
-               LOGGER.info("Объект "+objects.get(entry.getKey())+" удален");
-           }
-       }
-
-       */
