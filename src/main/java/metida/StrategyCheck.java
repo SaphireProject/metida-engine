@@ -11,42 +11,31 @@ public class StrategyCheck {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StrategyCheck.class);
 
-    /* public void execute() {
-        TankFactoryProvider.getTankFactory().get();
-    }
-    public void init() {
-        TankFactoryProvider.getTankFactory().get();
-    }
-
-    [
-        {
-            "id": "user1",
-            "strategyPaths": [
-                "C://strategy/Strategy1.java"
-            ]
-        }
-    ]
-*/
-
-
     public boolean check(String strategy) {
         strategy = "package com.example;\n" +
-                "    import metida.factory.TankFactory;\n" +
-                "    import metida.providers.TankFactoryProvider;\n" +
-                "    class CompileTest implements metida.interfacable.IUserStrategy { " +
+                "import metida.factory.TankFactory;\n" +
+                "import metida.object.Tank;\n" +
+                "import metida.interfacable.Direction;\n" +
+                "import metida.providers.TankFactoryProvider;\n" +
+                "class CompileTest implements metida.interfacable.IUserStrategy { \n" +
                 strategy +
-                "}";
+                "\n}";
         try {
+
+            LOGGER.info(strategy);
             IUserStrategy userStrategy;
             userStrategy = Reflect.compile(
                     "com.example.CompileTest",
                     strategy).create().get();
 
-            userStrategy.execute();
             userStrategy.init();
 
+            userStrategy.execute();
+
+            LOGGER.info("true");
             return true;
         } catch (Exception e) {
+            LOGGER.info("false " + e);
             return false;
         }
 

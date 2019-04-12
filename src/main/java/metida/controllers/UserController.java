@@ -2,6 +2,8 @@ package metida.controllers;
 
 import metida.StrategyCheck;
 import metida.data.UserConfig;
+import metida.factory.TankFactory;
+import metida.object.Game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class UserController {
     @RequestMapping(value = "/start")
     public ResponseEntity run(@RequestBody List<UserConfig> userConfigs) {
 
+        TankFactory.Initialize();
         for (int i = 0; userConfigs.size() > i; i++) {
             List<String> list = userConfigs.get(i).strategyPaths;
             for (int j = 0; list.size() > j; j++) {
@@ -36,9 +39,9 @@ public class UserController {
             String strategy = fileInput(path);
             boolean bool = strategyCreate.check(strategy);
             if (bool) {
-                LOGGER.info("Ваш код ужасен");
-            } else {
                 LOGGER.info("Ваш код хорош");
+            } else {
+                LOGGER.info("Ваш код ужасен");
             }
         } else {
             folder.list(new FilenameFilter() {
@@ -48,9 +51,9 @@ public class UserController {
                         String strategy = fileInput(folder + "\\" + name);
                         boolean bool = strategyCreate.check(strategy);
                         if (bool) {
-                            LOGGER.info("Ваш код ужасен");
-                        } else {
                             LOGGER.info("Ваш код хорош");
+                        } else {
+                            LOGGER.info("Ваш код ужасен");
                         }
                     }
                     return true;
