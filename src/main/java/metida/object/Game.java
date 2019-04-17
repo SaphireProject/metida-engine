@@ -14,7 +14,36 @@ import static metida.service.FileService.getConfigTest;
 public class Game extends GameOptions{
 
     private static Logger LOGGER = LoggerFactory.getLogger(Game.class);
+/*
+    private Queue<Command> history = new AbstractQueue<Command>() {
+        @Override
+        public Iterator<Command> iterator() {
+            return null;
+        }
 
+        @Override
+        public int size() {
+            return 0;
+        }
+
+        @Override
+        public boolean offer(Command command) {
+            return false;
+        }
+
+        @Override
+        public Command poll() {
+            return null;
+        }
+
+        @Override
+        public Command peek() {
+            return history.peek();
+        }
+
+
+    };
+*/
     //ToDo: пока считываю из файла
     public Game(String path)
     {
@@ -141,5 +170,11 @@ public class Game extends GameOptions{
         });
 
     }
-
+/*
+    private void executeCommand(Command command) {
+        if (command.execute()) {
+            history.add(command);
+        }
+    }
+*/
 }

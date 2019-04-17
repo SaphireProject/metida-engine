@@ -69,7 +69,9 @@ public class GameOptions implements Gameable {
         System.out.println(Collections.singletonList(hashmap));
     }
 
-    public Map<Integer, BaseObject> getByRange(Map<Integer, BaseObject> map , int xFrom , int xTo , int yFrom , int yTo) {
+    public Map<Integer, BaseObject> getByRange(Map<Integer, BaseObject> map ,
+                                               int xFrom , int xTo ,
+                                               int yFrom , int yTo) {
         Map<Integer, BaseObject> newmap = new HashMap<>();
         for (int i = xFrom; i <=xTo; i++) {
             for (int j = yFrom; j <= yTo; j++) {

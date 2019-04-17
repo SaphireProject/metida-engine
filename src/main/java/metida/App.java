@@ -4,10 +4,7 @@ package metida;
 import metida.factory.TankFactory;
 import metida.factory.WallFactory;
 import metida.interfacable.Direction;
-import metida.object.Game;
-import metida.object.Point;
-import metida.object.Tank;
-import metida.object.Wall;
+import metida.object.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -25,20 +22,35 @@ public class App {
         String path="E:/project/metida/test.json";
         Game game = Game.Initialize(path);
 
-        TankFactory factory=new TankFactory();
-        WallFactory wallFactory=new WallFactory();
+        TankFactory factory = new TankFactory();
+        //WallFactory wallFactory = new WallFactory();
 
         Tank tank1=factory.getTank(1);
-        Tank tank2=factory.getTank(2);
+        //Tank tank2=factory.getTank(2);
         //Tank tank3=factory.getGoldTank(2);
-        Tank tank4=factory.getTank(4);
+        //Tank tank4=factory.getTank(4);
 
+
+        //перенести логику addobject в gettank
         game.addObject(tank1,12,12, game.gameOptions);
-        game.addObject(tank2,10,10, game.gameOptions);
+        //game.addObject(tank2,10,10, game.gameOptions);
         //game.addObject(tank3,6,6, game.gameOptions);
-        game.addObject(tank4,5,10, game.gameOptions);
+       // game.addObject(tank4,5,10, game.gameOptions);
 
+
+        ListCommandsStrategy listCommandsStrategy=new ListCommandsStrategy().registerStep(new MoveUpCommand(tank1))
+                                                                            .registerStep(new MoveLeftCommand(tank1));
+
+
+
+        listCommandsStrategy.go();
+        LOGGER.info(game.findObject(11,13).toString());
+        LOGGER.info(" " +game.findObject(11,13).getX());
+
+/*
         //tank2.moveLeft();
+        tank4.moveDown();
+        tank4.moveDown();
         tank2.turn(Direction.LEFT);
         tank1.turn(Direction.DOWN);
         tank4.turn(Direction.RIGHT);
@@ -48,12 +60,11 @@ public class App {
         tank1.shoot(Direction.DOWN);
         tank4.shoot(Direction.RIGHT);
 
+
         //tank2.turn(Direction.DOWN);
 
         //tank1.moveLeft();
         game.action();
-        game.action();
-
-
+        game.action();*/
     }
 }
