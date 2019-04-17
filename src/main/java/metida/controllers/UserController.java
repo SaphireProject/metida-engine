@@ -44,7 +44,6 @@ public class UserController {
     }
 
     static private void searchStrategy(String path) {
-        TankFactory.Initialize();
         File folder = new File(path);
         if (path.endsWith(".java")) {
             String strategy = fileInput(path);
