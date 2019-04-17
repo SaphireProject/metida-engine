@@ -80,6 +80,8 @@ public class Game extends GameOptions{
         return objects;
     }
 
+    public Map<Integer, ThreadStrategy> threadStrategyMap = new HashMap<>();
+
     public void setObjects(Map<Integer, BaseObject> objects) {
         this.objects = objects;
     }

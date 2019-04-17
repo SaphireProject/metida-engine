@@ -1,5 +1,7 @@
 package metida;
 
+import metida.factory.TankFactory;
+import metida.object.Game;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +25,6 @@ public class Application {
         //System.out.println(json.get("Players").getAsJsonArray());
 
         SpringApplication.run(Application.class, args);
-
     }
 
 }
