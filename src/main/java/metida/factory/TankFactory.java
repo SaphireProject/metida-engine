@@ -22,7 +22,7 @@ public class TankFactory {
         if (instance == null) {
             instance = new TankFactory();
 
-            String path = "C:/Users/vdi/IdeaProjects/error/metida-engine/test.json";
+            String path = "E:/idea/error/metida-engine/test.json";
             game = Game.Initialize(path);
         }
         return instance;
@@ -32,9 +32,11 @@ public class TankFactory {
         LOGGER.info("Танк создан " + idTeam);
 
         Tank tank = new Tank(idTeam);
-        game.addObject(tank, x, y, game.gameOptions);
-        x = -2;
-        y = -2;
+        try {
+            game.addObject(tank, x, y, game.gameOptions);
+        }catch (Exception e){
+            LOGGER.info(String.valueOf(e));
+        }
         return tank;
     }
 

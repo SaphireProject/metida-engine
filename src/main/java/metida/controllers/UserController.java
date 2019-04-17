@@ -3,7 +3,10 @@ package metida.controllers;
 import metida.StrategyCheck;
 import metida.data.UserConfig;
 import metida.factory.TankFactory;
+import metida.interfacable.IUserStrategy;
 import metida.object.Game;
+import metida.object.ThreadStrategy;
+import org.joor.Reflect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,43 +21,71 @@ import java.util.List;
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static Game game;
 
     @RequestMapping(value = "/start")
     public ResponseEntity run(@RequestBody List<UserConfig> userConfigs) {
 
-        TankFactory.Initialize();
+        String pathGame = "test.json";
+        game = new Game(pathGame);
         for (int i = 0; userConfigs.size() > i; i++) {
             List<String> list = userConfigs.get(i).strategyPaths;
             for (int j = 0; list.size() > j; j++) {
                 searchStrategy(list.get(j));
             }
         }
+
+        //for (int i = 0; userConfigs.size() > i; i++) {
+        //    ThreadStrategy threadStrategy = game.threadStrategyMap.get(1);
+        //    threadStrategy.start();
+        //}
+
         return ResponseEntity.ok().build();
     }
 
     static private void searchStrategy(String path) {
-        StrategyCheck strategyCreate = new StrategyCheck();
+        TankFactory.Initialize();
         File folder = new File(path);
         if (path.endsWith(".java")) {
             String strategy = fileInput(path);
-            boolean bool = strategyCreate.check(strategy);
-            if (bool) {
-                LOGGER.info("Ваш код хорош");
-            } else {
-                LOGGER.info("Ваш код ужасен");
-            }
+            strategy = "package com.example;\n" +
+                    "    import metida.factory.TankFactory;\n" +
+                    "    import metida.object.Tank;\n" +
+                    "    import metida.providers.TankFactoryProvider;\n" +
+                    "    class CompileTest implements metida.interfacable.IUserStrategy { " +
+                    strategy +
+                    "}";
+
+            IUserStrategy userStrategy;
+            userStrategy = Reflect.compile(
+                    "com.example.CompileTest",
+                    strategy).create().get();
+
+            ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
+            threadStrategy.start();
+            //game.threadStrategyMap.put(threadStrategy.id, threadStrategy);
         } else {
             folder.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File folder, String name) {
                     if (name.endsWith(".java")) {
                         String strategy = fileInput(folder + "\\" + name);
-                        boolean bool = strategyCreate.check(strategy);
-                        if (bool) {
-                            LOGGER.info("Ваш код хорош");
-                        } else {
-                            LOGGER.info("Ваш код ужасен");
-                        }
+                        strategy = "package com.example;\n" +
+                                "    import metida.factory.TankFactory;\n" +
+                                "    import metida.object.Tank;\n" +
+                                "    import metida.providers.TankFactoryProvider;\n" +
+                                "    class CompileTest implements metida.interfacable.IUserStrategy { \n " +
+                                strategy +
+                                "\n}";
+
+                        IUserStrategy userStrategy;
+                        userStrategy = Reflect.compile(
+                                "com.example.CompileTest",
+                                strategy).create().get();
+
+                        ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
+                        threadStrategy.start();
+                        //game.threadStrategyMap.put(threadStrategy.id, threadStrategy);
                     }
                     return true;
                 }
