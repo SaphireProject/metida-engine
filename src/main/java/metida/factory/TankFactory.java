@@ -18,6 +18,10 @@ public class TankFactory {
     private static Game game;
     private static int x = 12, y = 12;
 
+
+    //Todo: почему при инициализации фабрики должна создаваться игра? У меня был отдельный конструктор,
+    // до game можно ведь и без этого дотянуться
+
     @PostConstruct
     public void init() {
 

@@ -2,8 +2,11 @@ package metida.object;
 
 public class MoveUpCommand extends TankCommands {
 
-    public MoveUpCommand(Tank tank) {
+    private TypeCommands type;
+
+    public MoveUpCommand(PlayerTank tank) {
         super(tank);
+        this.type=TypeCommands.MOVEUP;
     }
 
     @Override

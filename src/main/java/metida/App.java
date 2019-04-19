@@ -38,15 +38,6 @@ public class App {
        // game.addObject(tank4,5,10, game.gameOptions);
 
 
-        ListCommandsStrategy listCommandsStrategy=new ListCommandsStrategy().registerStep(new MoveUpCommand(tank1))
-                                                                            .registerStep(new MoveLeftCommand(tank1));
-
-
-
-        listCommandsStrategy.go();
-        LOGGER.info(game.findObject(11,13).toString());
-        LOGGER.info(" " +game.findObject(11,13).getX());
-
 /*
         //tank2.moveLeft();
         tank4.moveDown();

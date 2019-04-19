@@ -165,7 +165,7 @@ public class Bullet extends BaseObject implements Activable, Checkable {
             case UP:
                 Point pointUP=new Point(this.X,this.Y+1);
                 Point pointUPold=new Point(this.X,this.Y);
-                LOGGER.info("hash"+ pointUP.hashCode());
+                //LOGGER.info("hash"+ pointUP.hashCode());
                 if (gameOptions.hashmap.get(pointUP.hashCode())==null){
                     return true;
                 }

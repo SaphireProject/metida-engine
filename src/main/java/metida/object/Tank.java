@@ -1,5 +1,6 @@
 package metida.object;
 
+import metida.factory.CommandFactory;
 import metida.interfacable.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
     private int idTeam;
     private int damage;
-    private int step;
+    protected int step;
     private  int health;
     private  boolean isFlag = false;
     private  boolean living;
@@ -19,6 +20,10 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     private Direction direction;
 
     private static Logger LOGGER = LoggerFactory.getLogger(Tank.class);
+
+    private CommandFactory factory=new CommandFactory();
+
+    private PlayerTank tank = new PlayerTank();
 
 
     @Override
@@ -52,7 +57,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.direction = direction;
     }
 
-    private GameOptions gameOptions;
+    protected GameOptions gameOptions;
 
     public GameOptions getGameOptions() {
         return gameOptions;
@@ -103,75 +108,26 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
     @Override
     public void moveUp() {
-        if(Y+step<=gameOptions.getHeight()) {
-            if(checkForward(Direction.UP)){
-                LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
-                Y=Y+1;
-                setDirection(Direction.UP);
-                Point newpoint = new Point(X,Y);
-                LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(oldPoint.hashCode(),null);
-                LOGGER.info("Объект, который сдвинулся " + game.findObject(X,Y));
-            }
-        }
+        factory.getMoveUpCommand(tank);
     }
 
     @Override
     public void moveDown() {
-        if(Y-step>=0) {
-            if(checkForward(Direction.DOWN)){
-                LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
-                Y=Y-1;
-                setDirection(Direction.DOWN);
-                Point newpoint = new Point(X,Y);
-                LOGGER.info("Объект, который должен сдвинуться "
-                        +gameOptions.hashmap.get(oldPoint.hashCode())+" "
-                        +gameOptions.hashmap.get(oldPoint.hashCode()).Y);
-                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(oldPoint.hashCode(),null);
-            }
-        }
+        factory.getMoveDownCommand(tank);
     }
 
     @Override
     public void moveRight() {
-        if(X+step<=gameOptions.getWidth()) {
-            if(checkForward(Direction.RIGHT)){
-                LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
-                X=X+1;
-                setDirection(Direction.RIGHT);
-                Point newpoint = new Point(X,Y);
-                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(oldPoint.hashCode(),null);
-            }
-        }
+        factory.getMoveRightCommand(tank);
     }
 
     @Override
     public void moveLeft() {
-        if(X-step>=0) {
-            setDirection(Direction.LEFT);
-            if(checkForward(Direction.LEFT)){
-                LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
-                X=X-1;
-
-                Point newpoint = new Point(X,Y);
-                LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
-                gameOptions.hashmap.put(oldPoint.hashCode(),null);
-            }
-        }
+        factory.getMoveLeftCommand(tank);
     }
 
     public void turn(Direction direction) {
-        setDirection(direction);
-        LOGGER.info("Танк повернулся на " +direction);
+        factory.getTurnCommand(tank,direction);
     }
 
     public Map<Integer,BaseObject> checkAround(int vis) {
@@ -228,32 +184,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public void shoot(Direction direction) {
-        switch (direction){
-            case DOWN:
-                Bullet bulletDOWN = new Bullet(X, Y-1, direction,false);
-                Point pointDOWN = new Point(X,Y-1);
-                gameOptions.hashmap.put(pointDOWN.hashCode(),bulletDOWN);
-                LOGGER.info("произошел выстрел вниз");
-                game.addObject(bulletDOWN,X,Y-1,game.gameOptions);
-            case UP:
-                Bullet bulletUP = new Bullet(X, Y+1, direction,false);
-                Point pointUP = new Point(X,Y+1);
-                gameOptions.hashmap.put(pointUP.hashCode(),bulletUP);
-                LOGGER.info("произошел выстрел");
-                game.addObject(bulletUP,X,Y+1,game.gameOptions);
-            case RIGHT:
-                Bullet bulletRIGHT = new Bullet(X+1, Y, direction,false);
-                Point pointRIGHT = new Point(X+1,Y);
-                gameOptions.hashmap.put(pointRIGHT.hashCode(),bulletRIGHT);
-                LOGGER.info("произошел выстрел");
-                game.addObject(bulletRIGHT,X+1,Y,game.gameOptions);
-            case LEFT:
-                Bullet bulletLEFT = new Bullet(X-1, Y, direction,false);
-                Point pointLEFT = new Point(X-1,Y);
-                gameOptions.hashmap.put(pointLEFT.hashCode(),bulletLEFT);
-                LOGGER.info("произошел выстрел");
-                game.addObject(bulletLEFT,X-1,Y,game.gameOptions);
-        }
 
 
     }
