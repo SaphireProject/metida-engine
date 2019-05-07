@@ -4,11 +4,18 @@ public class Wall extends BaseObject {
     int X;
     int Y;
     int health;
+    TypeObjects type;
 
     public Wall(int x , int y) {
         X = x;
         Y = y;
         this.health = 5;
+        this.type=TypeObjects.WALL;
+    }
+
+    @Override
+    public TypeObjects getType() {
+        return type;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package metida.object;
 
-import java.util.AbstractQueue;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class QueueMethods<T> extends AbstractQueue<T> {
 
@@ -43,5 +41,12 @@ public class QueueMethods<T> extends AbstractQueue<T> {
     @Override
     public T peek() {
         return elements.getFirst();
+    }
+
+    @Override
+    public String toString() {
+        return "QueueMethods{" +
+                "elements=" + elements +
+                '}';
     }
 }

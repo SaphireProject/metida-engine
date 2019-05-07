@@ -36,7 +36,9 @@ public class App {
         //game.addObject(tank2,10,10, game.gameOptions);
         //game.addObject(tank3,6,6, game.gameOptions);
        // game.addObject(tank4,5,10, game.gameOptions);
-
+        tank1.turn(Direction.DOWN);
+        tank1.shoot(Direction.DOWN);
+        LOGGER.info(""+tank1.getQueueMethods().toString());
 
 /*
         //tank2.moveLeft();

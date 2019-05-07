@@ -1,6 +1,7 @@
 package metida.controllers;
 
 import metida.StrategyCheck;
+import metida.data.Config;
 import metida.data.UserConfig;
 import metida.factory.TankFactory;
 import metida.interfacable.IUserStrategy;
@@ -24,10 +25,11 @@ public class UserController {
     private static Game game;
 
     @RequestMapping(value = "/start")
-    public ResponseEntity run(@RequestBody List<UserConfig> userConfigs) {
+    public ResponseEntity run(@RequestBody List<UserConfig> userConfigs, @RequestBody String path) {
 
-        String pathGame = "test.json";
-        game = new Game(pathGame);
+        //String pathGame = "test.json";
+        //game = new Game(pathGame);
+        game=new Game(path);
         for (int i = 0; userConfigs.size() > i; i++) {
             List<String> list = userConfigs.get(i).strategyPaths;
             for (int j = 0; list.size() > j; j++) {
@@ -54,6 +56,7 @@ public class UserController {
                     "    class CompileTest implements metida.interfacable.IUserStrategy { " +
                     strategy +
                     "}";
+
 
             IUserStrategy userStrategy;
             userStrategy = Reflect.compile(

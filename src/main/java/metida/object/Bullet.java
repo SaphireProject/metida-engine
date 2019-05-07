@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Bullet extends BaseObject implements Activable, Checkable {
     private int speed;
@@ -19,11 +20,14 @@ public class Bullet extends BaseObject implements Activable, Checkable {
     private  boolean isFlag;
     private  boolean living;
     Direction direction;
+
+    TypeObjects type;
     public Map<Integer, BaseObject> hashmap = new HashMap<>();
     private static Logger LOGGER = LoggerFactory.getLogger(Bullet.class);
 
 
     public Bullet(int X, int Y, Direction direction) {
+        this.type=TypeObjects.BULLET;
         this.speed = 3;
         this.X=X;
         this.Y=Y;
@@ -32,12 +36,28 @@ public class Bullet extends BaseObject implements Activable, Checkable {
     }
 
     public Bullet(int X , int Y , Direction direction, boolean isFlag) {
+        this.type=TypeObjects.BULLET;
         this.speed = 3;
         this.X=X;
         this.Y=Y;
         this.health=1;
         this.direction=direction;
         this.isFlag = isFlag;
+    }
+
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    @Override
+    public TypeObjects getType() {
+        return type;
     }
 
     @Override
@@ -82,9 +102,7 @@ public class Bullet extends BaseObject implements Activable, Checkable {
 
     @Override
     public void action() {
-
         if(checkForward(this.direction)){
-
             switch (this.direction) {
                 case LEFT:
                     Bullet bulletLEFT = new Bullet(this.X-1, this.Y, direction,false);
@@ -159,6 +177,8 @@ public class Bullet extends BaseObject implements Activable, Checkable {
         return null;
     }
 
+    Random random = new Random();
+
     @Override
     public boolean checkForward(Direction direction) {
         switch(direction){
@@ -173,6 +193,16 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                     LOGGER.info("Движение невозможно в координату: " + (this.X) + " " + (Y+1));
                     BaseObject base=gameOptions.hashmap.get(pointUP.hashCode());
                     LOGGER.info("health old " + gameOptions.hashmap.get(pointUP.hashCode()).getHealth());
+                    if(base.getType()==TypeObjects.BULLET & base.isFlag()==true){
+                        int c=random.nextInt(3);
+                        //Вроде должно получиться
+                        if(c==1) {
+                            base.getHit(gameOptions.hashmap.get(pointUP.hashCode()));
+                            LOGGER.info("health new " + gameOptions.hashmap.get(pointUP.hashCode()).getHealth());
+                            LOGGER.info("Не удаляем пулю, которая встретила пулю " +  gameOptions.hashmap.get(pointUPold.hashCode()));
+                            return true;
+                        }
+                    }
                     base.getHit(gameOptions.hashmap.get(pointUP.hashCode()));
                     LOGGER.info("health new " + gameOptions.hashmap.get(pointUP.hashCode()).getHealth());
                     LOGGER.info("удаляем пулю, которая встретила препятствие " +  gameOptions.hashmap.get(pointUPold.hashCode()));
@@ -244,6 +274,11 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                 }
         }
         return false;
+    }
+
+    @Override
+    public void checkShoot(Direction direction) {
+
     }
 
 

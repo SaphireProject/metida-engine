@@ -21,7 +21,6 @@ public class StrategyCheck {
                 strategy +
                 "\n}";
         try {
-
             LOGGER.info(strategy);
             IUserStrategy userStrategy;
             userStrategy = Reflect.compile(

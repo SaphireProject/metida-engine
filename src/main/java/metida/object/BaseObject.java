@@ -1,12 +1,15 @@
 package metida.object;
 
-public abstract class BaseObject  {
+import metida.interfacable.Direction;
 
+public abstract class BaseObject  {
+    TypeObjects type;
     int X;
     int Y;
     boolean living=true;
     int health;
     boolean isFlag=false;
+    Direction direction;
 
     public boolean isFlagAction(){
         if(isFlag==false){
@@ -17,12 +20,27 @@ public abstract class BaseObject  {
         }
     }
 
-
     public boolean isLiving() {
         if(health>0) {
             return true;
         }
         return false;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public TypeObjects getType() {
+        return type;
+    }
+
+    public void setType(TypeObjects type) {
+        this.type = type;
     }
 
     public boolean isFlag() {
@@ -36,7 +54,6 @@ public abstract class BaseObject  {
     public void setLiving(boolean living) {
         this.living = living;
     }
-
 
     Game game;
 
@@ -82,7 +99,6 @@ public abstract class BaseObject  {
         obj.setHealth(obj.getHealth()-1);
     }
 
-
     void action() {
 
     }
@@ -90,9 +106,13 @@ public abstract class BaseObject  {
     @Override
     public String toString() {
         return "BaseObject{" +
-                "X=" + X +
+                "type=" + type +
+                ", X=" + X +
                 ", Y=" + Y +
+                ", living=" + living +
                 ", health=" + health +
+                ", isFlag=" + isFlag +
+                ", game=" + game +
                 '}';
     }
 }

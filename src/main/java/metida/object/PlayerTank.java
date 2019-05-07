@@ -10,11 +10,9 @@ public class PlayerTank extends Tank {
     private static Logger LOGGER = LoggerFactory.getLogger(PlayerTank.class);
 
     public PlayerTank() {
-
+        LOGGER.info("Вызван конструктор");
     }
-
-    CommandFactory factory=new CommandFactory();
-
+    //CommandFactory factory=new CommandFactory();
 
     public void turn(Direction direction){
         setDirection(direction);

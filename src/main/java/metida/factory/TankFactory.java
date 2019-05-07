@@ -6,9 +6,11 @@ import metida.object.GoldTank;
 import metida.object.Tank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Random;
 
 @Component
 public class TankFactory {
@@ -16,28 +18,29 @@ public class TankFactory {
     private static Logger LOGGER = LoggerFactory.getLogger(TankFactory.class);
 
     private static Game game;
-    private static int x = 12, y = 12;
-
-
-    //Todo: почему при инициализации фабрики должна создаваться игра? У меня был отдельный конструктор,
-    // до game можно ведь и без этого дотянуться
-
+/*
+    //когда создать игру
     @PostConstruct
     public void init() {
-
-        String path = "E:/idea/error/metida-engine/test.json";
-        game = Game.Initialize(path);
+        //String path = "E:/idea/error/metida-engine/test.json";
+        game = Game.Initialize("E:/project/metida/test.json");
     }
+*/
+    Random random=new Random();
 
     public Tank getTank(int idTeam) {
-        LOGGER.info("Танк создан " + idTeam);
 
+        //ToDo:рандомные координаты, но требуется проверка что не наложатся друг на друга
         Tank tank = new Tank(idTeam);
-        try {
-            game.addObject(tank, x, y, game.gameOptions);
+        LOGGER.info("Танк создан " + idTeam);
+       /* try {
+            game.addObject(tank, random.nextInt(game.gameOptions.getWidth()),
+                    random.nextInt(game.gameOptions.getHeight()),
+                    game.gameOptions);
+            //можно добавлять в отдельный список танки, а потом по нему пройтись и получить очереди методов
         } catch (Exception e) {
-            LOGGER.info(String.valueOf(e));
-        }
+            LOGGER.info("ошибочка");
+        }*/
         return tank;
     }
 

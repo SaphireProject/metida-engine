@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Tank extends BaseObject implements Movable, Activable, Checkable, Shootable {
 
@@ -16,15 +17,19 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     private  int health;
     private  boolean isFlag = false;
     private  boolean living;
+    TypeObjects type;
 
     private Direction direction;
+
+    protected GameOptions gameOptions;
 
     private static Logger LOGGER = LoggerFactory.getLogger(Tank.class);
 
     private CommandFactory factory=new CommandFactory();
 
-    private PlayerTank tank = new PlayerTank();
+    //private PlayerTank tank = new PlayerTank();
 
+    private QueueMethods<TankCommands> queueMethods =new QueueMethods<TankCommands>();
 
     @Override
     public boolean isFlag() {
@@ -57,8 +62,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.direction = direction;
     }
 
-    protected GameOptions gameOptions;
-
     public GameOptions getGameOptions() {
         return gameOptions;
     }
@@ -68,6 +71,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public Tank(int idTeam) {
+        this.type=TypeObjects.TANK;
         this.idTeam = idTeam;
         this.damage = 1;
         this.step = 1;
@@ -96,11 +100,17 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         return damage;
     }
 
-
     public int getIdTeam() {
         return idTeam;
     }
 
+    public QueueMethods<TankCommands> getQueueMethods() {
+        return queueMethods;
+    }
+
+    public void setQueueMethods(QueueMethods<TankCommands> queueMethods) {
+        this.queueMethods = queueMethods;
+    }
 
     public void action() {
 
@@ -108,26 +118,38 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
     @Override
     public void moveUp() {
-        factory.getMoveUpCommand(tank);
+        //factory.getMoveUpCommand(tank);
+        //todo: save command
+        //queueMethods.offer(factory.getMoveUpCommand(tank));
+
     }
 
     @Override
     public void moveDown() {
-        factory.getMoveDownCommand(tank);
+        //factory.getMoveDownCommand(tank);
+        //todo: save command
+       // queueMethods.offer(factory.getMoveDownCommand(tank));
     }
 
     @Override
     public void moveRight() {
-        factory.getMoveRightCommand(tank);
+
+        //todo: save command
+        queueMethods.offer(factory.getMoveRightCommand(tank));
     }
 
     @Override
     public void moveLeft() {
-        factory.getMoveLeftCommand(tank);
+
+        //todo: save command
+      //  queueMethods.offer(factory.getMoveLeftCommand(tank));
     }
 
     public void turn(Direction direction) {
-        factory.getTurnCommand(tank,direction);
+
+        //todo: save command
+       // queueMethods.offer(factory.getTurnCommand(tank,direction));
+        //queueMethods.offer(new MoveUpCommand(new PlayerTank()));
     }
 
     public Map<Integer,BaseObject> checkAround(int vis) {
@@ -139,7 +161,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public boolean checkForward(Direction direction) {
-
         Map<Integer,BaseObject> map = checkAround(gameOptions.getVision());
         switch(direction){
             case UP:
@@ -183,11 +204,103 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         return false;
     }
 
-    public void shoot(Direction direction) {
+    Random random = new Random();
 
+    /**
+     * Уворот от снарядов в зоне видимости
+     *
+     * */
 
+    //ToDo: дублировать действия на тестовую карту hashmap, для просчитывания информации окружения,
+    // то есть реализация будет дублироваться внутри Tank."Any"Command
+    // ***скорее всего не надо, буду просчитывать мир сразу
+    @Override
+    public void checkShoot(Direction direction) {
+        Map<Integer,BaseObject> map = checkAround(gameOptions.getVision());
+        map.forEach((id,object) -> {
+            if(object.getType()==TypeObjects.BULLET){
+                if(object.getX()==X){
+                    switch(object.getDirection()){
+                        case LEFT:
+                            if (direction==Direction.LEFT){
+                                break;
+                            }
+                            if (direction==Direction.RIGHT){
+                                int c=random.nextInt(2);
+                                if(c==1){
+                                    //factory.getMoveDownCommand(tank);
+                                    //todo: save command
+                                }
+                                else{
+                                    //factory.getMoveUpCommand(tank);
+                                    //todo: save command
+                                }
+                            }
+                        case RIGHT:
+                            if (direction==Direction.LEFT){
+                                int c=random.nextInt(2);
+                                if(c==1){
+                                    //factory.getMoveDownCommand(tank);
+                                    //todo: save command
+                                }
+                                else{
+                                    //factory.getMoveUpCommand(tank);
+                                    //todo: save command
+                                }
+                            }
+                            if (direction==Direction.RIGHT){
+                                break;
+                            }
+                    }
+
+                }
+                if(object.getY()==Y){
+                    switch(object.getDirection()){
+                        case UP:
+                            if (direction==Direction.UP){
+                                break;
+                            }
+                            if (direction==Direction.DOWN){
+                                int c=random.nextInt(2);
+                                if(c==1){
+                                    //factory.getMoveRightCommand(tank);
+                                    //todo: save command
+                                }
+                                else{
+                                    //factory.getMoveLeftCommand(tank);
+                                    //todo: save command
+                                }
+                            }
+                        case DOWN:
+                            if (direction==Direction.DOWN){
+                                break;
+                            }
+                            if (direction==Direction.UP){
+                                int c=random.nextInt(2);
+                                if(c==1){
+                                    //factory.getMoveRightCommand(tank);
+                                    //todo: save command
+                                }
+                                else{
+                                    //factory.getMoveLeftCommand(tank);
+                                    //todo: save command
+                                }
+                            }
+                    }
+
+                }
+            }
+        });
     }
 
+
+    public void shoot(Direction direction) {
+
+        //todo: save command
+        //queueMethods.offer(factory.getShootCommand(tank,direction));
+    }
+
+    //todo: не понадобится
     public double getDistance(double X, double Y) {
         double dx=X-this.X,
                 dy=Y-this.Y;
