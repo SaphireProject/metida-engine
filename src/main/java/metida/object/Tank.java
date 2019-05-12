@@ -11,12 +11,22 @@ import java.util.Random;
 
 public class Tank extends BaseObject implements Movable, Activable, Checkable, Shootable {
 
+
+    private static int idTank=1;
+
+    /**
+     * field ID
+     * */
+
+
+    private int id;
+
     private int idTeam;
     private int damage;
     protected int step;
     private  int health;
     private  boolean isFlag = false;
-    private  boolean living;
+    private  boolean living= true;
     TypeObjects type;
 
     private Direction direction;
@@ -26,8 +36,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     private static Logger LOGGER = LoggerFactory.getLogger(Tank.class);
 
     private CommandFactory factory=new CommandFactory();
-
-    //private PlayerTank tank = new PlayerTank();
 
     private QueueMethods<TankCommands> queueMethods =new QueueMethods<TankCommands>();
 
@@ -77,6 +85,8 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.step = 1;
         this.health=2;
         this.direction=Direction.UP;
+        this.id=idTank;
+        idTank++;
     }
 
     public Tank() {
@@ -112,43 +122,46 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.queueMethods = queueMethods;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void action() {
 
     }
 
     @Override
     public void moveUp() {
-        //factory.getMoveUpCommand(tank);
-        //todo: save command
-        //queueMethods.offer(factory.getMoveUpCommand(tank));
-
+        queueMethods.offer(factory.getMoveUpCommand(this));
     }
 
     @Override
     public void moveDown() {
         //factory.getMoveDownCommand(tank);
         //todo: save command
-       // queueMethods.offer(factory.getMoveDownCommand(tank));
+        queueMethods.offer(factory.getMoveDownCommand(this));
     }
 
     @Override
     public void moveRight() {
-
         //todo: save command
-        queueMethods.offer(factory.getMoveRightCommand(tank));
+        queueMethods.offer(factory.getMoveRightCommand(this));
     }
 
     @Override
     public void moveLeft() {
-
         //todo: save command
-      //  queueMethods.offer(factory.getMoveLeftCommand(tank));
+        queueMethods.offer(factory.getMoveLeftCommand(this));
     }
 
     public void turn(Direction direction) {
 
         //todo: save command
-       // queueMethods.offer(factory.getTurnCommand(tank,direction));
+        queueMethods.offer(factory.getTurnCommand(this,direction));
         //queueMethods.offer(new MoveUpCommand(new PlayerTank()));
     }
 
@@ -230,10 +243,12 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                                 if(c==1){
                                     //factory.getMoveDownCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveDownCommand(this));
                                 }
                                 else{
                                     //factory.getMoveUpCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveUpCommand(this));
                                 }
                             }
                         case RIGHT:
@@ -242,10 +257,12 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                                 if(c==1){
                                     //factory.getMoveDownCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveDownCommand(this));
                                 }
                                 else{
                                     //factory.getMoveUpCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveUpCommand(this));
                                 }
                             }
                             if (direction==Direction.RIGHT){
@@ -265,10 +282,12 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                                 if(c==1){
                                     //factory.getMoveRightCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveRightCommand(this));
                                 }
                                 else{
                                     //factory.getMoveLeftCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveLeftCommand(this));
                                 }
                             }
                         case DOWN:
@@ -280,14 +299,15 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
                                 if(c==1){
                                     //factory.getMoveRightCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveRightCommand(this));
                                 }
                                 else{
                                     //factory.getMoveLeftCommand(tank);
                                     //todo: save command
+                                    queueMethods.offer(factory.getMoveLeftCommand(this));
                                 }
                             }
                     }
-
                 }
             }
         });
@@ -297,7 +317,106 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     public void shoot(Direction direction) {
 
         //todo: save command
-        //queueMethods.offer(factory.getShootCommand(tank,direction));
+        queueMethods.offer(factory.getShootCommand(this, direction));
+    }
+
+    public void moveLeftExecute(){
+        if(X-step>=0) {
+            setDirection(Direction.LEFT);
+            if(checkForward(Direction.LEFT)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                X=X-1;
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
+    }
+
+    public void moveRightExecute(){
+        if(X+step<=gameOptions.getWidth()) {
+            setDirection(Direction.RIGHT);
+            if(checkForward(Direction.RIGHT)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                X=X+1;
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
+    }
+
+    public void moveDownExecute(){
+        if(Y-step>=0) {
+            setDirection(Direction.DOWN);
+            if(checkForward(Direction.DOWN)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                Y=Y-1;
+
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться "
+                        +gameOptions.hashmap.get(oldPoint.hashCode())+" "
+                        +gameOptions.hashmap.get(oldPoint.hashCode()).Y);
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+            }
+        }
+    }
+
+    public void moveUpExecute(){
+        if(Y+step<=gameOptions.getHeight()) {
+            setDirection(Direction.UP);
+            if(checkForward(Direction.UP)){
+                LOGGER.info("Начало движения");
+                Point oldPoint = new Point(X,Y);
+                Y=Y+1;
+
+                Point newpoint = new Point(X,Y);
+                LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
+                gameOptions.hashmap.put(oldPoint.hashCode(),null);
+                LOGGER.info("Объект, который сдвинулся " + game.findObject(X,Y));
+            }
+        }
+    }
+
+    public void turnExecute(Direction direction){
+        setDirection(direction);
+        LOGGER.info("Танк повернулся на " +direction);
+    }
+
+    public void shootExecute(Direction direction){
+        switch (direction){
+            case DOWN:
+                Bullet bulletDOWN = new Bullet(X, Y-1, direction,false);
+                Point pointDOWN = new Point(X,Y-1);
+                gameOptions.hashmap.put(pointDOWN.hashCode(),bulletDOWN);
+                LOGGER.info("произошел выстрел вниз");
+                game.addObject(bulletDOWN,X,Y-1,game.gameOptions);
+            case UP:
+                Bullet bulletUP = new Bullet(X, Y+1, direction,false);
+                Point pointUP = new Point(X,Y+1);
+                gameOptions.hashmap.put(pointUP.hashCode(),bulletUP);
+                LOGGER.info("произошел выстрел");
+                game.addObject(bulletUP,X,Y+1,game.gameOptions);
+            case RIGHT:
+                Bullet bulletRIGHT = new Bullet(X+1, Y, direction,false);
+                Point pointRIGHT = new Point(X+1,Y);
+                gameOptions.hashmap.put(pointRIGHT.hashCode(),bulletRIGHT);
+                LOGGER.info("произошел выстрел");
+                game.addObject(bulletRIGHT,X+1,Y,game.gameOptions);
+            case LEFT:
+                Bullet bulletLEFT = new Bullet(X-1, Y, direction,false);
+                Point pointLEFT = new Point(X-1,Y);
+                gameOptions.hashmap.put(pointLEFT.hashCode(),bulletLEFT);
+                LOGGER.info("произошел выстрел");
+                game.addObject(bulletLEFT,X-1,Y,game.gameOptions);
+        }
     }
 
     //todo: не понадобится
@@ -310,10 +429,12 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     @Override
     public String toString() {
         return "Tank{" +
-                "idTeam=" + idTeam +
-                ", damage=" + damage +
+                "id=" + id +
+                ", idTeam=" + idTeam +
                 ", step=" + step +
                 ", health=" + health +
+                ", isFlag=" + isFlag +
+                ", living=" + living +
                 ", direction=" + direction +
                 '}';
     }
