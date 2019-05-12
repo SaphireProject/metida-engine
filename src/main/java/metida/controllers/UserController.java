@@ -25,16 +25,19 @@ public class UserController {
     private static Game game;
 
     @RequestMapping(value = "/start")
-    public ResponseEntity run(@RequestBody List<UserConfig> userConfigs, @RequestBody String path) {
-
+    public ResponseEntity run(@RequestBody List<UserConfig> userConfigs/*, @RequestBody String path*/) {
+        //todo: сделать чтоб игра создавалась по адресу конфига из боди
         //String pathGame = "test.json";
         //game = new Game(pathGame);
+        String path="E:/project/metida/test.json";
+        LOGGER.info(""+userConfigs.size());
         game=new Game(path);
-        for (int i = 0; userConfigs.size() > i; i++) {
-            List<String> list = userConfigs.get(i).strategyPaths;
-            for (int j = 0; list.size() > j; j++) {
-                searchStrategy(list.get(j));
-            }
+        for (int i = 0;  i < userConfigs.size(); i++) {
+           // List<String> list = userConfigs.get(i).strategyPaths;
+            ///for (int j = 0;  j < list.size(); j++) {
+                searchStrategy(userConfigs.get(i).id ,userConfigs.get(i).strategyPaths/*list.get(j)*/);
+                LOGGER.info(""+userConfigs.get(i).strategyPaths);
+            //}
         }
 
         //for (int i = 0; userConfigs.size() > i; i++) {
@@ -45,24 +48,26 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    static private void searchStrategy(String path) {
+    static private void searchStrategy(String id,String path) {
         File folder = new File(path);
         if (path.endsWith(".java")) {
             String strategy = fileInput(path);
             strategy = "package com.example;\n" +
                     "    import metida.factory.TankFactory;\n" +
                     "    import metida.object.Tank;\n" +
+                    "    import metida.interfacable.Direction;\n" +
                     "    import metida.providers.TankFactoryProvider;\n" +
-                    "    class CompileTest implements metida.interfacable.IUserStrategy { " +
+                    "    class "+ id/*CompileTest*/ +" implements metida.interfacable.IUserStrategy { " +
                     strategy +
                     "}";
 
 
             IUserStrategy userStrategy;
             userStrategy = Reflect.compile(
-                    "com.example.CompileTest",
+                    "com.example."+id
+                    /*"com.example.CompileTest"*/,
                     strategy).create().get();
-
+            LOGGER.info("скомпилировалось");
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
             threadStrategy.start();
             //game.threadStrategyMap.put(threadStrategy.id, threadStrategy);
