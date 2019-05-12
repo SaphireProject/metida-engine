@@ -6,7 +6,7 @@ public class TurnCommand extends TankCommands {
     private Direction direction;
     private TypeCommands type;
 
-    public TurnCommand(PlayerTank tank,Direction direction) {
+    public TurnCommand(Tank tank,Direction direction) {
         super(tank);
         this.direction = direction;
         this.type=TypeCommands.TURN;
@@ -14,6 +14,6 @@ public class TurnCommand extends TankCommands {
 
     @Override
     public void execute(){
-        tank.turn(direction);
+        tank.turnExecute(direction);
     }
 }

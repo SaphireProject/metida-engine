@@ -2,10 +2,10 @@ package metida.object;
 
 public class TankCommands implements Command {
 
-    protected PlayerTank tank;
+    protected Tank tank;
 
 
-    public TankCommands(PlayerTank tank) {
+    public TankCommands(Tank tank) {
         this.tank=tank;
     }
 

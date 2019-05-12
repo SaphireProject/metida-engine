@@ -4,13 +4,13 @@ public class MoveDownCommand extends TankCommands{
 
     private TypeCommands type;
 
-    public MoveDownCommand(PlayerTank tank) {
+    public MoveDownCommand(Tank tank) {
         super(tank);
         this.type=TypeCommands.MOVEDOWN;
     }
 
     @Override
     public void execute(){
-        tank.moveDown();
+        tank.moveDownExecute();
     }
 }

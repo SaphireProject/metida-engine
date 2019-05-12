@@ -7,7 +7,7 @@ public class ShootCommand extends TankCommands {
     private Direction direction;
     private TypeCommands type;
 
-    public ShootCommand(PlayerTank tank, Direction direction) {
+    public ShootCommand(Tank tank, Direction direction) {
         super(tank);
         this.direction = direction;
         this.type=TypeCommands.SHOOT;
@@ -15,6 +15,6 @@ public class ShootCommand extends TankCommands {
 
     @Override
     public void execute(){
-        tank.shoot(direction);
+        tank.shootExecute(direction);
     }
 }
