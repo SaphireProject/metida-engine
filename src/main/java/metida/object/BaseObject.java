@@ -10,6 +10,8 @@ public abstract class BaseObject  {
     int health;
     boolean isFlag=false;
     Direction direction;
+    boolean isLastSnapshot;
+    boolean isFirstSnapshot;
 
     public boolean isFlagAction(){
         if(isFlag==false){
@@ -99,6 +101,22 @@ public abstract class BaseObject  {
         obj.setHealth(obj.getHealth()-1);
     }
 
+    public boolean isLastSnapshot() {
+        return isLastSnapshot;
+    }
+
+    public void setLastSnapshot(boolean lastSnapshot) {
+        isLastSnapshot = lastSnapshot;
+    }
+
+    public boolean isFirstSnapshot() {
+        return isFirstSnapshot;
+    }
+
+    public void setFirstSnapshot(boolean firstSnapshot) {
+        isFirstSnapshot = firstSnapshot;
+    }
+
     void action() {
 
     }
@@ -112,7 +130,9 @@ public abstract class BaseObject  {
                 ", living=" + living +
                 ", health=" + health +
                 ", isFlag=" + isFlag +
-                ", game=" + game +
+                ", direction=" + direction +
+                ", isLastSnapshot=" + isLastSnapshot +
+                ", isFirstSnapshot=" + isFirstSnapshot +
                 '}';
     }
 }

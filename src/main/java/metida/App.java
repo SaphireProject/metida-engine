@@ -26,19 +26,20 @@ public class App {
         //WallFactory wallFactory = new WallFactory();
 
         Tank tank1=factory.getTank(1);
-        //Tank tank2=factory.getTank(2);
+        Tank tank2=factory.getTank(2);
         //Tank tank3=factory.getGoldTank(2);
         //Tank tank4=factory.getTank(4);
 
 
         //перенести логику addobject в gettank
         game.addObject(tank1,12,12, game.gameOptions);
-        //game.addObject(tank2,10,10, game.gameOptions);
+        game.addObject(tank2,10,10, game.gameOptions);
         //game.addObject(tank3,6,6, game.gameOptions);
        // game.addObject(tank4,5,10, game.gameOptions);
         tank1.turn(Direction.DOWN);
         tank1.shoot(Direction.DOWN);
-        LOGGER.info(""+tank1.getQueueMethods().toString());
+
+        LOGGER.info("команды для "+tank1.toString()+" - "+tank1.getQueueMethods().toString());
 
 /*
         //tank2.moveLeft();

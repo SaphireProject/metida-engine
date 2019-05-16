@@ -1,16 +1,11 @@
 package metida.object;
 
 import metida.data.Data;
-import metida.interfacable.Activable;
-import metida.interfacable.Direction;
-import metida.interfacable.Gameable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static metida.service.FileService.getConfigTest;
 
@@ -51,6 +46,8 @@ public class Game extends GameOptions{
 
     public Map<Integer, BaseObject> objectsDeleteOld = new HashMap<>();
 
+    public Map<Integer, BaseObject> objTank = new HashMap<>();
+
     public Map<Integer, BaseObject> getObjects() {
         return objects;
     }
@@ -59,6 +56,18 @@ public class Game extends GameOptions{
 
     public void setObjects(Map<Integer, BaseObject> objects) {
         this.objects = objects;
+    }
+
+    public void addTank(BaseObject obj, int x, int y, GameOptions gameOptions){
+        obj.setX(x);
+        obj.setY(y);
+        obj.setGameOptions(gameOptions);
+        obj.setGame(instance);
+        Point point = new Point(x,y);
+
+        objTank.put(point.hashCode(), obj);
+        //Для того чтобы бежать по танкам и собирать очереди с методами
+        LOGGER.info("Добавлен танк "+obj);
     }
 
     public void addObjectAdd(BaseObject obj, int x, int y, GameOptions gameOptions)
@@ -77,13 +86,9 @@ public class Game extends GameOptions{
     public void addObject(BaseObject obj, int x, int y, GameOptions gameOptions)
     {
         obj.setX(x);
-        LOGGER.info("Добавлен объект "+obj);
         obj.setY(y);
-        LOGGER.info("Добавлен объект "+obj);
         obj.setGameOptions(gameOptions);
-        LOGGER.info("Добавлен объект "+obj);
         obj.setGame(instance);
-        LOGGER.info("Добавлен объект "+obj);
         Point point = new Point(x,y);
 
         gameOptions.hashmap.put(point.hashCode(), obj);
@@ -119,6 +124,11 @@ public class Game extends GameOptions{
 
         objects.forEach((id, object) ->  {
             if(object.isFlag()==false){
+                //надо убрать статус первого выстрела у снаряда
+                if(object.getType()==TypeObjects.BULLET){
+                    object.setFirstSnapshot(false);
+                    LOGGER.info("Снаряд "+object.toString()+" изменил статус первого snapshoot");
+                }
                 object.action();
                 LOGGER.info("Объект "+object.toString()+" выполнил одно свое действие в свой ход");
                 //object.setFlag(false);
@@ -130,6 +140,7 @@ public class Game extends GameOptions{
             }
         });
 
+        //установка статуса, что все объекты не совершали действий
         objects.forEach((id, object) -> object.setFlag(false));
         //Добавление новых пуль на карту
         objectsAdd.forEach((id, object) -> objects.put(id,object));
@@ -147,11 +158,4 @@ public class Game extends GameOptions{
         });
 
     }
-/*
-    private void executeCommand(Command command) {
-        if (command.execute()) {
-            history.add(command);
-        }
-    }
-*/
 }

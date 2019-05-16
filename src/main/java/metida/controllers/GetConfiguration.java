@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//ToDo: сделать модель для данных и ловить ее рестом
 public class GetConfiguration {
 
     @RequestMapping(value="config", method = RequestMethod.GET)

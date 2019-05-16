@@ -10,6 +10,7 @@ import metida.object.ThreadStrategy;
 import org.joor.Reflect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,26 +25,41 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private static Game game;
 
+    @Autowired
+    private TankFactory factory;
+
     @RequestMapping(value = "/start")
-    public ResponseEntity run(@RequestBody List<UserConfig> userConfigs/*, @RequestBody String path*/) {
+    public ResponseEntity run(@RequestBody List<UserConfig> userConfigs) {
         //todo: сделать чтоб игра создавалась по адресу конфига из боди
         //String pathGame = "test.json";
         //game = new Game(pathGame);
         String path="E:/project/metida/test.json";
         LOGGER.info(""+userConfigs.size());
-        game=new Game(path);
+        game=Game.Initialize(path);
         for (int i = 0;  i < userConfigs.size(); i++) {
-           // List<String> list = userConfigs.get(i).strategyPaths;
-            ///for (int j = 0;  j < list.size(); j++) {
-                searchStrategy(userConfigs.get(i).id ,userConfigs.get(i).strategyPaths/*list.get(j)*/);
-                LOGGER.info(""+userConfigs.get(i).strategyPaths);
-            //}
+            searchStrategy(userConfigs.get(i).id, userConfigs.get(i).strategyPaths);
+            LOGGER.info(""+userConfigs.get(i).strategyPaths);
         }
 
-        //for (int i = 0; userConfigs.size() > i; i++) {
-        //    ThreadStrategy threadStrategy = game.threadStrategyMap.get(1);
-        //    threadStrategy.start();
-        //}
+        return ResponseEntity.ok().build();
+    }
+
+    //fixme: разобраться в логах, придумать как верно крутить мир
+    @RequestMapping(value = "/start1")
+    public ResponseEntity run1(@RequestBody List<UserConfig> userConfigs) {
+        for(int i=0;i<2;i++){
+            factory.getObjectsTank().forEach((id, object) ->{
+                try{
+                    object.getQueueMethods().poll().execute();
+                }
+                catch (Exception e) {
+                    LOGGER.info("ошибка вызова команды");
+                }
+            });
+            game.action();
+            game.action();
+            game.action();
+        }
 
         return ResponseEntity.ok().build();
     }
