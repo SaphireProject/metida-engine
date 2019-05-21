@@ -5,6 +5,7 @@ public class Player {
     private int idTeam;
     private boolean goldStatus;
 
+
     public String getPath() {
         return path;
     }
@@ -42,5 +43,8 @@ public class Player {
         this.path = path;
         this.idTeam = idTeam;
         this.goldStatus = goldStatus;
+    }
+
+    public Player() {
     }
 }

@@ -1,3 +1,4 @@
 server:
   port: 8904
   contextPath: "/"
+runner.url: ${RUNNER_URL}

@@ -1,6 +1,8 @@
-package metida.object;
+package metida.CommandsTank;
 
-public class MoveDownCommand extends TankCommands{
+import metida.object.Tank;
+
+public class MoveDownCommand extends TankCommands {
 
     private TypeCommands type;
 

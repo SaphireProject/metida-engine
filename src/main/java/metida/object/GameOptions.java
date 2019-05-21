@@ -1,18 +1,28 @@
 package metida.object;
 
+import metida.controllers.UserController;
 import metida.interfacable.Direction;
 import metida.interfacable.Gameable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 
 public class GameOptions implements Gameable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameOptions.class);
     private int width;
     private int height;
     private int vision;
     public Map<Integer, BaseObject> hashmap = new HashMap<>();
+
 
 
     public GameOptions() {
@@ -66,7 +76,13 @@ public class GameOptions implements Gameable {
                 hashmap.put(point.hashCode() , null);
             }
         }
-        System.out.println(Collections.singletonList(hashmap));
+
+        //добавляем стены
+        //System.out.println(Collections.singletonList(hashmap));
+    }
+
+    public void setHashmap(Map<Integer, BaseObject> hashmap) {
+        this.hashmap = hashmap;
     }
 
     public Map<Integer, BaseObject> getByRange(Map<Integer, BaseObject> map ,

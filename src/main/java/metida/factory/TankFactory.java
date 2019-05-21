@@ -1,11 +1,15 @@
 package metida.factory;
 
 
+import metida.data.Data;
 import metida.object.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -18,6 +22,9 @@ public class TankFactory {
     private static Logger LOGGER = LoggerFactory.getLogger(TankFactory.class);
 
     private static Game game;
+
+    @Value("${runner.url}")
+    private String url;
 
     public Map<Integer, Tank> objectsTank = new HashMap<>();
 
@@ -32,25 +39,29 @@ public class TankFactory {
     //когда создать игру
     @PostConstruct
     public void init() {
-        String path="E:/project/metida/test.json";
-        game = Game.Initialize(path);
-        //game = Game.Initialize(path);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Data> responseEntity = restTemplate.getForEntity(
+                url+"/config",
+                Data.class
+        );
+        Data data=responseEntity.getBody();
+        game = Game.Initialize(data);
     }
 
     Random random=new Random();
 
     public Tank getTank(int idTeam) {
+
         Tank tank = new Tank(idTeam);
         LOGGER.info("Танк создан " + tank.getId());
         try {
+            LOGGER.info(""+game.gameOptions.getWidth());
             int x=random.nextInt(game.gameOptions.getWidth());
             int y=random.nextInt(game.gameOptions.getHeight());
             Point point = new Point(x, y);
             if(game.gameOptions.hashmap.get(point.hashCode()) == null){
                 //getTank(idTeam);
-                game.addObject(tank, random.nextInt(game.gameOptions.getWidth()),
-                        random.nextInt(game.gameOptions.getHeight()),
-                        game.gameOptions);
+                game.addObject(tank, x, y, game.gameOptions);
                 LOGGER.info("не ошибочка");
                 //можно добавлять в отдельный список танки, а потом по нему пройтись и получить очереди методов
                 objectsTank.put(point.hashCode(),tank);

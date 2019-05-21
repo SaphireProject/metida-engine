@@ -1,8 +1,10 @@
 package metida.object;
 
 import metida.data.Data;
+import metida.factory.TankFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,21 +16,25 @@ public class Game extends GameOptions{
 
     private static Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
-    //ToDo: пока считываю из файла
-    public Game(String path)
+    public Game(Data data)
     {
-        Data data = getConfigTest(path);
+        //Data data = getConfigTest(path);
         gameOptions = new GameOptions(data.getLengthX(),data.getLengthY(),data.getVision());
+        LOGGER.info("Игра создана");
+
     }
 
     private static Game instance;
 
-    public static Game Initialize(String path)
+    public static Game Initialize(Data data)
     {
         if (instance == null)
-            instance = new Game(path);
+            instance = new Game(data);
         return instance;
     }
+
+    @Autowired
+    private TankFactory factory;
 
     public GameOptions gameOptions;
 
@@ -48,6 +54,16 @@ public class Game extends GameOptions{
 
     public Map<Integer, BaseObject> objTank = new HashMap<>();
 
+    public Map<Integer, BaseObject> objWall = new HashMap<>();
+
+    public Map<Integer, BaseObject> getObjWall() {
+        return objWall;
+    }
+
+    public void setObjWall(Map<Integer, BaseObject> objWall) {
+        this.objWall = objWall;
+    }
+
     public Map<Integer, BaseObject> getObjects() {
         return objects;
     }
@@ -57,6 +73,8 @@ public class Game extends GameOptions{
     public void setObjects(Map<Integer, BaseObject> objects) {
         this.objects = objects;
     }
+
+
 
     public void addTank(BaseObject obj, int x, int y, GameOptions gameOptions){
         obj.setX(x);
@@ -68,6 +86,35 @@ public class Game extends GameOptions{
         objTank.put(point.hashCode(), obj);
         //Для того чтобы бежать по танкам и собирать очереди с методами
         LOGGER.info("Добавлен танк "+obj);
+    }
+
+    public Map<Integer, BaseObject> getObjTank() {
+        return objTank;
+    }
+
+    public void setObjTank(Map<Integer, BaseObject> objTank) {
+        this.objTank = objTank;
+    }
+
+    public Map<Integer, BaseObject> getObjectsDeleteOld() {
+        return objectsDeleteOld;
+    }
+
+    public void setObjectsDeleteOld(Map<Integer, BaseObject> objectsDeleteOld) {
+        this.objectsDeleteOld = objectsDeleteOld;
+    }
+
+    public void addObjectWall(BaseObject obj, int x, int y, GameOptions gameOptions)
+    {
+        obj.setX(x);
+        obj.setY(y);
+        obj.setGameOptions(gameOptions);
+        obj.setGame(instance);
+        Point point = new Point(x,y);
+
+        gameOptions.hashmap.put(point.hashCode(), obj);
+        objects.put(point.hashCode(), obj);
+        objWall.put(point.hashCode(), obj);
     }
 
     public void addObjectAdd(BaseObject obj, int x, int y, GameOptions gameOptions)
@@ -133,11 +180,15 @@ public class Game extends GameOptions{
                 LOGGER.info("Объект "+object.toString()+" выполнил одно свое действие в свой ход");
                 //object.setFlag(false);
             }
+            if(!object.isLiving() && object.getType()==TypeObjects.TANK){
+                factory.objectsTank.remove(id);
+            }
             if(!object.isLiving()){
                 LOGGER.info("Удаление мертвого объекта "+objects.get(id));
                 objects.remove(id);
                 LOGGER.info("Объект "+objects.get(id)+" удален");
             }
+
         });
 
         //установка статуса, что все объекты не совершали действий

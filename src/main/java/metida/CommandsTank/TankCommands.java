@@ -1,4 +1,7 @@
-package metida.object;
+package metida.CommandsTank;
+
+import metida.CommandsTank.Command;
+import metida.object.Tank;
 
 public class TankCommands implements Command {
 

@@ -1,68 +1,269 @@
 package metida.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import metida.CommandsTank.TankCommands;
+import metida.JsonObject.*;
 import metida.StrategyCheck;
 import metida.data.Config;
+import metida.data.Data;
 import metida.data.UserConfig;
 import metida.factory.TankFactory;
 import metida.interfacable.IUserStrategy;
-import metida.object.Game;
-import metida.object.ThreadStrategy;
+import metida.object.*;
 import org.joor.Reflect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 @RestController
+@Component
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private static Game game;
-
+    private QueueMethods<TankCommands> queue =new QueueMethods<TankCommands>();
+    Random random=new Random();
     @Autowired
     private TankFactory factory;
 
+    @Value("${runner.url}")
+    private String url;
+
+    protected GameOptions gameOptions;
+
+    private static int idWall=1;
+
+    public void addWall(Data data){
+        int x=random.nextInt(data.getLengthX());
+        int y=random.nextInt(data.getLengthY());
+        Point point = new Point(x, y);
+        if(game.gameOptions.hashmap.get(point.hashCode()) == null){
+            Wall wall=new Wall(x, y);
+            game.addObjectWall(wall, x, y, game.gameOptions);
+            LOGGER.info("стена добавлена"+" "+idWall);
+            idWall++;
+        }
+        else{
+            addWall(data);
+        }
+    }
+
+
     @RequestMapping(value = "/start")
     public ResponseEntity run(@RequestBody List<UserConfig> userConfigs) {
-        //todo: сделать чтоб игра создавалась по адресу конфига из боди
-        //String pathGame = "test.json";
-        //game = new Game(pathGame);
-        String path="E:/project/metida/test.json";
-        LOGGER.info(""+userConfigs.size());
-        game=Game.Initialize(path);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Data> responseEntity = restTemplate.getForEntity(
+                url+"/config",
+                Data.class
+                );
+        Data data=responseEntity.getBody();
+        LOGGER.info(data.toString());
+        game=Game.Initialize(data);
+
         for (int i = 0;  i < userConfigs.size(); i++) {
             searchStrategy(userConfigs.get(i).id, userConfigs.get(i).strategyPaths);
             LOGGER.info(""+userConfigs.get(i).strategyPaths);
         }
 
+        int countWall=(int)(data.getLengthX()*data.getLengthY()*0.003);
+        LOGGER.info(""+countWall);
+        while(countWall>0){
+            addWall(data);
+            countWall--;
+        }
+
+        List<String> preloadBlocks=new LinkedList<>();
+        for (int j = 0; j < data.getLengthY(); j++) {
+            String row="";
+            for (int i = 0; i < data.getLengthX(); i++) {
+
+                Point point = new Point(i , j);
+                if(game.gameOptions.hashmap.get(point.hashCode())==null){
+                    row=row+"0";
+
+                }
+                else if(game.gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL){
+                    row=row+"1";
+                }
+                else{
+                    row=row+"0";
+                }
+            }
+            preloadBlocks.add(row);
+            //row="";
+        }
+
+        LOGGER.info(preloadBlocks.toString());
+
+        PreloadJson preloadJson=new PreloadJson(preloadBlocks);
+        //todo:отправить модель поля
+        
+        factory.getObjectsTank().forEach((id, object) ->{
+            try{
+                object.setQueueMethodsDuplicate(object.getQueueMethods());
+                //object.getQueueMethods().poll().execute();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         return ResponseEntity.ok().build();
     }
 
-    //fixme: разобраться в логах, придумать как верно крутить мир
     @RequestMapping(value = "/start1")
     public ResponseEntity run1(@RequestBody List<UserConfig> userConfigs) {
-        for(int i=0;i<2;i++){
+        int count=0;
+        //while(count<500||)
+        for(int i=0;i<15;i++){
+
+
             factory.getObjectsTank().forEach((id, object) ->{
                 try{
-                    object.getQueueMethods().poll().execute();
+                    if(object.getQueueMethods().isEmpty()){
+                        object.setQueueMethods(object.getQueueMethodsDuplicate());
+                    }
+                    else{
+                        object.getQueueMethods().poll().execute();
+                    }
                 }
                 catch (Exception e) {
-                    LOGGER.info("ошибка вызова команды");
+                    e.printStackTrace();
+                }
+            });
+            Map<Integer, BaseObject> objBulletDelete=game.getObjectsDeleteOld();
+            List<BulletJson> bullets=new LinkedList<>();
+            game.action();
+            objBulletDelete.forEach((idBullet, objectBullet) ->  {
+                if(objectBullet.getX()==0||objectBullet.getY()==0){
+                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                            ""+objectBullet.getDirection(),
+                            objectBullet.isFirstSnapshot(),
+                            objectBullet.isLastSnapshot());
+                    bullets.add(bullet);
                 }
             });
             game.action();
+            objBulletDelete.forEach((idBullet, objectBullet) ->  {
+                if(objectBullet.getX()==0||objectBullet.getY()==0){
+                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                            ""+objectBullet.getDirection(),
+                            objectBullet.isFirstSnapshot(),
+                            objectBullet.isLastSnapshot());
+                    bullets.add(bullet);
+                }
+            });
             game.action();
-            game.action();
-        }
+            objBulletDelete.forEach((idBullet, objectBullet) ->  {
+                if(objectBullet.getX()==0||objectBullet.getY()==0){
+                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                            ""+objectBullet.getDirection(),
+                            objectBullet.isFirstSnapshot(),
+                            objectBullet.isLastSnapshot());
+                    bullets.add(bullet);
+                }
+            });
 
+
+            Map<Integer, BaseObject> obj = game.getObjects();
+            System.out.println(obj);
+
+
+
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+            List<TankJson> tanks=new LinkedList<>();
+            Map<Integer, Integer> endOfGame=new HashMap<>();
+            List<Integer> idWinner=new LinkedList<>();
+            List<Winner> listWinner=new LinkedList<>();
+
+            obj.forEach((id, object) ->  {
+                LOGGER.info("Старт создания snapshot");
+                if(object.getType()== TypeObjects.TANK){
+                    LOGGER.info("Создание объекта танк");
+                    TankJson tankJson = new TankJson(""+obj.get(id).getId(),
+                            object.getX(),
+                            object.getY(),
+                            "tank_green",
+                            object.isLiving());
+                    tanks.add(tankJson);
+
+                    /*if(endOfGame.containsValue(factory.objectsTank.get(id).getIdTeam())){
+                        endOfGame.put(id, factory.objectsTank.get(id).getIdTeam());
+                        idWinner.add(id);
+                        listWinner.add(new Winner(id));
+                    }
+
+                    if(endOfGame.size()==1){
+                        //создать модель окончания игры
+                        Winner winner=new Winner(idWinner.get(0));
+                        EndGame endGame=new EndGame(TypeEnd.win, listWinner);
+                    }*/
+
+
+                }
+                if(object.getType()== TypeObjects.BULLET){
+                    BulletJson bullet=new BulletJson(object.getX(),object.getY(),
+                            ""+object.getDirection(),
+                            object.isFirstSnapshot(),
+                            object.isLastSnapshot());
+                    bullets.add(bullet);
+                }
+
+                objBulletDelete.forEach((idBullet, objectBullet) ->  {
+                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                            ""+objectBullet.getDirection(),
+                            objectBullet.isFirstSnapshot(),
+                            objectBullet.isLastSnapshot());
+                    bullets.add(bullet);
+                });
+
+
+            });
+            AnimationJson animationJson=new AnimationJson(tanks, bullets);
+            FrameJson frameJson = new FrameJson(animationJson);
+
+
+            if(endOfGame.size()==1){
+                //создать модель окончания игры
+               // Winner winner=new Winner(idWinner.get(0));
+                EndGame endGame=new EndGame(TypeEnd.win, listWinner);
+                //todo:отправка модели
+            }
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                String jsonFrame = mapper.writeValueAsString(frameJson);
+
+                LOGGER.info(jsonFrame);
+                //todo:отправить модель snapshot
+               // ResponseEntity<AnimationJson> result
+               //        = restTemplate.postForObject("http://localhost:8904/list", frameJson, ResponseEntity.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
         return ResponseEntity.ok().build();
     }
+
 
     static private void searchStrategy(String id,String path) {
         File folder = new File(path);
@@ -133,3 +334,24 @@ public class UserController {
     }
 
 }
+
+/*
+        List<String> preloadBlocks=new LinkedList<>();
+        for (int j = 0; j < data.getLengthY(); j++) {
+            String row="";
+            for (int i = 0; i < data.getLengthX(); i++) {
+
+                Point point = new Point(i , j);
+                game.gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL
+                if(gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL){
+                        row=row+"1";
+                        }
+                        else{
+                        row=row+"0";
+                        }
+                        }
+                        preloadBlocks.add(row);
+                        row="";
+                        }
+
+                        LOGGER.info(preloadBlocks.toString());*/

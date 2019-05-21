@@ -1,6 +1,8 @@
 package metida.object;
 
-public class Wall extends BaseObject {
+import metida.interfacable.Activable;
+
+public class Wall extends BaseObject implements Activable {
     int X;
     int Y;
     int health;
@@ -40,5 +42,10 @@ public class Wall extends BaseObject {
                 ", Y=" + Y +
                 ", health=" + health +
                 '}';
+    }
+
+    @Override
+    public void action() {
+
     }
 }

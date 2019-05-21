@@ -1,5 +1,6 @@
 package metida.factory;
 
+import metida.CommandsTank.*;
 import metida.interfacable.Direction;
 import metida.object.*;
 import org.slf4j.Logger;

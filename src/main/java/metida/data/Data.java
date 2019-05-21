@@ -101,6 +101,9 @@ public class Data {
                 '}';
     }
 
+    public Data() {
+    }
+
     public Data(int lengthX , int lengthY , boolean obstacles , int countPlayers ,
                 boolean buff , boolean debuff , int maxTanksOnPlayer , int vision , ArrayList<Player> players) {
         this.lengthX = lengthX;

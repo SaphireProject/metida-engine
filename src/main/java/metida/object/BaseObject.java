@@ -12,6 +12,15 @@ public abstract class BaseObject  {
     Direction direction;
     boolean isLastSnapshot;
     boolean isFirstSnapshot;
+    int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public boolean isFlagAction(){
         if(isFlag==false){

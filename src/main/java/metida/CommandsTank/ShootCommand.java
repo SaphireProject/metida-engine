@@ -1,6 +1,7 @@
-package metida.object;
+package metida.CommandsTank;
 
 import metida.interfacable.Direction;
+import metida.object.Tank;
 
 public class ShootCommand extends TankCommands {
 

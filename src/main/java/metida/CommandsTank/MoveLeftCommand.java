@@ -1,4 +1,6 @@
-package metida.object;
+package metida.CommandsTank;
+
+import metida.object.Tank;
 
 public class MoveLeftCommand extends TankCommands {
 

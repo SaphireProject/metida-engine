@@ -1,11 +1,11 @@
 package metida.object;
 
+import metida.CommandsTank.TankCommands;
 import metida.factory.CommandFactory;
 import metida.interfacable.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -13,11 +13,6 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
 
 
     private static int idTank=1;
-
-    /**
-     * field ID
-     * */
-
 
     private int id;
 
@@ -38,6 +33,34 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     private CommandFactory factory=new CommandFactory();
 
     private QueueMethods<TankCommands> queueMethods =new QueueMethods<TankCommands>();
+
+    private QueueMethods<TankCommands> queueMethodsDuplicate =new QueueMethods<TankCommands>();
+
+    public Tank(int idTeam) {
+        this.type=TypeObjects.TANK;
+        this.idTeam = idTeam;
+        this.damage = 1;
+        this.step = 1;
+        this.health=2;
+        this.direction=Direction.UP;
+        this.id=idTank;
+        idTank++;
+    }
+
+    public Tank() {
+    }
+
+    public QueueMethods<TankCommands> getQueueMethodsDuplicate() {
+        return queueMethodsDuplicate;
+    }
+
+    public void setQueueMethodsDuplicate(QueueMethods<TankCommands> queueMethodsDuplicate) {
+        this.queueMethodsDuplicate = queueMethodsDuplicate;
+    }
+
+    public void setIdTeam(int idTeam) {
+        this.idTeam = idTeam;
+    }
 
     @Override
     public boolean isFlag() {
@@ -78,19 +101,7 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.gameOptions = gameOptions;
     }
 
-    public Tank(int idTeam) {
-        this.type=TypeObjects.TANK;
-        this.idTeam = idTeam;
-        this.damage = 1;
-        this.step = 1;
-        this.health=2;
-        this.direction=Direction.UP;
-        this.id=idTank;
-        idTank++;
-    }
 
-    public Tank() {
-    }
 
     @Override
     public int getHealth() {
@@ -115,6 +126,10 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public QueueMethods<TankCommands> getQueueMethods() {
+        if(queueMethods.isEmpty())
+        {
+            queueMethods=queueMethodsDuplicate;
+        }
         return queueMethods;
     }
 
@@ -122,18 +137,28 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
         this.queueMethods = queueMethods;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
-
-
     public void action() {
 
+    }
+
+    @Override
+    public TypeObjects getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(TypeObjects type) {
+        this.type = type;
     }
 
     @Override
@@ -400,40 +425,52 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     public void shootExecute(Direction direction){
         switch (direction){
             case DOWN:
-                Bullet bulletDOWN = new Bullet(X, Y-1, direction,false);
-                Point pointDOWN = new Point(X,Y-1);
-                gameOptions.hashmap.put(pointDOWN.hashCode(),bulletDOWN);
-                LOGGER.info("произошел выстрел вниз");
-                //выставляем флаг что первое появление пули
-                gameOptions.hashmap.get(pointDOWN.hashCode()).setFirstSnapshot(true);
-                game.addObject(bulletDOWN,X,Y-1,game.gameOptions);
+                if(Y-1>=0){
+                    Bullet bulletDOWN = new Bullet(X, Y-1, direction,false);
+                    Point pointDOWN = new Point(X,Y-1);
+                    gameOptions.hashmap.put(pointDOWN.hashCode(),bulletDOWN);
+                    LOGGER.info("произошел выстрел вниз");
+                    //выставляем флаг что первое появление пули
+                    gameOptions.hashmap.get(pointDOWN.hashCode()).setFirstSnapshot(true);
+                    game.addObject(bulletDOWN,X,Y-1,game.gameOptions);
+                    break;
+                }
                 break;
             case UP:
-                Bullet bulletUP = new Bullet(X, Y+1, direction,false);
-                Point pointUP = new Point(X,Y+1);
-                gameOptions.hashmap.put(pointUP.hashCode(),bulletUP);
-                LOGGER.info("произошел выстрел вверх");
-                //выставляем флаг что первое появление пули
-                gameOptions.hashmap.get(pointUP.hashCode()).setFirstSnapshot(true);
-                game.addObject(bulletUP,X,Y+1,game.gameOptions);
-                break;
+                if(Y+1<=gameOptions.getHeight()){
+                    Bullet bulletUP = new Bullet(X, Y+1, direction,false);
+                    Point pointUP = new Point(X,Y+1);
+                    gameOptions.hashmap.put(pointUP.hashCode(),bulletUP);
+                    LOGGER.info("произошел выстрел вверх");
+                    //выставляем флаг что первое появление пули
+                    gameOptions.hashmap.get(pointUP.hashCode()).setFirstSnapshot(true);
+                    game.addObject(bulletUP,X,Y+1,game.gameOptions);
+                    break;
+                }
+               break;
             case RIGHT:
-                Bullet bulletRIGHT = new Bullet(X+1, Y, direction,false);
-                Point pointRIGHT = new Point(X+1,Y);
-                gameOptions.hashmap.put(pointRIGHT.hashCode(),bulletRIGHT);
-                LOGGER.info("произошел выстрел");
-                //выставляем флаг что первое появление пули
-                gameOptions.hashmap.get(pointRIGHT.hashCode()).setFirstSnapshot(true);
-                game.addObject(bulletRIGHT,X+1,Y,game.gameOptions);
+                if(X+1<=gameOptions.getWidth()) {
+                    Bullet bulletRIGHT = new Bullet(X+1, Y, direction,false);
+                    Point pointRIGHT = new Point(X+1,Y);
+                    gameOptions.hashmap.put(pointRIGHT.hashCode(),bulletRIGHT);
+                    LOGGER.info("произошел выстрел");
+                    //выставляем флаг что первое появление пули
+                    gameOptions.hashmap.get(pointRIGHT.hashCode()).setFirstSnapshot(true);
+                    game.addObject(bulletRIGHT,X+1,Y,game.gameOptions);
+                    break;
+                }
                 break;
             case LEFT:
-                Bullet bulletLEFT = new Bullet(X-1, Y, direction,false);
-                Point pointLEFT = new Point(X-1,Y);
-                gameOptions.hashmap.put(pointLEFT.hashCode(),bulletLEFT);
-                LOGGER.info("произошел выстрел");
-                //выставляем флаг что первое появление пули
-                gameOptions.hashmap.get(pointLEFT.hashCode()).setFirstSnapshot(true);
-                game.addObject(bulletLEFT,X-1,Y,game.gameOptions);
+                if(X-1>=0) {
+                    Bullet bulletLEFT = new Bullet(X-1, Y, direction,false);
+                    Point pointLEFT = new Point(X-1,Y);
+                    gameOptions.hashmap.put(pointLEFT.hashCode(),bulletLEFT);
+                    LOGGER.info("произошел выстрел");
+                    //выставляем флаг что первое появление пули
+                    gameOptions.hashmap.get(pointLEFT.hashCode()).setFirstSnapshot(true);
+                    game.addObject(bulletLEFT,X-1,Y,game.gameOptions);
+                    break;
+                }
                 break;
         }
     }
