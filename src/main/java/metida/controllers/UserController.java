@@ -111,10 +111,20 @@ public class UserController {
         }
 
         LOGGER.info(preloadBlocks.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         PreloadJson preloadJson=new PreloadJson(preloadBlocks);
         //todo:отправить модель поля
-        
+        String jsonPreload = null;
+        try {
+            jsonPreload = mapper.writeValueAsString(preloadJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        LOGGER.info(jsonPreload);
+
         factory.getObjectsTank().forEach((id, object) ->{
             try{
                 object.setQueueMethodsDuplicate(object.getQueueMethods());
