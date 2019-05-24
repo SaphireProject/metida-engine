@@ -62,7 +62,7 @@ public class TankFactory {
             if(game.gameOptions.hashmap.get(point.hashCode()) == null){
                 //getTank(idTeam);
                 game.addObject(tank, x, y, game.gameOptions);
-                LOGGER.info("не ошибочка");
+                LOGGER.info("Танк добавлен");
                 //можно добавлять в отдельный список танки, а потом по нему пройтись и получить очереди методов
                 objectsTank.put(point.hashCode(),tank);
             }

@@ -2,7 +2,7 @@ package metida.object;
 
 import metida.interfacable.Activable;
 
-public class Wall extends BaseObject implements Activable {
+public class Wall extends BaseObject  {
     int X;
     int Y;
     int health;
@@ -44,8 +44,12 @@ public class Wall extends BaseObject implements Activable {
                 '}';
     }
 
-    @Override
-    public void action() {
-
+    public boolean isLiving() {
+        if(health>0) {
+            return true;
+        }
+        return false;
     }
+
+
 }

@@ -126,10 +126,10 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public QueueMethods<TankCommands> getQueueMethods() {
-        if(queueMethods.isEmpty())
+       /* if(queueMethods.isEmpty())
         {
             queueMethods=queueMethodsDuplicate;
-        }
+        }*/
         return queueMethods;
     }
 
@@ -357,19 +357,19 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public void moveRightExecute(){
-        if(X+step<=gameOptions.getWidth()) {
+        if(this.X+step<=gameOptions.getWidth()) {
             setDirection(Direction.RIGHT);
             LOGGER.info("Начало проверки");
             if(checkForward(Direction.RIGHT)){
                 LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
-                LOGGER.info("Первоначальные координаты " + X+" "+Y);
-                X=X+1;
-                Point newpoint = new Point(X,Y);
+                Point oldPoint = new Point(this.X,this.Y);
+                LOGGER.info("Первоначальные координаты " + this.X+" "+this.Y);
+                this.X=this.X+1;
+                Point newpoint = new Point(this.X,this.Y);
                 LOGGER.info("Объект, который должен сдвинуться "+gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(oldPoint.hashCode(),null);
-                LOGGER.info("Объект, который сдвинулся " + game.findObject(X,Y)+" "+X+" "+Y);
+                LOGGER.info("Объект, который сдвинулся " + game.findObject(this.X,this.Y)+" "+this.X+" "+this.Y);
                 LOGGER.info("Конец движения");
             }
         }

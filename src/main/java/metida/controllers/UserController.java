@@ -115,10 +115,11 @@ public class UserController {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         PreloadJson preloadJson=new PreloadJson(preloadBlocks);
+        PreloadFinalJson preloadFinalJson=new PreloadFinalJson(preloadJson);
         //todo:отправить модель поля
         String jsonPreload = null;
         try {
-            jsonPreload = mapper.writeValueAsString(preloadJson);
+            jsonPreload = mapper.writeValueAsString(preloadFinalJson);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -128,7 +129,8 @@ public class UserController {
         factory.getObjectsTank().forEach((id, object) ->{
             try{
                 object.setQueueMethodsDuplicate(object.getQueueMethods());
-                //object.getQueueMethods().poll().execute();
+                LOGGER.info(""+object.getQueueMethodsDuplicate());
+                LOGGER.info(""+object.getQueueMethods());
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -142,13 +144,14 @@ public class UserController {
     public ResponseEntity run1(@RequestBody List<UserConfig> userConfigs) {
         int count=0;
         //while(count<500||)
-        for(int i=0;i<15;i++){
+        for(int i=0;i<10;i++){
 
 
             factory.getObjectsTank().forEach((id, object) ->{
                 try{
                     if(object.getQueueMethods().isEmpty()){
-                        object.setQueueMethods(object.getQueueMethodsDuplicate());
+                       object.setQueueMethods(object.getQueueMethodsDuplicate());
+                       object.getQueueMethods().poll().execute();
                     }
                     else{
                         object.getQueueMethods().poll().execute();
@@ -207,7 +210,7 @@ public class UserController {
             List<Winner> listWinner=new LinkedList<>();
 
             obj.forEach((id, object) ->  {
-                LOGGER.info("Старт создания snapshot");
+                //LOGGER.info("Старт создания snapshot");
                 if(object.getType()== TypeObjects.TANK){
                     LOGGER.info("Создание объекта танк");
                     TankJson tankJson = new TankJson(""+obj.get(id).getId(),
@@ -227,6 +230,7 @@ public class UserController {
                         //создать модель окончания игры
                         Winner winner=new Winner(idWinner.get(0));
                         EndGame endGame=new EndGame(TypeEnd.win, listWinner);
+                        //сюда вот вписать новую модель окончания
                     }*/
 
 
