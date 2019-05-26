@@ -1,18 +1,13 @@
 package metida.object;
 
-import metida.controllers.UserController;
 import metida.interfacable.Direction;
 import metida.interfacable.Gameable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 
 public class GameOptions implements Gameable {
