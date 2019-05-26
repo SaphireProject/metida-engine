@@ -2,3 +2,4 @@ server:
   port: 8904
   contextPath: "/"
 runner.url: ${RUNNER_URL}
+runner.url1: ${STRATEGY_URL}
