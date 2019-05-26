@@ -8,6 +8,7 @@ import metida.JsonObject.*;
 import metida.StrategyCheck;
 import metida.data.Config;
 import metida.data.Data;
+import metida.data.ListConfig;
 import metida.data.UserConfig;
 import metida.factory.TankFactory;
 import metida.interfacable.IUserStrategy;
@@ -39,11 +40,15 @@ public class UserController {
     private static Game game;
     private QueueMethods<TankCommands> queue =new QueueMethods<TankCommands>();
     Random random=new Random();
+
     @Autowired
     private TankFactory factory;
 
     @Value("${runner.url}")
     private String url;
+
+    /*@Value("${runner.url1}")
+    private String url1;*/
 
     protected GameOptions gameOptions;
 
@@ -76,12 +81,19 @@ public class UserController {
         Data data=responseEntity.getBody();
         LOGGER.info(data.toString());
         game=Game.Initialize(data);
+/*
+        ResponseEntity<ListConfig> responseConfig = restTemplate.getForEntity(
+                url1+"/getpath",
+                ListConfig.class
+        );
 
-        for (int i = 0;  i < userConfigs.size(); i++) {
-            searchStrategy(userConfigs.get(i).id, userConfigs.get(i).strategyPaths);
-            LOGGER.info(""+userConfigs.get(i).strategyPaths);
+        ListConfig listConfig=responseConfig.getBody();
+
+        for (int i = 0;  i < listConfig.getList().size(); i++) {
+            searchStrategy(listConfig.getList().get(i).id, listConfig.getList().get(i).strategyPaths);
+            LOGGER.info(""+listConfig.getList().get(i).strategyPaths);
         }
-
+*/
         int countWall=(int)(data.getLengthX()*data.getLengthY()*0.003);
         LOGGER.info(""+countWall);
         while(countWall>0){
@@ -116,13 +128,16 @@ public class UserController {
 
         PreloadJson preloadJson=new PreloadJson(preloadBlocks);
         PreloadFinalJson preloadFinalJson=new PreloadFinalJson(preloadJson);
-        //todo:отправить модель поля
+
         String jsonPreload = null;
         try {
             jsonPreload = mapper.writeValueAsString(preloadFinalJson);
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        //отправка данных на раннер, модель карты
+        //restTemplate.postForEntity("http://localhost:8085/game/preload", preloadFinalJson, PreloadFinalJson.class);
 
         LOGGER.info(jsonPreload);
 
@@ -198,7 +213,7 @@ public class UserController {
             Map<Integer, BaseObject> obj = game.getObjects();
             System.out.println(obj);
 
-
+            RestTemplate restTemplate = new RestTemplate();
 
 
             ObjectMapper mapper = new ObjectMapper();
@@ -255,7 +270,7 @@ public class UserController {
             });
             AnimationJson animationJson=new AnimationJson(tanks, bullets);
             FrameJson frameJson = new FrameJson(animationJson);
-
+            //restTemplate.postForEntity("http://localhost:8085/game/animation", frameJson, FrameJson.class);
 
             if(endOfGame.size()==1){
                 //создать модель окончания игры
@@ -264,7 +279,7 @@ public class UserController {
                 //todo:отправка модели
             }
             try {
-                RestTemplate restTemplate = new RestTemplate();
+
                 String jsonFrame = mapper.writeValueAsString(frameJson);
 
                 LOGGER.info(jsonFrame);

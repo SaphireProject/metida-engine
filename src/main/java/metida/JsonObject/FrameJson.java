@@ -1,7 +1,7 @@
 package metida.JsonObject;
 
 public class FrameJson {
-    private static int idSnapshot=1;
+    private static int idSnapshot=0;
     private int snapshotNumber;
     private AnimationJson animations;
 
