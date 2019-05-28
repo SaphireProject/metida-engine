@@ -1,14 +1,18 @@
 package metida.factory;
 
 
+import metida.JsonObject.PostConfig;
 import metida.data.Data;
+import metida.data.ParameterMetida;
 import metida.object.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -39,13 +43,26 @@ public class TankFactory {
     //когда создать игру
     @PostConstruct
     public void init() {
-        RestTemplate restTemplate = new RestTemplate();
+        /*RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Data> responseEntity = restTemplate.getForEntity(
                 url+"/config",
                 Data.class
         );
         Data data=responseEntity.getBody();
-        game = Game.Initialize(data);
+        game = Game.Initialize(data);*/
+        Map<String, Integer> body = new HashMap<>();
+        body.put("id", 22);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<Map> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<ParameterMetida> data=restTemplate.exchange(
+                url+"/game/parameters", HttpMethod.POST, entity, ParameterMetida.class);
+
+        game = Game.Initialize(data.getBody());
     }
 
     Random random=new Random();

@@ -19,4 +19,11 @@ public class PreloadJson {
     public void setBlocks(List<String> blocks) {
         this.blocks = blocks;
     }
+
+    @Override
+    public String toString() {
+        return "PreloadJson{" +
+                "blocks=" + blocks +
+                '}';
+    }
 }

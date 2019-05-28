@@ -1,6 +1,7 @@
 package metida.object;
 
 import metida.data.Data;
+import metida.data.ParameterMetida;
 import metida.factory.TankFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,17 +17,17 @@ public class Game extends GameOptions{
 
     private static Logger LOGGER = LoggerFactory.getLogger(Game.class);
 
-    public Game(Data data)
+    public Game(ParameterMetida data)
     {
         //Data data = getConfigTest(path);
-        gameOptions = new GameOptions(data.getLengthX(),data.getLengthY(),data.getVision());
+        gameOptions = new GameOptions(data.getWidthOfMapForGame(), data.getHeightOfMapForGame());
         LOGGER.info("Игра создана");
 
     }
 
     private static Game instance;
 
-    public static Game Initialize(Data data)
+    public static Game Initialize(ParameterMetida data)
     {
         if (instance == null)
             instance = new Game(data);

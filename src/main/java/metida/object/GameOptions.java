@@ -59,10 +59,10 @@ public class GameOptions implements Gameable {
         return null;
     }
 
-    public GameOptions(int width , int height , int vision) {
+    public GameOptions(int width , int height) {
         this.width = width;
         this.height = height;
-        this.vision = vision;
+        //this.vision = vision;
         this.hashmap = new HashMap<>();
 
         for (int i = 0; i < width; i++) {

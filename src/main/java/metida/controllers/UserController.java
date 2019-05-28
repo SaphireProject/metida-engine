@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import metida.CommandsTank.TankCommands;
 import metida.JsonObject.*;
-import metida.StrategyCheck;
-import metida.data.Config;
 import metida.data.Data;
-import metida.data.ListConfig;
 import metida.data.UserConfig;
 import metida.factory.TankFactory;
 import metida.interfacable.IUserStrategy;
@@ -18,14 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -80,7 +73,7 @@ public class UserController {
                 );
         Data data=responseEntity.getBody();
         LOGGER.info(data.toString());
-        game=Game.Initialize(data);
+       // game=Game.Initialize(data);
 /*
         ResponseEntity<ListConfig> responseConfig = restTemplate.getForEntity(
                 url1+"/getpath",
@@ -94,6 +87,13 @@ public class UserController {
             LOGGER.info(""+listConfig.getList().get(i).strategyPaths);
         }
 */
+
+/*
+* for (int i = 0;  i < userConfigs.size(); i++) {
+            searchStrategy(userConfigs.get(i).id, userConfigs.get(i).strategyPaths);
+            LOGGER.info(""+userConfigs.get(i).strategyPaths);
+        }
+        */
         int countWall=(int)(data.getLengthX()*data.getLengthY()*0.003);
         LOGGER.info(""+countWall);
         while(countWall>0){

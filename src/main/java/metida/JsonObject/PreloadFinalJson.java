@@ -14,4 +14,11 @@ public class PreloadFinalJson {
     public void setPreload(PreloadJson preload) {
         this.preload = preload;
     }
+
+    @Override
+    public String toString() {
+        return "PreloadFinalJson{" +
+                "preload=" + preload +
+                '}';
+    }
 }
