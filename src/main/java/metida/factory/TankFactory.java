@@ -57,8 +57,9 @@ public class TankFactory {
 
         ResponseEntity<ParameterMetida> data=restTemplate.getForEntity(
                 url+"/game/parameters", ParameterMetida.class);
-
+        LOGGER.info("Начинается создание игры для фактори");
         game = Game.Initialize(data.getBody());
+        LOGGER.info("Закончилось создание игры для фактори");
     }
 
     Random random=new Random();

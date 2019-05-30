@@ -65,14 +65,14 @@ public class UserController {
 
     @RequestMapping(value = "/start")
     public ResponseEntity run(@RequestBody List<UserConfig> userConfigs) {
-
+/*
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Data> responseEntity = restTemplate.getForEntity(
                 url+"/config",
                 Data.class
                 );
         Data data=responseEntity.getBody();
-        LOGGER.info(data.toString());
+        LOGGER.info(data.toString());*/
        // game=Game.Initialize(data);
 /*
         ResponseEntity<ListConfig> responseConfig = restTemplate.getForEntity(
@@ -94,7 +94,7 @@ public class UserController {
             LOGGER.info(""+userConfigs.get(i).strategyPaths);
         }
         */
-        int countWall=(int)(data.getLengthX()*data.getLengthY()*0.003);
+      /*  int countWall=(int)(data.getLengthX()*data.getLengthY()*0.003);
         LOGGER.info(""+countWall);
         while(countWall>0){
             addWall(data);
@@ -121,25 +121,25 @@ public class UserController {
             preloadBlocks.add(row);
             //row="";
         }
-
-        LOGGER.info(preloadBlocks.toString());
+*/
+       /* LOGGER.info(preloadBlocks.toString());
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         PreloadJson preloadJson=new PreloadJson(preloadBlocks);
-        PreloadFinalJson preloadFinalJson=new PreloadFinalJson(preloadJson);
+        PreloadFinalJson preloadFinalJson=new PreloadFinalJson(preloadJson);*/
 
-        String jsonPreload = null;
+       /* String jsonPreload = null;
         try {
-            jsonPreload = mapper.writeValueAsString(preloadFinalJson);
+           // jsonPreload = mapper.writeValueAsString(preloadFinalJson);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }
+        }*/
         //отправка данных на раннер, модель карты
         //restTemplate.postForEntity("http://localhost:8085/game/preload", preloadFinalJson, PreloadFinalJson.class);
 
-        LOGGER.info(jsonPreload);
+       // LOGGER.info(jsonPreload);
 
         factory.getObjectsTank().forEach((id, object) ->{
             try{
