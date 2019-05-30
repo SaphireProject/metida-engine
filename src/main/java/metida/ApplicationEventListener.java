@@ -140,8 +140,8 @@ public class ApplicationEventListener {
 
         HttpEntity<Map> entity1 = new HttpEntity<>(body1, headers1);
 
-        ResponseEntity<Void> data1=restTemplate.exchange(
-                url+"/game/preload", HttpMethod.POST, entity1, Void.class);
+        ResponseEntity<Void> data1=restTemplate.postForEntity(
+                url+"/game/preload",  entity1, Void.class);
 
         //--------до сюда
 
@@ -261,8 +261,8 @@ public class ApplicationEventListener {
 
             HttpEntity<FrameJson> entity2 = new HttpEntity<>(frameJson, headers2);
 
-            ResponseEntity<Void> data2=restTemplate.exchange(
-                    url+"/game/animation", HttpMethod.POST, entity2, Void.class);
+            ResponseEntity<Void> data2=restTemplate.postForEntity(
+                    url+"/game/animation", entity2, Void.class);
             try {
                 String jsonFrame = mapper.writeValueAsString(frameJson);
                 LOGGER.info(jsonFrame);

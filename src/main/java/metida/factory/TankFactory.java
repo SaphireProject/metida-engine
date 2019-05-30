@@ -50,17 +50,13 @@ public class TankFactory {
         );
         Data data=responseEntity.getBody();
         game = Game.Initialize(data);*/
-        Map<String, Integer> body = new HashMap<>();
-        body.put("id", 22);
 
         RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-        HttpEntity<Map> entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<ParameterMetida> data=restTemplate.exchange(
-                url+"/game/parameters", HttpMethod.POST, entity, ParameterMetida.class);
+
+        ResponseEntity<ParameterMetida> data=restTemplate.getForEntity(
+                url+"/game/parameters", ParameterMetida.class);
 
         game = Game.Initialize(data.getBody());
     }
