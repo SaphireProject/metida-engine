@@ -303,7 +303,7 @@ public class UserController {
                     "    import metida.object.Tank;\n" +
                     "    import metida.interfacable.Direction;\n" +
                     "    import metida.providers.TankFactoryProvider;\n" +
-                    "    class "+ id/*CompileTest*/ +" implements metida.interfacable.IUserStrategy { " +
+                    "    class "+ id +" implements metida.interfacable.IUserStrategy { " +
                     strategy +
                     "}";
 

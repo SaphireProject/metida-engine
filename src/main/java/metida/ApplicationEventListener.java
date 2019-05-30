@@ -61,17 +61,20 @@ public class ApplicationEventListener {
         LOGGER.info("Success");
 
         //fixme:не должно быть post запроса, должен по runner_url получать конфиг
-        Map<String, Integer> body = new HashMap<>();
+       /* Map<String, Integer> body = new HashMap<>();
         body.put("id", 22);
 
-        RestTemplate restTemplate = new RestTemplate();
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<Map> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<ParameterMetida> data=restTemplate.exchange(
-                url+"/game/parameters", HttpMethod.POST, entity, ParameterMetida.class);
+                url+"/game/parameters", HttpMethod.POST, entity, ParameterMetida.class);*/
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<ParameterMetida> data=restTemplate.getForEntity(
+                url+"/game/parameters", ParameterMetida.class);
 
         game = Game.Initialize(data.getBody());
         LOGGER.info("Игра создана в листенере" +data.getBody().toString());
@@ -133,7 +136,7 @@ public class ApplicationEventListener {
 
 
         HttpHeaders headers1 = new HttpHeaders();
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        headers1.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<Map> entity1 = new HttpEntity<>(body1, headers1);
 
@@ -211,7 +214,7 @@ public class ApplicationEventListener {
                             "tank_green",
                             object.isLiving());
                     tanks.add(tankJson);
-
+/*
                     if(endOfGame.containsValue(factory.objectsTank.get(id).getIdTeam())){
                         endOfGame.put(id, factory.objectsTank.get(id).getIdTeam());
                         idWinner.add(id);
@@ -224,7 +227,7 @@ public class ApplicationEventListener {
                         EndGame endGame=new EndGame(TypeEnd.win, listWinner);
                         //сюда вот вписать новую модель окончания
                     }
-
+*/
 
                 }
                 if(object.getType()== TypeObjects.BULLET){
@@ -254,7 +257,7 @@ public class ApplicationEventListener {
 
 
             HttpHeaders headers2 = new HttpHeaders();
-            headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+            headers2.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
             HttpEntity<FrameJson> entity2 = new HttpEntity<>(frameJson, headers2);
 
