@@ -288,7 +288,7 @@ public class ApplicationEventListener {
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
             threadStrategy.start();
         }
-        if(id.equals("user4")){
+        if(id.equals("user5")){
             userStrategy1=new Strategy2();
             userStrategy1.init();
             userStrategy1.execute();
