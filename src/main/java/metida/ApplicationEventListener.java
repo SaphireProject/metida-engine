@@ -281,14 +281,14 @@ public class ApplicationEventListener {
     static private void searchStrategy(String id, String path) {
         IUserStrategy userStrategy;
         IUserStrategy userStrategy1;
-        if (id.equals("user1")){
+        if (id.equals("user3")){
             userStrategy=new Strategy1();
             userStrategy.init();
             userStrategy.execute();
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
             threadStrategy.start();
         }
-        if(id.equals("user2")){
+        if(id.equals("user4")){
             userStrategy1=new Strategy2();
             userStrategy1.init();
             userStrategy1.execute();
