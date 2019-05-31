@@ -279,7 +279,7 @@ public class ApplicationEventListener {
 
     static private void searchStrategy(String id, String path) {
         IUserStrategy userStrategy;
-        if (id=="user1"){
+        if (id.equals("user1")){
             userStrategy=new Strategy1();
             userStrategy.init();
             userStrategy.execute();
