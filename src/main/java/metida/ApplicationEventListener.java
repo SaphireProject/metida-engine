@@ -279,7 +279,7 @@ public class ApplicationEventListener {
     static private void searchStrategy(String id, String path) {
 
             String strategy = path;
-            strategy = "package com.example;\n" +
+            strategy = "package metida.factory;\n" +
                     "    import metida.factory.TankFactory;\n" +
                     "    import metida.object.Tank;\n" +
                     "    import metida.interfacable.Direction;\n" +
