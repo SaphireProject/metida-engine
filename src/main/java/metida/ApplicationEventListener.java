@@ -9,6 +9,7 @@ import metida.data.Data;
 import metida.factory.TankFactory;
 import metida.interfacable.IUserStrategy;
 import metida.object.*;
+import metida.service.Strategy1;
 import org.joor.Reflect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -277,7 +278,12 @@ public class ApplicationEventListener {
 
 
     static private void searchStrategy(String id, String path) {
-
+        IUserStrategy userStrategy;
+        if (id=="user1"){
+            userStrategy=new Strategy1();
+            ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
+            threadStrategy.start();
+        }
             String strategy = path;
             strategy = "package com.example;\n" +
                     "    import metida.factory.TankFactory;\n" +
@@ -289,14 +295,14 @@ public class ApplicationEventListener {
                     "}";
 
 
-            IUserStrategy userStrategy;
-            userStrategy = Reflect.compile(
+            /*IUserStrategy userStrategy1;
+            userStrategy1 = Reflect.compile(
                     "metida.factory."+id
-                    /*"com.example.CompileTest"*/,
+                    ,
                     strategy).create().get();
             LOGGER.info("скомпилировалось");
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
-            threadStrategy.start();
+            threadStrategy.start();*/
         }
 
     static String fileInput(String name) {
