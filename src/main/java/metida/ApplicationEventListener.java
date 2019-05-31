@@ -90,7 +90,7 @@ public class ApplicationEventListener {
         //ResponseEntity<String> answer=restTemplate.getForEntity(url+"/game/strategy/1", String.class);
 
 
-        int countWall=(int)(data.getBody().getWidthOfMapForGame()*data.getBody().getHeightOfMapForGame()*0.01);
+        int countWall=(int)(data.getBody().getWidthOfMapForGame()*data.getBody().getHeightOfMapForGame()*0.1);
         LOGGER.info(""+countWall);
         while(countWall>0){
             addWall(data.getBody());
