@@ -4,21 +4,20 @@ import metida.interfacable.Direction;
 import metida.interfacable.IUserStrategy;
 import metida.object.Tank;
 import metida.providers.TankFactoryProvider;
-import metida.factory.TankFactory;
 
-public class Strategy1 implements IUserStrategy {
+public class Strategy2 implements IUserStrategy {
     Tank tank;
     public void execute(){
         for(int i=0;i<30;i++){
-            tank.shoot(Direction.LEFT);
+            tank.shoot(Direction.RIGHT);
             tank.moveRight();
-            tank.shoot(Direction.UP);
             tank.moveDown();
+            tank.shoot(Direction.UP);
         }
         tank.moveUp();
         tank.moveRight();
     }
     public void init(){
-        tank= TankFactoryProvider.getTankFactory().getTank(1);
+        tank= TankFactoryProvider.getTankFactory().getTank(2);
     }
 }

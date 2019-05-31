@@ -10,6 +10,7 @@ import metida.factory.TankFactory;
 import metida.interfacable.IUserStrategy;
 import metida.object.*;
 import metida.service.Strategy1;
+import metida.service.Strategy2;
 import org.joor.Reflect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,7 +147,7 @@ public class ApplicationEventListener {
 
         //--------до сюда
 
-        for(int i=0;i<14;i++) {
+        for(int i=0;i<122;i++) {
 
             factory.getObjectsTank().forEach((id , object) -> {
                 try {
@@ -279,11 +280,19 @@ public class ApplicationEventListener {
 
     static private void searchStrategy(String id, String path) {
         IUserStrategy userStrategy;
+        IUserStrategy userStrategy1;
         if (id.equals("user1")){
             userStrategy=new Strategy1();
             userStrategy.init();
             userStrategy.execute();
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
+            threadStrategy.start();
+        }
+        if(id.equals("user2")){
+            userStrategy1=new Strategy2();
+            userStrategy1.init();
+            userStrategy1.execute();
+            ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy1);
             threadStrategy.start();
         }
             String strategy = path;
