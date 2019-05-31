@@ -279,7 +279,7 @@ public class ApplicationEventListener {
     static private void searchStrategy(String id, String path) {
 
             String strategy = path;
-            strategy = "package metida.factory;\n" +
+            strategy = "package com.example;\n" +
                     "    import metida.factory.TankFactory;\n" +
                     "    import metida.object.Tank;\n" +
                     "    import metida.interfacable.Direction;\n" +
@@ -291,7 +291,7 @@ public class ApplicationEventListener {
 
             IUserStrategy userStrategy;
             userStrategy = Reflect.compile(
-                    "com.example."+id
+                    "metida.factory."+id
                     /*"com.example.CompileTest"*/,
                     strategy).create().get();
             LOGGER.info("скомпилировалось");
