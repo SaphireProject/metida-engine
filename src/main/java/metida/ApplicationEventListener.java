@@ -146,7 +146,7 @@ public class ApplicationEventListener {
 
         //--------до сюда
 
-        for(int i=0;i<10;i++) {
+        for(int i=0;i<14;i++) {
 
             factory.getObjectsTank().forEach((id , object) -> {
                 try {
@@ -281,6 +281,8 @@ public class ApplicationEventListener {
         IUserStrategy userStrategy;
         if (id=="user1"){
             userStrategy=new Strategy1();
+            userStrategy.init();
+            userStrategy.execute();
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
             threadStrategy.start();
         }
