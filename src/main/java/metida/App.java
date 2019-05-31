@@ -42,17 +42,9 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
-        Map<String, Integer> body = new HashMap<>();
-        body.put("id", 3);
-
         RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-        HttpEntity<Map> entity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<ParameterMetida> data=restTemplate.exchange(
-                "http://localhost:8085/game/parameters", HttpMethod.POST, entity, ParameterMetida.class);
+        ResponseEntity<ParameterMetida> data=restTemplate.getForEntity(
+                "https://f846e947-48a3-45a2-8fdf-6e2313e1e30f.mock.pstmn.io/game/parameters", ParameterMetida.class);
         LOGGER.info(""+data.getBody().getStrategies());
     }
 }

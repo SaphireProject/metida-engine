@@ -26,7 +26,7 @@ import java.util.*;
 @Component
 public class ApplicationEventListener {
     private static Game game;
-
+    private String t="https://f846e947-48a3-45a2-8fdf-6e2313e1e30f.mock.pstmn.io";
     @Value("${runner.url}")
     private String url;
 
