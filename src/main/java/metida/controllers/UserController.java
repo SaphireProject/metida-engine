@@ -293,8 +293,33 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+}
 
-    static private void searchStrategy(String id,String path) {
+/*
+        List<String> preloadBlocks=new LinkedList<>();
+        for (int j = 0; j < data.getLengthY(); j++) {
+            String row="";
+            for (int i = 0; i < data.getLengthX(); i++) {
+
+                Point point = new Point(i , j);
+                game.gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL
+                if(gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL){
+                        row=row+"1";
+                        }
+                        else{
+                        row=row+"0";
+                        }
+                        }
+                        preloadBlocks.add(row);
+                        row="";
+                        }
+
+                        LOGGER.info(preloadBlocks.toString());
+
+                        */
+
+/*
+* /*static private void searchStrategy(String id,String path) {
         File folder = new File(path);
         if (path.endsWith(".java")) {
             String strategy = fileInput(path);
@@ -311,7 +336,7 @@ public class UserController {
             IUserStrategy userStrategy;
             userStrategy = Reflect.compile(
                     "com.example."+id
-                    /*"com.example.CompileTest"*/,
+                    "com.example.CompileTest",
                     strategy).create().get();
             LOGGER.info("скомпилировалось");
             ThreadStrategy threadStrategy = new ThreadStrategy(userStrategy);
@@ -360,27 +385,4 @@ public class UserController {
         }
 
         return res;
-    }
-
-}
-
-/*
-        List<String> preloadBlocks=new LinkedList<>();
-        for (int j = 0; j < data.getLengthY(); j++) {
-            String row="";
-            for (int i = 0; i < data.getLengthX(); i++) {
-
-                Point point = new Point(i , j);
-                game.gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL
-                if(gameOptions.hashmap.get(point.hashCode()).getType()==TypeObjects.WALL){
-                        row=row+"1";
-                        }
-                        else{
-                        row=row+"0";
-                        }
-                        }
-                        preloadBlocks.add(row);
-                        row="";
-                        }
-
-                        LOGGER.info(preloadBlocks.toString());*/
+    }*/

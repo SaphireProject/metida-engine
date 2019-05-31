@@ -73,8 +73,8 @@ public class ApplicationEventListener {
         ResponseEntity<ParameterMetida> data=restTemplate.exchange(
                 url+"/game/parameters", HttpMethod.POST, entity, ParameterMetida.class);*/
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ParameterMetida> data=restTemplate.getForEntity(
-                url+"/game/parameters", ParameterMetida.class);
+        ResponseEntity<ParameterMetida> data=restTemplate.getForEntity(url+
+                "/game/parameters", ParameterMetida.class);
 
         game = Game.Initialize(data.getBody());
         LOGGER.info("Игра создана в листенере" +data.getBody().toString());
@@ -163,7 +163,7 @@ public class ApplicationEventListener {
             List<BulletJson> bullets = new LinkedList<>();
             game.action();
             objBulletDelete.forEach((idBullet , objectBullet) -> {
-                if (objectBullet.getX() == 0 || objectBullet.getY() == 0) {
+                if (objectBullet.isLastSnapshot()==true||objectBullet.getX() == 0 || objectBullet.getY() == 0  ) {
                     BulletJson bullet = new BulletJson(objectBullet.getX() , objectBullet.getY() ,
                             "" + objectBullet.getDirection() ,
                             objectBullet.isFirstSnapshot() ,
@@ -173,7 +173,7 @@ public class ApplicationEventListener {
             });
             game.action();
             objBulletDelete.forEach((idBullet , objectBullet) -> {
-                if (objectBullet.getX() == 0 || objectBullet.getY() == 0) {
+                if (objectBullet.getX() == 0 || objectBullet.getY() == 0|| objectBullet.isLastSnapshot()==true) {
                     BulletJson bullet = new BulletJson(objectBullet.getX() , objectBullet.getY() ,
                             "" + objectBullet.getDirection() ,
                             objectBullet.isFirstSnapshot() ,
@@ -183,7 +183,7 @@ public class ApplicationEventListener {
             });
             game.action();
             objBulletDelete.forEach((idBullet , objectBullet) -> {
-                if (objectBullet.getX() == 0 || objectBullet.getY() == 0) {
+                if (objectBullet.getX() == 0 || objectBullet.getY() == 0|| objectBullet.isLastSnapshot()==true) {
                     BulletJson bullet = new BulletJson(objectBullet.getX() , objectBullet.getY() ,
                             "" + objectBullet.getDirection() ,
                             objectBullet.isFirstSnapshot() ,
@@ -284,7 +284,7 @@ public class ApplicationEventListener {
                     "    import metida.object.Tank;\n" +
                     "    import metida.interfacable.Direction;\n" +
                     "    import metida.providers.TankFactoryProvider;\n" +
-                    "    class "+ id+" implements metida.interfacable.IUserStrategy { " +
+                    "    class "+ id +" implements metida.interfacable.IUserStrategy { " +
                     strategy +
                     "}";
 
