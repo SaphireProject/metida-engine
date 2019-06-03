@@ -58,7 +58,8 @@ public class ApplicationEventListener {
         }
     }
 
-static String strategy="";
+    static String strategy="";
+    static int idStrategy=3;
 
     @EventListener(ApplicationStartedEvent.class)
     public void applicationStartedEvent() {
@@ -86,7 +87,11 @@ static String strategy="";
 
         for(int i=0; i<data.getBody().getStrategies().size();i++){
             LOGGER.info("Айди стратегии "+data.getBody().getStrategies().get(i).getId());
-            searchStrategy("user"+data.getBody().getStrategies().get(i).getId(), data.getBody().getStrategies().get(i).getDescription());
+            int p=data.getBody().getStrategies().get(i).getId();
+
+            searchStrategy("user"+idStrategy, data.getBody().getStrategies().get(i).getDescription());
+            idStrategy++;
+            idStrategy++;
         }
 
 
