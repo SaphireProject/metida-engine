@@ -174,21 +174,27 @@ public class Game extends GameOptions{
             if(object.isFlag()==false){
                 //надо убрать статус первого выстрела у снаряда
                 if(object.getType()==TypeObjects.BULLET){
-                    object.setFirstSnapshot(false);
+                    //object.setFirstSnapshot(false);
                     LOGGER.info("Снаряд "+object.toString()+" изменил статус первого snapshoot");
                 }
                 object.action();
-                LOGGER.info("Объект "+object.toString()+" выполнил одно свое действие в свой ход");
+                if(object.getType()==TypeObjects.WALL){
+
+                }
+                else{
+                    LOGGER.info("Объект "+object.toString()+" выполнил одно свое действие в свой ход");
+                }
+
                 //object.setFlag(false);
             }
-            if(!object.isLiving() && object.getType()==TypeObjects.TANK){
+            /*if(!object.isLiving() && object.getType()==TypeObjects.TANK){
                 factory.objectsTank.remove(id);
             }
             if(!object.isLiving()){
                 LOGGER.info("Удаление мертвого объекта "+objects.get(id));
                 objects.remove(id);
                 LOGGER.info("Объект "+objects.get(id)+" удален");
-            }
+            }*/
 
         });
 
@@ -198,7 +204,7 @@ public class Game extends GameOptions{
         objectsAdd.forEach((id, object) -> objects.put(id,object));
         //Удаление старых пуль с карты
         objectsDeleteOld.forEach((id,object) -> objects.remove(id));
-        objectsDeleteOld.clear();
+        //objectsDeleteOld.clear();
         objectsAdd.clear();
         LOGGER.info("Конец одного действия");
     }

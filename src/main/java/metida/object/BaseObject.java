@@ -13,6 +13,24 @@ public abstract class BaseObject  {
     boolean isLastSnapshot;
     boolean isFirstSnapshot;
     int id;
+    String color;
+    int idTeam;
+
+    public int getIdTeam() {
+        return idTeam;
+    }
+
+    public void setIdTeam(int idTeam) {
+        this.idTeam = idTeam;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public int getId() {
         return id;

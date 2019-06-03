@@ -181,31 +181,31 @@ public class UserController {
             game.action();
             objBulletDelete.forEach((idBullet, objectBullet) ->  {
                 if(objectBullet.getX()==0||objectBullet.getY()==0){
-                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                   /* BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
                             ""+objectBullet.getDirection(),
                             objectBullet.isFirstSnapshot(),
                             objectBullet.isLastSnapshot());
-                    bullets.add(bullet);
+                    bullets.add(bullet);*/
                 }
             });
             game.action();
             objBulletDelete.forEach((idBullet, objectBullet) ->  {
                 if(objectBullet.getX()==0||objectBullet.getY()==0){
-                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                   /* BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
                             ""+objectBullet.getDirection(),
                             objectBullet.isFirstSnapshot(),
                             objectBullet.isLastSnapshot());
-                    bullets.add(bullet);
+                    bullets.add(bullet);*/
                 }
             });
             game.action();
             objBulletDelete.forEach((idBullet, objectBullet) ->  {
                 if(objectBullet.getX()==0||objectBullet.getY()==0){
-                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                   /* BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
                             ""+objectBullet.getDirection(),
                             objectBullet.isFirstSnapshot(),
                             objectBullet.isLastSnapshot());
-                    bullets.add(bullet);
+                    bullets.add(bullet);*/
                 }
             });
 
@@ -228,12 +228,12 @@ public class UserController {
                 //LOGGER.info("Старт создания snapshot");
                 if(object.getType()== TypeObjects.TANK){
                     LOGGER.info("Создание объекта танк");
-                    TankJson tankJson = new TankJson(""+obj.get(id).getId(),
+                   /* TankJson tankJson = new TankJson(""+obj.get(id).getId(),
                             object.getX(),
                             object.getY(),
                             "tank_green",
                             object.isLiving());
-                    tanks.add(tankJson);
+                    tanks.add(tankJson);*/
 
                     /*if(endOfGame.containsValue(factory.objectsTank.get(id).getIdTeam())){
                         endOfGame.put(id, factory.objectsTank.get(id).getIdTeam());
@@ -251,19 +251,19 @@ public class UserController {
 
                 }
                 if(object.getType()== TypeObjects.BULLET){
-                    BulletJson bullet=new BulletJson(object.getX(),object.getY(),
+                    /*BulletJson bullet=new BulletJson(object.getX(),object.getY(),
                             ""+object.getDirection(),
                             object.isFirstSnapshot(),
                             object.isLastSnapshot());
-                    bullets.add(bullet);
+                    bullets.add(bullet);*/
                 }
 
                 objBulletDelete.forEach((idBullet, objectBullet) ->  {
-                    BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
+                   /* BulletJson bullet=new BulletJson(objectBullet.getX(),objectBullet.getY(),
                             ""+objectBullet.getDirection(),
                             objectBullet.isFirstSnapshot(),
                             objectBullet.isLastSnapshot());
-                    bullets.add(bullet);
+                    bullets.add(bullet);*/
                 });
 
 

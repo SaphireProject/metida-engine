@@ -20,7 +20,8 @@ public class Bullet extends BaseObject implements Activable, Checkable {
     private  int health;
     private boolean isLastSnapshot;
     private boolean isFirstSnapshot;
-
+    private int id;
+    private static int idBullet=0;
     private  boolean isFlag;
     private  boolean living;
 
@@ -38,6 +39,8 @@ public class Bullet extends BaseObject implements Activable, Checkable {
         this.Y=Y;
         this.health=1;
         this.direction=direction;
+        id=idBullet;
+        idBullet++;
     }
 
     public Bullet(int X , int Y , Direction direction, boolean isFlag) {
@@ -48,6 +51,18 @@ public class Bullet extends BaseObject implements Activable, Checkable {
         this.health=1;
         this.direction=direction;
         this.isFlag = isFlag;
+        id=idBullet;
+        idBullet++;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -128,18 +143,25 @@ public class Bullet extends BaseObject implements Activable, Checkable {
             switch (this.direction) {
                 case LEFT:
                     Bullet bulletLEFT = new Bullet(this.X-1, this.Y, direction,false);
+
                     Point pointLEFT = new Point(this.X-1, this.Y);
                     Point oldPointLEFT= new Point(this.X, this.Y);
+                    bulletLEFT.setId(game.objects.get(oldPointLEFT.hashCode()).getId());
                     gameOptions.hashmap.put(pointLEFT.hashCode(), bulletLEFT);
                     LOGGER.info("координата Х пули " + bulletLEFT.X);
                     gameOptions.hashmap.put(oldPointLEFT.hashCode(), null);
                     LOGGER.info("переместилась ли пуля(должна исчезнуть) " + game.findObject(X,Y));
                     LOGGER.info("переместилась ли пуля(должна появиться тут) " + game.findObject(X-1,Y));
-
+                    LOGGER.info(""+game.objects.get(oldPointLEFT.hashCode()));
+                    if(game.objects.get(oldPointLEFT.hashCode()).isFirstSnapshot()){
+                        bulletLEFT.setFirstSnapshot(true);
+                    }
                     //Добавили новую пулю в отдельную мапу, чтобы потом добавить в основную
                     game.addObjectAdd(bulletLEFT ,X-1, Y, game.gameOptions);
-
+                    LOGGER.info(""+game.objects.get(oldPointLEFT.hashCode()));//это почему то null
+                    //-game.addObjectAdd(game.objects.get(oldPointLEFT.hashCode()) ,X-1, Y, game.gameOptions);
                     //Добавили чтобы удалить старую пулю
+
                     game.removeObjectOld(game.objects.get(oldPointLEFT.hashCode()),X,Y,game.gameOptions);
 
                     break;
@@ -147,11 +169,15 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                     Bullet bulletRIGHT = new Bullet(this.X+1,this.Y,this.direction);
                     Point pointRIGHT = new Point(this.X+1,this.Y);
                     Point oldPointRIGHT= new Point(this.X,this.Y);
+                    bulletRIGHT.setId(game.objects.get(oldPointRIGHT.hashCode()).getId());
                     gameOptions.hashmap.put(pointRIGHT.hashCode(), bulletRIGHT);
                     gameOptions.hashmap.put(oldPointRIGHT.hashCode(),null);
                     LOGGER.info("переместилась ли пуля(должна исчезнуть) " + game.findObject(X,Y));
                     LOGGER.info("переместилась ли пуля(должна появиться тут) " + game.findObject(X+1,Y));
 
+                    if(game.objects.get(oldPointRIGHT.hashCode()).isFirstSnapshot()){
+                        bulletRIGHT.setFirstSnapshot(true);
+                    }
                     //Добавили новую пулю в отдельную мапу, чтобы потом добавить в основную
                     game.addObjectAdd(bulletRIGHT ,X+1, Y, game.gameOptions);
 
@@ -162,13 +188,15 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                     Bullet bulletUP = new Bullet(this.X,this.Y+1, this.direction);
                     Point pointUP = new Point(this.X,this.Y+1);
                     Point oldPointUP= new Point(this.X,this.Y);
-
+                    bulletUP.setId(game.objects.get(oldPointUP.hashCode()).getId());
                     gameOptions.hashmap.put(pointUP.hashCode(), bulletUP);
                     gameOptions.hashmap.put(oldPointUP.hashCode(),null);
 
                     LOGGER.info("переместилась ли пуля(должна исчезнуть) " + game.findObject(X,Y));
                     LOGGER.info("переместилась ли пуля(должна появиться тут) " + game.findObject(X,Y+1));
-
+                    if(game.objects.get(oldPointUP.hashCode()).isFirstSnapshot()){
+                        bulletUP.setFirstSnapshot(true);
+                    }
                     //Добавили новую пулю в отдельную мапу, чтобы потом добавить в основную
                     game.addObjectAdd(bulletUP ,X, Y+1, game.gameOptions);
 
@@ -179,12 +207,15 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                     Bullet bulletDOWN = new Bullet(this.X,this.Y-1,this.direction);
                     Point pointDOWN = new Point(this.X,this.Y-1);
                     Point oldPointDOWN= new Point(this.X,this.Y);
+                    bulletDOWN.setId(game.objects.get(oldPointDOWN.hashCode()).getId());
                     gameOptions.hashmap.put(pointDOWN.hashCode(), bulletDOWN);
                     gameOptions.hashmap.put(oldPointDOWN.hashCode(),null);
 
                     LOGGER.info("переместилась ли пуля(должна исчезнуть) " + game.findObject(X,Y));
                     LOGGER.info("переместилась ли пуля(должна появиться тут) " + game.findObject(X,Y-1));
-
+                    if(game.objects.get(oldPointDOWN.hashCode()).isFirstSnapshot()){
+                        bulletDOWN.setFirstSnapshot(true);
+                    }
                     //Добавили новую пулю в отдельную мапу, чтобы потом добавить в основную
                     game.addObjectAdd(bulletDOWN ,X, Y-1, game.gameOptions);
 
@@ -206,7 +237,7 @@ public class Bullet extends BaseObject implements Activable, Checkable {
     public boolean checkForward(Direction direction) {
         switch(direction){
             case UP:
-                if(Y+1<=gameOptions.getHeight()){
+                if(Y+1<gameOptions.getHeight()){
                     Point pointUP=new Point(this.X,this.Y+1);
                     Point pointUPold=new Point(this.X, this.Y);
 
@@ -218,7 +249,6 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                         //получаем встреченнный объект
                         BaseObject base = gameOptions.hashmap.get(pointUP.hashCode());
                         LOGGER.info("health old " + gameOptions.hashmap.get(pointUP.hashCode()).getHealth());
-                        //возможна нужна проверка что если флаг false
                         if(base.getType()==TypeObjects.BULLET & base.isFlag() == true){
                             //чтобы перезаписывалась или встречная пуля, или текущая
                             int c=random.nextInt(1);
@@ -236,7 +266,9 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                         gameOptions.hashmap.put(pointUPold.hashCode(), null);//удаляем пулю с карты
                         //todo: когда буду делать мапу с пулями, надо будет прибавлять эту мапу
                         //выставляем флаг на то что последний кадр пули
+
                         game.objects.get(pointUPold.hashCode()).setLastSnapshot(true);
+                        LOGGER.info("пуля получила статус lastsnapshot " + game.objects.get(pointUPold.hashCode()));
                         //добавляем на удаление
                         game.removeObjectOld(game.objects.get(pointUPold.hashCode()), X, Y, game.gameOptions);
                         LOGGER.info("Повредился ли объект: " +
@@ -347,7 +379,7 @@ public class Bullet extends BaseObject implements Activable, Checkable {
                 return false;
 
             case RIGHT:
-                if(X+1<=gameOptions.getWidth()) {
+                if(X+1<gameOptions.getWidth()) {
                     Point pointRIGHT=new Point(this.X+1,this.Y);
                     Point pointRIGHTold=new Point(this.X,this.Y);
                     LOGGER.info("hash"+ pointRIGHT.hashCode());

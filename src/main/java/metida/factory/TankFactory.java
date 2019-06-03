@@ -1,18 +1,16 @@
 package metida.factory;
 
 
-import metida.JsonObject.PostConfig;
-import metida.data.Data;
 import metida.data.ParameterMetida;
-import metida.object.*;
+import metida.object.Game;
+import metida.object.GoldTank;
+import metida.object.Point;
+import metida.object.Tank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -70,12 +68,12 @@ public class TankFactory {
         LOGGER.info("Танк создан " + tank.getId());
         try {
             LOGGER.info(""+game.gameOptions.getWidth());
-            int x=random.nextInt(game.gameOptions.getWidth());
-            int y=random.nextInt(game.gameOptions.getHeight());
+            int x=random.nextInt(game.gameOptions.getWidth()-1);
+            int y=random.nextInt(game.gameOptions.getHeight()-1);
             Point point = new Point(x, y);
             if(game.gameOptions.hashmap.get(point.hashCode()) == null){
                 //getTank(idTeam);
-                game.addObject(tank, x, y, game.gameOptions);
+                game.addObject(tank,x, y, game.gameOptions);
                 LOGGER.info("Танк добавлен");
                 //можно добавлять в отдельный список танки, а потом по нему пройтись и получить очереди методов
                 objectsTank.put(point.hashCode(),tank);
