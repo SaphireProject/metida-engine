@@ -9,28 +9,27 @@ public class Strategy2 implements IUserStrategy {
     Tank tank;
     //Tank tank1;
     public void execute(){
-        for(int i=0;i<5;i++){
-            tank.shoot(Direction.RIGHT);
-            tank.moveRight();
+        for(int i=0;i<2;i++){
             tank.moveDown();
+            tank.moveRight();
+            for(int j=0;j<2;j++){
+                tank.moveRight();
+                tank.shoot(Direction.RIGHT);
+                tank.moveUp();
+                for(int n=0;n<2;n++){
+                    tank.moveRight();
+                    tank.moveRight();
+                    tank.moveDown();
+                    tank.shoot(Direction.UP);
+                }
+                tank.shoot(Direction.UP);
+            }
             tank.moveLeft();
-            tank.moveUp();
+            tank.shoot(Direction.UP);
+            tank.moveDown();
         }
-        /*for(int i=0;i<5;i++){
-            tank1.shoot(Direction.LEFT);
-            tank1.moveLeft();
-            tank1.moveUp();
-            tank1.shoot(Direction.DOWN);
-            tank1.shoot(Direction.UP);
-        }
-        for(int i=0;i<5;i++){
-            tank1.shoot(Direction.RIGHT);
-            tank1.moveRight();
-            tank1.moveDown();
-            tank1.shoot(Direction.UP);
-            tank1.shoot(Direction.DOWN);
-        }*/
-        for(int i=0;i<5;i++){
+
+        for(int i=0;i<2;i++){
             tank.shoot(Direction.LEFT);
             tank.moveLeft();
             tank.moveUp();
@@ -44,20 +43,7 @@ public class Strategy2 implements IUserStrategy {
             tank.shoot(Direction.UP);
             tank.shoot(Direction.RIGHT);
         }
-        /*for(int i=0;i<5;i++){
-            tank1.shoot(Direction.LEFT);
-            tank1.moveLeft();
-            tank1.moveUp();
-            tank1.shoot(Direction.DOWN);
-            tank1.shoot(Direction.UP);
-        }
-        for(int i=0;i<5;i++){
-            tank1.shoot(Direction.RIGHT);
-            tank1.moveRight();
-            tank1.moveDown();
-            tank1.shoot(Direction.UP);
-            tank1.shoot(Direction.DOWN);
-        }*/
+
         for(int i=0;i<5;i++){
             tank.shoot(Direction.LEFT);
             tank.moveLeft();

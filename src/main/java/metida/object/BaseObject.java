@@ -125,7 +125,7 @@ public abstract class BaseObject  {
     }
 
     void getHit(BaseObject obj){
-        obj.setHealth(obj.getHealth()-1);
+//        obj.setHealth(obj.getHealth()-1);
     }
 
     public boolean isLastSnapshot() {

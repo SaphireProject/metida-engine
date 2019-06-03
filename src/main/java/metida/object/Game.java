@@ -172,10 +172,10 @@ public class Game extends GameOptions{
 
         objects.forEach((id, object) ->  {
             if(object.isFlag()==false){
-                //надо убрать статус первого выстрела у снаряда
+
                 if(object.getType()==TypeObjects.BULLET){
-                    //object.setFirstSnapshot(false);
-                    LOGGER.info("Снаряд "+object.toString()+" изменил статус первого snapshoot");
+
+
                 }
                 object.action();
                 if(object.getType()==TypeObjects.WALL){
@@ -187,6 +187,7 @@ public class Game extends GameOptions{
 
                 //object.setFlag(false);
             }
+            //object.setFlag(false);
             /*if(!object.isLiving() && object.getType()==TypeObjects.TANK){
                 factory.objectsTank.remove(id);
             }

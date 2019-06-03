@@ -93,7 +93,7 @@ static String strategy="";
         //ResponseEntity<String> answer=restTemplate.getForEntity(url+"/game/strategy/1", String.class);
 
 
-        int countWall=(int)(data.getBody().getWidthOfMapForGame()*data.getBody().getHeightOfMapForGame()*0.05);
+        int countWall=(int)(data.getBody().getWidthOfMapForGame()*data.getBody().getHeightOfMapForGame()*0.1);
         LOGGER.info(""+countWall);
         while(countWall>0){
             addWall(data.getBody());
@@ -144,20 +144,20 @@ static String strategy="";
 
         HttpEntity<Map> entity1 = new HttpEntity<>(body1, headers3);
 
-       /* ResponseEntity<Void> data1=restTemplate.postForEntity(
-                url+"/game/preload",  entity1, Void.class);*/
+        ResponseEntity<Void> data1=restTemplate.postForEntity(
+                url+"/game/preload",  entity1, Void.class);
 
 
        //--------до сюда
 
         //отправка первичного расположения
-        Map<Integer, BaseObject> objFirst = game.getObjects();
+        Map<Integer, BaseObject> objFirst1 = game.getObjects();
         List<BulletJson> bullets1 = new LinkedList<>();
         List<TankJson> tanks1=new LinkedList<>();
         factory.getObjectsTank().forEach((id , object) -> {
                     LOGGER.info("Создание объекта танк");
                     if(object.getIdTeam()==1){
-                        TankJson tankJson = new TankJson(""+objFirst.get(id).getId(),
+                        TankJson tankJson = new TankJson(""+objFirst1.get(id).getId(),
                                 object.getX(),
                                 object.getY(),
                                 object.getDirection(),
@@ -166,7 +166,7 @@ static String strategy="";
                         tanks1.add(tankJson);
                     }
                     else{
-                        TankJson tankJson = new TankJson(""+objFirst.get(id).getId(),
+                        TankJson tankJson = new TankJson(""+objFirst1.get(id).getId(),
                                 object.getX(),
                                 object.getY(),
                                 object.getDirection(),
@@ -189,10 +189,10 @@ static String strategy="";
 
         HttpEntity<FrameJson> entityFirst = new HttpEntity<>(frameJson1, headers1);
 
-            /*ResponseEntity<Void> data2=restTemplate.postForEntity(
-                    url+"/game/animation", entityFirst, Void.class);*/
+            ResponseEntity<Void> data2=restTemplate.postForEntity(
+                    url+"/game/animation", entityFirst, Void.class);
 
-        for(int i=0;i<20;i++) {
+        for(int i=0;i<60;i++) {
 
             factory.getObjectsTank().forEach((id , object) -> {
                 try {
@@ -295,7 +295,7 @@ static String strategy="";
 
 
             //------
-
+            //Map<Integer, BaseObject> objFirst = game.getObjects();
             List<TankJson> tanks=new LinkedList<>();
             Map<Integer, Integer> endOfGame=new HashMap<>();
             List<Integer> idWinner=new LinkedList<>();
@@ -308,7 +308,7 @@ static String strategy="";
 
                     LOGGER.info("Создание объекта танк");
                     if(object.getIdTeam()==1){
-                        TankJson tankJson = new TankJson(""+objFirst.get(id).getId(),
+                        TankJson tankJson = new TankJson(""+obj.get(id).getId(),
                                 object.getX(),
                                 object.getY(),
                                 object.getDirection(),
@@ -316,8 +316,8 @@ static String strategy="";
                                 object.isLiving());
                         tanks.add(tankJson);
                     }
-                    else{
-                        TankJson tankJson = new TankJson(""+objFirst.get(id).getId(),
+                    else if (object.getIdTeam()==2){
+                        TankJson tankJson = new TankJson(""+obj.get(id).getId(),
                                 object.getX(),
                                 object.getY(),
                                 object.getDirection(),
@@ -374,8 +374,8 @@ static String strategy="";
 
             HttpEntity<FrameJson> entity2 = new HttpEntity<>(frameJson, headers2);
 
-            /*ResponseEntity<Void> data2=restTemplate.postForEntity(
-                    url+"/game/animation", entity2, Void.class);*/
+            ResponseEntity<Void> data3=restTemplate.postForEntity(
+                    url+"/game/animation", entity2, Void.class);
             try {
                 String jsonFrame = mapper.writeValueAsString(frameJson);
                 strategy=strategy+jsonFrame+",";

@@ -12,12 +12,25 @@ public class Strategy1 implements IUserStrategy {
     public void execute(){
         tank.shoot(Direction.LEFT);
         tank.shoot(Direction.DOWN);
-        for(int i=0;i<5;i++){
+        for(int i=0;i<2;i++){
             tank.moveUp();
             tank.moveRight();
-            tank.moveDown();
+            for(int j=0;j<2;j++){
+                tank.moveRight();
+                tank.shoot(Direction.RIGHT);
+                tank.moveUp();
+                tank.shoot(Direction.UP);
+            }
+            tank.moveLeft();
             tank.shoot(Direction.UP);
             tank.moveDown();
+            for(int k=0;k<2;k++){
+                tank.shoot(Direction.LEFT);
+                tank.moveLeft();
+                tank.moveUp();
+                tank.shoot(Direction.DOWN);
+                tank.shoot(Direction.UP);
+            }
         }
         for(int i=0;i<5;i++){
             tank.shoot(Direction.LEFT);
@@ -33,20 +46,7 @@ public class Strategy1 implements IUserStrategy {
             tank.shoot(Direction.UP);
             tank.shoot(Direction.RIGHT);
         }
-       /* for(int i=0;i<5;i++){
-            tank1.shoot(Direction.LEFT);
-            tank1.moveLeft();
-            tank1.moveUp();
-            tank1.shoot(Direction.DOWN);
-            tank1.shoot(Direction.UP);
-        }
-        for(int i=0;i<5;i++){
-            tank1.shoot(Direction.RIGHT);
-            tank1.moveRight();
-            tank1.moveDown();
-            tank1.shoot(Direction.UP);
-            tank1.shoot(Direction.DOWN);
-        }*/
+
         for(int i=0;i<5;i++){
             tank.shoot(Direction.LEFT);
             tank.moveLeft();

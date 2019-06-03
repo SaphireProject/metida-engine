@@ -210,45 +210,57 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
     }
 
     public boolean checkForward(Direction direction) {
-        Map<Integer,BaseObject> map = checkAround(gameOptions.getVision());
+        //Map<Integer,BaseObject> map = checkAround(gameOptions.getVision());
         switch(direction){
             case UP:
-                Point pointUP=new Point(X,Y+1);
-                if (map.get(pointUP.hashCode()) == null){
-                    return true;
+                if(Y+1<gameOptions.getHeight()){
+                    Point pointUP=new Point(this.X,this.Y+1);
+                    if (gameOptions.hashmap.get(pointUP.hashCode()) == null){
+                        return true;
+                    }
+                    else{
+                        LOGGER.info("Движение невозможно в координату: "+(X)+" "+(Y+1));
+                        return false;
+                    }
                 }
-                else{
-                    LOGGER.info("Движение невозможно в координату: "+(X)+" "+(Y+1));
-                    return false;
-                }
+                return false;
             case DOWN:
-                Point pointDOWN=new Point(super.X,super.Y-1);
-                if (map.get(pointDOWN.hashCode()) == null){
-                    return true;
+                if(Y-1>=0){
+                    Point pointDOWN=new Point(this.X,this.Y-1);
+                    if (gameOptions.hashmap.get(pointDOWN.hashCode()) == null){
+                        return true;
+                    }
+                    else{
+                        LOGGER.info("Движение невозможно в координату: "+(X)+" "+(Y-1));
+                        return false;
+                    }
                 }
-                else{
-                    LOGGER.info("Движение невозможно в координату: "+(X)+" "+(Y-1));
-                    return false;
-                }
+                return false;
             case LEFT:
-                Point pointLEFT=new Point(super.X-1,super.Y);
-                //LOGGER.info("hash"+ pointLEFT.hashCode());
-                if (gameOptions.hashmap.get(pointLEFT.hashCode()) == null){
-                    return true;
+                if(X-1>=0) {
+                    Point pointLEFT=new Point(this.X-1,this.Y);
+                    //LOGGER.info("hash"+ pointLEFT.hashCode());
+                    if (gameOptions.hashmap.get(pointLEFT.hashCode()) == null){
+                        return true;
+                    }
+                    else{
+                        LOGGER.info("Движение невозможно в координату: "+(X-1)+" "+(Y));
+                        return false;
+                    }
                 }
-                else{
-                    LOGGER.info("Движение невозможно в координату: "+(X-1)+" "+(Y));
-                    return false;
-                }
+                return false;
             case RIGHT:
-                Point pointRIGHT=new Point(super.X+1,super.Y);
-                if (map.get(pointRIGHT.hashCode()) == null){
-                    return true;
+                if(X+1<gameOptions.getWidth()) {
+                    Point pointRIGHT=new Point(this.X+1,this.Y);
+                    if (gameOptions.hashmap.get(pointRIGHT.hashCode()) == null){
+                        return true;
+                    }
+                    else{
+                        LOGGER.info("Движение невозможно в координату: "+(X+1)+" "+(Y));
+                        return false;
+                    }
                 }
-                else{
-                    LOGGER.info("Движение невозможно в координату: "+(X+1)+" "+(Y));
-                    return false;
-                }
+                return false;
         }
         return false;
     }
@@ -358,10 +370,10 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
             LOGGER.info("Начало проверки");
             if(checkForward(Direction.LEFT)){
                 LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
+                Point oldPoint = new Point(this.X,this.Y);
                 LOGGER.info("Первоначальные координаты " + X+" "+Y);
                 X=X-1;
-                Point newpoint = new Point(X,Y);
+                Point newpoint = new Point(this.X,this.Y);
                 LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(oldPoint.hashCode(),null);
@@ -396,11 +408,11 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
             LOGGER.info("Начало проверки");
             if(checkForward(Direction.DOWN)){
                 LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
+                Point oldPoint = new Point(this.X,this.Y);
                 LOGGER.info("Первоначальные координаты " + X+" "+Y);
                 Y=Y-1;
 
-                Point newpoint = new Point(X,Y);
+                Point newpoint = new Point(this.X,this.Y);
                 LOGGER.info("Объект, который должен сдвинуться "
                         +gameOptions.hashmap.get(oldPoint.hashCode())+" "
                         +gameOptions.hashmap.get(oldPoint.hashCode()).Y);
@@ -418,11 +430,11 @@ public class Tank extends BaseObject implements Movable, Activable, Checkable, S
             LOGGER.info("Начало проверки");
             if(checkForward(Direction.UP)){
                 LOGGER.info("Начало движения");
-                Point oldPoint = new Point(X,Y);
+                Point oldPoint = new Point(this.X,this.Y);
                 LOGGER.info("Первоначальные координаты " + X+" "+Y);
                 Y=Y+1;
 
-                Point newpoint = new Point(X,Y);
+                Point newpoint = new Point(this.X,this.Y);
                 LOGGER.info("Объект, который должен сдвинуться " + gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(newpoint.hashCode(), gameOptions.hashmap.get(oldPoint.hashCode()));
                 gameOptions.hashmap.put(oldPoint.hashCode(),null);
